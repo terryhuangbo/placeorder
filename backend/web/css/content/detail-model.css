@@ -1,0 +1,1004 @@
+/*==项目详情模板==*/
+*{ box-sizing: border-box; }
+/*========================================苏州日报==========================================*/
+/*upload*/
+.work-upload {
+    width: 1000px;
+    position: relative;
+}
+.work-upload-inner {
+    padding: 25px;
+    background-color: #fff;
+}
+.work-upload .upload-step {
+    padding-bottom: 25px;
+}
+
+.work-upload .upload-step .step-item{
+    float: left;
+    margin-right: 10px;
+    font-family: "Microsoft Yahei";
+    font-size: 14px;
+    color: #999;
+    line-height: 1;
+}
+.step-item .step-no
+{
+    margin-right: 5px;
+    font-family: "Arial";
+    font-size: 30px;
+    font-style: italic;
+    color: #999;
+    line-height: 1;
+}
+.work-upload .upload-step .step-done, .step-done .step-no
+{
+    color: #404040;
+}
+.work-upload .upload-step .step-cur, .step-cur .step-no
+{
+    color: #3e80dc;
+}
+.upload-main .upload-area {
+    border: 1px dashed #bbbbc0;
+    background-color: #f3f3f3;
+    min-height: 335px;
+    height: 335px;
+    margin: 0 auto;
+    position: relative;
+    display: table;
+    width: 100%;
+    padding: 30px 0;
+}
+.upload-main .upload-area.hide{
+    display:none;
+}
+.mod-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+    font-size: 0;
+}
+.mod-icon-delete {
+    width: 20px;
+    height: 20px;
+    background-image: url("../images/icon-delete.png");
+}
+
+.btn-close {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 40px;
+    cursor: pointer;
+    top: 37px;
+}
+/*按钮*/
+.upload-op {
+    margin: 15px 0;
+}
+.upload-op .btn-box-prev
+{
+    float: left;
+}
+.upload-op .btn-box-next
+{
+    float: right;
+}
+.upload-op .btn-box-left{
+    float: left;
+}
+.upload-op .mod-btn {
+    background-color: #404040;
+    width: 100px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+    -moz-transition: background-color 0.3s;
+    -webkit-transition: background-color 0.3s;
+    -o-transition: background-color 0.3s;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+.upload-op .mod-btn:hover{
+    background-color:#000 ;
+}
+.upload-op .mod-btn-gray{
+    background-color: #bbbbc0;
+}
+.upload-op .mod-btn-gray:hover{
+    background-color: #bbbbc0;
+}
+.upload-img{
+    position: relative;
+    border-right: 1px dashed #bbbbc0 ;
+    width: 100%;
+    height: 228px;
+    padding-top: 110px;
+}
+.upload-img img,.upload-rightbox-img img
+{
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    left: 0;
+}
+.upload-icon{
+    display: inline-block;
+    width:72px ;
+    height:61px;
+    cursor: pointer;
+}
+.upload-img-icon{
+    background: url(/images/createNew/upload-img.png) no-repeat center center;
+}
+.upload-icon-box{
+    color:#bbbbc0;
+    line-height: 2.0;
+    position: relative;
+    overflow: hidden;
+}
+.upload-result{
+    position: relative;
+    text-align: center;
+}
+.upload-result-pic{
+    float: left;
+    border: 1px solid #bbbbc0;
+    width: 295px;
+    height: 218px;
+    margin:0 5px 10px 5px;
+    position: relative;
+    overflow: hidden;
+    color:#666;
+}
+.upload-result .upload-img{
+    float:left;
+    margin-bottom: 10px;
+    padding: 40px 0 0 0;
+    width: 250px;
+    height: 140px;
+    background-color: #e5e5e5;
+    border: 1px dashed #bbbbc0;
+    box-sizing: border-box;
+}
+.project-cover .upload-result .upload-img img, .upload-rightbox-img img
+{
+    width: 250px;
+    height: 140px;
+}
+.upload-result-pic-mask{
+    position: absolute;
+    left:0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+.btn-delete-pic{
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 65px;
+    height: 62px;
+    background: url("../images/delete.jpg") no-repeat;
+    z-index: 2;
+}
+.progress-bar-title{
+    font-size:40px;
+    color:#3e80dc;
+    text-align: center;
+    top: 70px;
+    position: absolute;
+    width: 100%;
+}
+.progress-bar-box{
+    position: absolute;
+    width:86%;
+    height:4px ;
+    background: #FFF;
+    left: 7%;
+    top: 130px;
+}
+.progress-bar{
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    top: 0;
+    left: 0;
+    background-color:#3e80dc ;
+}
+.upload-link-input{
+    height: 106px;
+    line-height:1.5;
+    background-color: #FFF;
+    border: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 873px;
+    resize: none;
+    font-size: 24px;
+    color: blue;
+    font-family: "microsoft yahei";
+    padding: 0 20px;
+    display: none;
+}
+.upload-file{font-size: 300px; position: absolute; right: 0; top: 0; cursor: pointer; opacity: 0; filter: alpha(opacity=0); z-index: 99; }
+
+.select-ft{
+    width: 100%;
+    top: 0;
+    z-index: 9;
+    position: absolute;
+    left: 0;
+}
+/*视频上传进度条*/
+.progress{
+    height: 4px;
+    width: 300px;
+    background: red;
+    margin: 0 auto;
+}
+.progress .bar{
+    height: 4px;
+    background: #000;
+}
+
+
+
+.font24{font-size: 24px;}
+.font32{font-size: 32px;}
+.font38{font-size: 38px;}
+.fl_l{float: left;}
+.fl_r{float: right;}
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+    height: 0;
+}
+input:focus,textarea:focus{outline: 0 none;}
+/*加载更多*/
+.loading-over{
+    background-color: #dfdfdf;
+    color: #333333;
+    padding: 8px 25px;
+    font-size: 14px;
+    display: inline-block;
+    cursor: default;
+}
+.loading-box{
+    text-align: center;
+    padding-top:30px;
+}
+.loading-over-box{
+    text-align: center;
+    border-top:1px solid #e1e1e1;
+    padding-top:30px;
+    margin-top:15px;
+}
+.loading{color: #333333; font-size: 14px;}
+.loading-icon-24{width: 24px; height: 24px; vertical-align: middle; display: inline-block; background: url("/resource/images/loading/loader_24.gif") no-repeat;  margin-right: 5px;}
+
+
+.btn-group{
+    position: absolute;
+    left: 402px;
+    top: 385px;
+}
+
+.surb-btn{
+    width: 280px;
+    height: 60px;
+    box-shadow: 0 5px 0px #FF6500;
+    background-color:#FF8432 ;
+    border-radius: 8px;
+    font-size: 30px;
+    line-height: 60px;
+    color: #FFF;
+    display: block;
+    margin-bottom:13px;
+    margin-top: 40px;
+}
+.surb-btn:hover{
+     background-color:#f38033 ;
+}
+
+.notice-title{
+    font-family: "Microsoft YaHei";
+    font-size: 24px;
+    color:#397ddb ;
+    padding-bottom:15px;
+}
+.pull-left{float:left;}
+.pull-right{float:right;}
+.match-notice-left{width:600px;}
+.w_830{width:828px;}
+.notice-txt{
+    padding-bottom:25px;
+    max-width:1157px;
+}
+.notice-txt{ line-height:1.8;}
+.notice-txt li{padding-left:20px;}
+.notice-txt li span{width:20px;float:left;margin-left:-20px;}
+.notice-img{ margin-bottom:25px;}
+.match-notice-top,.match-notice-bottom{overflow:hidden;}
+.icon-notice{width:162px;height:99px; float:left; background: url("../images/icon-fiy.png") no-repeat;}
+.match-notice-bottom{margin-top:-30px;}
+.pt20{padding-top:20px;}
+.pt50{padding-top:50px;}
+.prize-show{
+    position: relative;
+    width: 1200px;
+    height:410px;
+}
+.prize-setting{
+    width: 389px;
+    height: 211px;
+    right: 0;
+    bottom: 0px;
+    position: absolute;
+}
+#content{padding-top:45px;}
+.btn-manage{  position: absolute;
+  width: 234px;
+  height: 64px;
+  right: 0;
+  bottom: 20px;
+  border: 2px dashed #397ddb;
+  left: 50%;
+  margin-left: 361px;
+  font-size: 30px;
+  line-height: 64px;
+  text-align: center;
+  background-color: #FFF;color:#397ddb;}
+
+.footer{margin-top:0;}
+
+.icon-24{
+    width:24px;
+    height:24px;
+    display:inline-block;
+}
+.icon-home{background: url("../images/icon-home.png") center 2px no-repeat;  vertical-align: middle; margin-right:5px;}
+.form-top{text-align: right; font-size:18px; width:1000px; margin:0 auto; padding:24px 0 12px 0;}
+.form-top a{line-height:24px;color:#666666;}
+.step_1{
+    background: url("../images/step_1.jpg") center 2px no-repeat;
+    width:566px;
+    height:214px;
+    margin:130px auto 0 auto;
+}
+.step_1_w{ font-size:18px;color:#666666;padding:20px 0 25px 0;text-align: center;}
+.step_1_w .color-green{color:#69c915;}
+.step_1_btn{font-weight: lighter;width:230px;height:58px;display:block;font-size:36px; color:#3e80dc; border:1px solid #3e80dc;border-radius:8px;text-align: center;line-height:58px;margin:0 auto;}
+.step_2-title{line-height:1; margin:150px auto 0 auto;font-weight:100; font-size:48px; color:#383838;text-align: center;}
+.step_2{ background: url("../images/step_2.jpg") center 2px no-repeat;
+    width:113px;
+    height:66px;
+    margin:0 auto 30px auto;
+   }
+   .step_2-title-f{
+   font-weight:100; font-size:24px; color:#a09f9f;text-align: center;
+   font-family:"SIMSUN";
+   line-height:1;
+   padding:20px 0 30px 0;
+   }
+.form_box{padding-bottom: 25px;  position: relative;}
+.form_box label
+{
+    display: inline-block;
+    margin-right: 15px;
+    float: left;
+    width: 135px;
+    font-size: 14px;
+    line-height: 34px;
+    color: #666;
+    text-align: right;
+}
+.form_box .red{font-weight:100;margin-right:3px;  position: relative;  top: 2px;}
+.form_box .form-control{  float: left; width: 350px; padding: 0 10px; height: 34px; font-family: "Microsoft Yahei"; line-height: 34px;  display: inline-block; box-sizing: content-box; }
+.form_box select.form-control{ padding: 0; }
+.form_box .form-control.w100
+{
+    width: 100px;
+}
+.table-cell{display: table-cell;vertical-align: middle;}
+.font22{font-size:22px; color:#999999;margin-bottom:40px;  line-height: 1}
+.step_4-sucess {width: 594px; margin: 160px auto 0 auto;}
+.step_4-sucess dt{width:203px;height:191px;background: url("../images/sucess-icon.jpg") no-repeat; float:left;}
+.step_4-sucess dd{font-size:24px;line-height:1;color:#ff6600;}
+.step_4-sucess .font48{font-size:48px;color:#531d0c;padding:55px 0 20px 0;}
+
+.work-list-title{border-bottom:1px solid #e0e0e0; padding:20px 0 16px 0;overflow:hidden;}
+.work-list-title-name{height:24px;width:120px;background-color:#282828;color:#ffffff; display:block;  text-align: center;line-height: 24px;font-size:18px; margin-bottom:18px;}
+.download-all{height:24px;width:120px;border:1px solid #397ddb;color:#397ddb; display:block;  text-align: center;line-height: 24px;font-size:16px;}
+.work-list-box{padding-top:20px;}
+.work-list{width:33.333%;float:left; padding:25px 0; border-bottom:1px solid #e0e0e0;}
+.work-checkbox .role-upload{line-height:110px;  position: relative;}
+.work-list-title .role-upload{line-height:26px; color:#000; font-size:16px;}
+.work-checkbox .role-upload .mod-icon{margin:0 10px;}
+.work-checkbox  {float:left;}
+.work-img{float:left; margin-right:20px;width:150px;height:110px;}
+.work-img img{width:150px;height:110px;}
+.work-name{font-size:24px;color:#404040;padding:4px 0 8px 0;}
+.work-author{color:#666666;font-size:14px;}
+.work-download {padding:12px 0 0 0;}
+.work-download a{color:#FFF;font-size:14px;height:28px;width:100px;background-color:#ff6600;line-height:28px;  display: inline-block;  text-align: center;}
+.form_box label.error
+{
+    position: absolute;
+    left: 150px;
+    top: 30px;
+    padding-left: 25px;
+    width: 342px;
+    font-size: 12px;
+    text-align: left;
+    background: url("http://account.vsochina.com/static/images/login/vso-orange-tip.png") no-repeat 0px center;
+}
+#SWFUpload_SWFUpload_local_upload, #SWFUpload_SWFUpload_source_upload{left: -112px; top: -41px;}
+.upload-img-style-bg{margin-bottom: 10px;color: #26343f;background: url("../images/icon-file.png") no-repeat;width:83px; height:103px;display:inline-block;  text-align: center;  line-height: 100px;}
+.upload-result-pic .table-cell{  width: 295px;  height: 218px;}
+.upload-result-pic {  display: table;}
+.upload-result-pic .real-title{  overflow: hidden;  line-height: 1.4;  white-space: nowrap;  width: 294px;  text-overflow: ellipsis;}
+.work-list dd{  overflow: hidden;  white-space: nowrap;  text-overflow: ellipsis;}
+.upload-result-pic .table-cell  img{  max-width: 295px;  max-height: 218px;  display: block;  margin: 0 auto;}
+.h30{
+margin-top:30px;
+}
+.step_4-sucess dd.step-sucess-btn-group{
+    padding-top: 84px;
+    width: 668px;
+}
+.step_4-sucess dd.step-sucess-btn-group .step_1_btn{
+    display: inline-block;
+    margin: 0 98px 0 0;
+}
+.step_4-sucess dd.font18{font-size:18px;color:#656565;line-height:1.4;}
+.xm-product-box,.footer{  min-width: 1200px;}
+.font12{
+    font-size: 12px;
+    margin-top: 12px;
+}
+.match-case-select a:hover{text-decoration:underline;color: #397ddf;}
+.count-work{width: 30px;}
+.szrb-order-div{width: 120px; margin-top: 7px;}
+
+/*==创客入驻添加==*/
+.stripe-bg{
+    padding: 25px 0;
+    min-width: 1200px;
+    background-color: #e3e4e6;
+    font-family: "Microsoft Yahei";
+}
+.maker-logo
+{
+    position: absolute;
+    right: 25px;
+    top: 25px;
+}
+.form_box .form-intro
+{
+    display: inline-block;
+    margin-left: 20px;
+    font-size: 12px;
+    line-height: 34px;
+    color: #999;
+    text-align: left;
+}
+.upload-rightbox
+{
+    position: absolute;
+    top: -25px;
+    left: 305px;
+}
+.upload-rightbox .upload-arrow
+{
+    position: absolute;
+    top: 65px;
+    width: 133px;
+    height: 63px;
+    background: url(/images/createNew/upload-arrow.png) no-repeat center center;
+}
+.upload-rightbox .upload-rightbox-main
+{
+    position: absolute;
+    left: 175px;
+    width: 250px;
+    border-radius: 3px;
+    border: 1px solid #c8c8c8;
+    padding-bottom: 75px;
+    background: url(/images/createNew/rightbox-bg.jpg) no-repeat center bottom;
+    box-shadow: 0 0 5px #c8c8c8;
+}
+.upload-rightbox-main .upload-rightbox-img
+{
+    position: relative;
+    padding-top: 65px;
+    height: 140px;
+    background-color: #e5e5e5;
+    box-sizing: border-box;
+}
+.upload-rightbox-main .upload-rightbox-img p
+{
+    color: #999;
+}
+.upload-area .verifymsg-loading
+{
+    position: relative;
+    margin: 0 auto;
+    margin-top: -50px;
+    width: 645px;
+    height: 130px;
+    background: url(/images/createNew/verify-bg.jpg) no-repeat center center;
+}
+.verifymsg-loading p
+{
+    position: absolute;
+    right: 293px;
+    font-family: "Microsoft Yahei";
+    line-height: 1;
+}
+.verifymsg-loading .verifymsg-loading-en
+{
+    top: 50px;
+    font-size: 32px;
+    color: #CA3434;
+}
+.verifymsg-loading .verifymsg-loading-zh
+{
+    top: 100px;
+    font-size: 13px;
+    color: #404040;
+}
+.upload-area .verifymsg-info
+{
+    margin-top: 35px;
+    color: #999;
+    text-align: center;
+}
+.upload-area .verifymsg-info a
+{
+    margin: 0 10px;
+    color: #3e80dc;
+    text-decoration: underline;
+}
+.project-banner .upload-result .upload-img
+{
+    padding-top: 60px;
+    width: 480px;
+    height: 180px;
+}
+.project-banner .upload-result .upload-img img
+{
+    width: 480px;
+    height: 180px;
+}
+.project-banner .upload-icon
+{
+    background-size: 30px 36px;
+}
+#step_projectstory .form_box .form-intro.lh20
+{
+    line-height: 20px;
+}
+.project-show .upload-result .upload-img
+{
+    margin-right: 10px;
+    padding-top: 45px;
+    width: 150px;
+    height: 150px;
+}
+.project-show .upload-result-img
+{
+    position: relative;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 150px;
+    height: 150px;
+    box-sizing: border-box;
+}
+.project-show .upload-result-img img
+{
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    vertical-align: top;
+}
+.project-show .upload-result-img a.delete-img
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    background: url(/images/createNew/delete.jpg) no-repeat center center;
+}
+.project-show .upload-icon
+{
+    background-size: 49px 56px;
+}
+.project-show .upload-result
+{
+    width: 480px;
+    max-width: 480px;
+}
+#step_projectstory .project-qa
+{
+    width: 480px;
+}
+#step_projectstory .project-qa .form-intro
+{
+    height: 36px;
+    line-height: 36px;
+}
+.project-qa textarea.form-control
+{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    width: 480px;
+    height: 85px;
+    box-sizing: border-box;
+}
+.project-qa .add-qa
+{
+    display: block;
+    float: left;
+    margin-top: 5px;
+    padding-left: 20px;
+    height: 18px;
+    font-size: 14px;
+    line-height: 18px;
+    color: #4aa6ee;
+    background: url(/images/createNew/add.png) no-repeat left center;
+    clear: both;
+}
+.project-qa .delete-qa
+{
+    display: block;
+    float: left;
+    margin-top: -5px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    height: 18px;
+    font-size: 14px;
+    line-height: 18px;
+    color: #ff6f65;
+    background: url(/images/createNew/delete.png) no-repeat left center;
+    clear: both;
+}
+.upload-idcard-box
+{
+    position: relative;
+    width: 370px;
+}
+.upload-idcard-box .file-submit-box
+{
+    position: relative;
+    width: 175px;
+    height: 110px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.upload-idcard-box .file-submit-box .box-idphoto
+{
+    position: relative;
+    height: 110px;
+    line-height: 110px;
+    background-color: #FFF;
+    text-align: center;
+    border: 1px dashed #CCC;
+}
+.upload-idcard-box .file-submit-box .box-idphoto img
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 175px;
+    height: 110px;
+}
+.form_box .ds-btn
+{
+    margin-top: 3px;
+    margin-left: 10px;
+    display: inline-block;
+    width: 90px;
+    height: 30px;
+    font-family: "Microsoft Yahei";
+    font-size: 12px;
+    line-height: 28px;
+    color: #404040;
+    background-color: #FFF;
+    text-align: center;
+    border: 1px solid #D9D9D9;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+.form_box .ds-btn.disabled
+{
+    color: #666;
+    background-color: #E5E5E5;
+    border-color: #B8B8B8;
+    cursor: default;
+}
+/*==/创客入驻添加==*/
+/*==辅助==*/
+.clear
+{
+    clear: both;
+}
+.clear-l
+{
+    clear: left;
+}
+.hide
+{
+    display: none;
+}
+.fl
+{
+    float: left;
+}
+.font-bottom
+{
+    vertical-align: bottom;
+}
+.mt10
+{
+    margin-top: 10px;
+}
+.mt50
+{
+    margin-top: 50px;
+}
+.mt70
+{
+    margin-top: 70px;
+}
+.ml5, .form_box .form-intro.ml5
+{
+    margin-left: 5px;
+}
+.mr20
+{
+    margin-right: 20px;
+}
+.mh10
+{
+    margin: 0 10px;
+}
+.w280
+{
+    width: 280px;
+}
+.stripe-bg .font-red
+{
+    color: #C65050;
+}
+.font-blue
+{
+    color: #3E80DC;
+}
+.lh20
+{
+    line-height: 20px;
+}
+/*==/辅助==*/
+/*==富文本编辑器==*/
+#step_projectstory .edui-container
+{
+    float: left;
+    box-shadow: none;
+}
+#step_projectstory .edui-toolbar
+{
+    box-shadow: none;
+}
+/*==/富文本编辑器==*/
+/*==uploadify==*/
+.upload-img .uploadify
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+.upload-img .uploadify object
+{
+    top: 0;
+    left: 0;
+}
+.upload-img .uploadify .uploadify-button
+{
+    opacity: 0;
+    filter:alpha(opacity=0);
+}
+.upload-img .uploadify-queue
+{
+    position: absolute;
+    top: 40%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+}
+/*==/uploadify==*/
+/*==/项目详情模板==*/
+
+/*==添加成员20151109==*/
+#proj_member_str
+{
+    width: 460px;
+}
+.add-member-box
+{
+    display: none;
+    position: absolute;
+    left: 150px;
+    top: 35px;
+    width: 482px;
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    box-shadow: 0 3px 8px #ccc;
+    z-index: 3;
+}
+.add-member-box li
+{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border-bottom: 1px solid #f8f8f8;
+}
+.add-member-box li a
+{
+    display: block;
+    padding-left: 15px;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+}
+.add-member-box li a:hover
+{
+    background-color: #f8f8f8;
+}
+.add-member-box .member-box-portrait
+{
+    display: inline-block;
+    float: left;
+    margin-top: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.member-box-portrait img
+{
+    width: 24px;
+    height: 24px;
+    vertical-align: top;
+}
+.add-member-box .member-box-name
+{
+    float: left;
+    margin-left: 10px;
+    width: 400px;
+    font-family: "Microsoft Yahei";
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.add-member-list
+{
+    margin-top: 10px;
+    margin-left: 150px;
+    width: 480px;
+    overflow: hidden;
+}
+.add-member-list ul
+{
+    margin: 0 -3px;
+    overflow: hidden;
+}
+.add-member-list ul li
+{
+    position: relative;
+    display: inline-block;
+    float: left;
+    margin: 0 3px;
+    margin-bottom: 3px;
+    width: 91px;
+    height: 91px;
+    text-align: center;
+    background-color: #e5e5e5;
+    border-radius: 3px;
+}
+.add-member-list ul li .member-list-portrait
+{
+    display: inline-block;
+    margin-top: 15px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.member-list-portrait img
+{
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    vertical-align: top;
+}
+.add-member-list ul li .member-list-name
+{
+    margin-top: 10px;
+    padding: 0 9px;
+    width: 91px;
+    font-family: "Microsoft Yahei";
+    font-size: 12px;
+    line-height: 1;
+    color: #666;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.add-member-list ul li .member-list-close
+{
+    display: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    background: url(/images/detail-close.png) no-repeat center center;
+}
+.add-member-list ul li:hover .member-list-close
+{
+    display: inline-block;
+}
+/*==/添加成员20151109==*/
+
+/*==bugfix-placeholder20151123==*/
+.placeholder-box
+{
+    position: relative;
+    float: left;
+}
+.placeholder-box label
+{
+    text-align: left;
+}
+/*==/bugfix-placeholder20151123==*/
+.work-upload h1, .work-upload h2
+{
+    font-family: "microsoft yahei","黑体";
+    font-size: medium;
+    font-weight: bold;
+    margin-bottom: 1.5em;
+    margin-left: 25px;
+}
+.upload-main .form_box .required
+{
+    color: red;
+    padding-right: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}

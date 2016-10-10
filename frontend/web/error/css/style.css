@@ -1,0 +1,75 @@
+html,body{
+    font: 12px/200% "Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei",tahoma,arial,simsun;
+    background-color: #FFF;
+    color: #666666;
+}
+p{
+	padding: 0;
+	margin: 0;
+}
+.error-box{
+	width: 730px;
+	height: 388px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-top: -194px;
+	margin-left: -365px;
+	text-align: center;
+	display: table;
+}
+.table-cell{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+.font14{
+	font-size: 14px;
+}
+.font16{
+	font-size: 16px;
+}
+.bold{
+	font-weight: 700;
+}
+.pd20{
+	padding-bottom: 20px;
+}
+.action-500{
+	position: relative;
+	height: 64px;
+	font-size: 14px;
+	color: #333333;
+}
+.action-500 a,.action-400 a{
+	color:#1993e9 ;
+	text-decoration: none;
+}
+.action-line{
+	height: 6px;
+	border: 1px solid #cccccc;
+	border-width: 1px 0 1px 0;
+	position: absolute;
+	top: 50%;
+	margin-top: -3px;
+	z-index: -1;
+	width: 100%;
+}
+.action-info{
+	line-height: 64px;
+	display: inline-block;
+	background-color: #FFF;
+	padding:0 15px;
+}
+.red-sceond{
+	color: #df0b40;
+}
+.action-400{
+	font-weight: 700;
+	color: #262626;
+	font-size: 14px;
+	position: absolute;
+	text-align: left;
+	top: 256px;
+    left: 204px;
+}

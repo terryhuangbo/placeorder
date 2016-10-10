@@ -1,0 +1,13 @@
+*.idea
+*.log
+*.data
+
+/frontend/runtime
+/frontend/web/assets
+/frontend/webrc/assets
+
+/backend/runtime/
+/backend/web/assets
+
+backend/runtime/debug/index.data
+backend/runtime/logs/app.log

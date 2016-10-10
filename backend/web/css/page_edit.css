@@ -1,0 +1,288 @@
+body {
+    margin: 0;
+    padding-top: 60px;
+}
+
+._dialog_win {
+    background: #fff;
+    padding: 30px;
+    border: 1px solid #efefef;
+    display: none;
+}
+
+._dialog_win li {
+    display: block;
+    margin: 10px 0px;
+    line-height: 30px;
+}
+
+._dialog_win .input-small, ._dialog_win .input, ._dialog_win .input-large, ._dialog_win .textarea {
+    padding: 0 5px;
+    border: 1px solid #cecece;
+}
+
+._dialog_win .input-small {
+    width: 80px;
+}
+
+._dialog_win .input {
+    width: 180px;
+}
+
+._dialog_win .input-large {
+    width: 520px;
+}
+
+._dialog_win .textarea {
+    width: 360px;
+    height: 80px;
+}
+
+._dialog_close {
+    position: absolute;
+    right: 25px;
+    top: 40px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #c3232c;
+    color: #ffffff;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 3px;
+}
+
+._dialog_close:hover {
+    background: #cecece;
+    color: #ffffff;
+}
+
+._dialog_form_title {
+    line-height: 30px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+._dialog_win ._btn {
+    cursor: pointer;
+    line-height: normal;
+    padding: 3px 5px;
+}
+
+.ui-dialog {
+    z-index: 99999;
+}
+
+.ui-widget-overlay {
+    background: #000000;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+}
+
+#_dialog_content li label {
+    width: 200px;
+    float: left;
+    padding-right: 20px;
+    text-align: right;
+    display: inline-block;
+    line-height: 30px;
+}
+
+._upload_btn, ._uploader_input, input[type="file"] {
+    display: inline-block;
+    line-height: normal;
+}
+
+._upload_btn {
+    padding: 3px 8px;
+}
+
+.form_tips {
+    margin-left: 10px;
+    color: #8e8e8e;
+}
+
+.upload_form {
+    padding: 20px 0px;
+    border: 1px dashed #aaaaaa;
+    background: #efefef;
+    margin-bottom: 20px;
+}
+
+._tips_win {
+    background: #ffffff;
+    padding: 35px;
+    text-align: center;
+    font-size: 14px;
+    display: none;
+    z-index: 99999;
+}
+
+.holder_box {
+    border: 2px dashed #aaa;
+    background: #efefef;
+    height: 300px;
+}
+
+.fix_bottom_box {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    background: #fefefe;
+    line-height: 50px;
+    z-index: 1000;
+    border-bottom: 5px solid #5c637b;
+    text-align: right;
+}
+
+._edit_model {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 99999;
+    display: none;
+    background: #0000ff;
+    padding: 3px 10px;
+    color: #fff;
+}
+
+._edit_model:hover {
+    background: #333;
+    color: #fff;
+}
+
+.module_list_box {
+    float: left;
+}
+
+.show_module_btn {
+    float: left;
+}
+
+.module_list {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px 10px;
+    border: 2px dashed #ccc;
+    cursor: pointer;
+}
+
+.module_group_list_box {
+    text-align: center;
+    display: inline-block;
+}
+
+._page_edit_box {
+    position: relative;
+    min-height: 200px;
+}
+
+._page_edit:hover {
+    background: #ff0000;
+}
+
+._module_edit_box {
+    position: absolute;
+    z-index: 999;
+    right: 0px;
+    top: 0px;
+    background: #fefefe;
+    padding: 10px 10px 5px;
+    border: 2px dashed #ccc;
+    filter: alpha(opacity=90);
+    -moz-opacity: 0.9;
+    opacity: 0.9;
+}
+
+._module_edit_box a, ._s_edit_box a {
+    display: block;
+    margin-bottom: 5px;
+}
+
+._module_edit_box h2, ._s_edit_box h2 {
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+._s_edit_box {
+    position: absolute;
+    z-index: 999;
+    left: 0px;
+    top: 0px;
+    background: #fff;
+    padding: 10px 10px 5px;
+    border: 2px dashed #ccc;
+    filter: alpha(opacity=90);
+    -moz-opacity: 0.9;
+    opacity: 0.9;
+}
+
+.personal-intro, .personal-ads {
+    /*cursor: move;*/
+}
+
+.btn {
+    height: auto;
+}
+
+._page_edit {
+    /*cursor: move;*/
+}
+
+.cursor-move {
+    cursor: move;
+}
+
+.s_module_edit_box {
+    position: relative;
+}
+
+#_tips_content .form-horizontal .form-group-sm .control-label {
+    font-size: 14px;
+    padding-top: 10px;
+}
+
+#myTabContent {
+    margin-top: 20px;
+}
+
+#myTabContent .tab-hide {
+    display: none;
+}
+
+#myTabContent .tab-active {
+    display: block;
+}
+
+.table thead th {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.table td, .table th {
+    text-align: center;
+    line-height: 40px;
+}
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    line-height: 40px;
+    vertical-align: middle;
+}
+
+#_history_info_list_page {
+    text-align: center;
+}

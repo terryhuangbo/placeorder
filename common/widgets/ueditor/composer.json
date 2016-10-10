@@ -1,0 +1,20 @@
+{
+    "name": "common/widgets/ueditor",
+    "description": "desc",
+    "license": "null",
+    "authors": [
+        {
+            "name": "111",
+            "email": "22"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+      "common/widgets/ueditor": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "common\\widgets\\ueditor\\": ""
+        }
+    }
+}
