@@ -7,11 +7,11 @@
  */
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=qdm114473640.my3w.com;dbname=qdm114473640_db',
+    'dsn' => 'mysql:host=139.196.230.61;dbname=orders',
 //    'dsn' => 'mysql:host=127.0.0.1;dbname=acc',
-    'username' => 'qdm114473640',
+    'username' => 'orders',
 //    'username' => 'root',
-    'password' => 'love243661753',
+    'password' => 'orders626@',
 //    'password' => '',
     'tablePrefix' => 'tb_',
     'charset' => 'utf8'

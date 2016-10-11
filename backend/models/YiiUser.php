@@ -7,7 +7,7 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "vso_point_admin".
+ * This is the model class for table '{{%admin}}'.
  *
  * @property integer $uid
  * @property string $username
@@ -20,7 +20,8 @@ class YiiUser extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return 'vso_point_admin';
+        return '{{%admin}}';
+
     }
 
     /**

@@ -12,7 +12,7 @@ class Team extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'vso_point_admin';
+        return '{{%admin}}';
     }
 
     /**

@@ -18,7 +18,7 @@ class PrivilegeGroup extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'vso_point_privilege_group';
+        return '{{%privilege_group}}';
     }
 
     /**

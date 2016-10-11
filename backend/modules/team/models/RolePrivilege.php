@@ -17,7 +17,8 @@ class RolePrivilege extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'vso_point_role_privilege';
+        return '{{%role_privilege}}';
+
     }
 
     /**

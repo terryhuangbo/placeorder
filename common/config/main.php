@@ -1,7 +1,7 @@
 <?php
 // 配置文件
 return [
-    'id' => 'vsomaker',
+    'id' => 'placeorder',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'language' => 'zh-CN',
