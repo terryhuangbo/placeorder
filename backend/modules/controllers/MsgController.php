@@ -39,9 +39,8 @@ class MsgController extends CommonWebController
         $uid = Yii::$app->user->getId();
         $count = $model->find()->where(['tid' => $uid])->count();
         $page = new Pagination(['defaultPageSize' => yii::$app->params['page_size'], 'totalCount' => $count]);
-        $msgs = $model->find()->where(['tid' => $uid])->orderBy('send_time asc')->orderBy('status asc')->offset(
-            $page->offset
-        )->limit($page->limit)->all();
+        $msgs = $model->find()->where(['tid' => $uid])->orderBy('send_time asc')->orderBy('status asc')
+            ->offset($page->offset)->limit($page->limit)->all();
 
         return $this->render('msg', ['page' => $page, 'msgs' => $msgs]);
     }

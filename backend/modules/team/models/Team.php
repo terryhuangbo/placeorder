@@ -50,7 +50,7 @@ class Team extends ActiveRecord
      */
     public function ckuser($user)
     {
-        $count = Static::find()->where(["username" => $user])->count();
+        $count = static::find()->where(["username" => $user])->count();
         if ($count)
         {
             return true;

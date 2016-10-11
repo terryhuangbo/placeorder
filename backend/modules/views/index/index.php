@@ -5,7 +5,7 @@ use yii\helpers\Html;
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>积分商城管理后台</title>
+    <title>下单系统管理后台</title>
     <?= Html::cssFile('@web/assets/css/dpl-min.css') ?>
     <?= Html::cssFile('@web/assets/css/bui-min.css') ?>
     <?= Html::cssFile('@web/assets/css/main-min.css') ?>
@@ -39,7 +39,7 @@ use yii\helpers\Html;
 <body>
 <div class="header">
     <div class="dl-title">
-        <h1>积分商城管理后台</h1>
+        <h1>下单系统管理后台</h1>
     </div>
     <div class="dl-log">欢迎您，<span class="dl-log-user"
                                   id="<?= Yii::$app->user->getId() ?>"><?= Yii::$app->user->identity->nickname ?>
