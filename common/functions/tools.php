@@ -24,23 +24,6 @@ function yiiUrl($params) {
     return yii::$app->urlManager->createUrl($params);
 }
 
-
-/**
- * 获取值
- * @param $data mixed 要判断是否存在的值
- * @param $default mixed 当$data不存在时默认值
- * @param $empty bool true-同时验证$data还不能为空, 默认不验证
- * @return mixed mix
- **/
-function _value($data, $default = '', $empty = false)
-{
-    if ($empty) {
-        return !empty($data) ? $data : $default;
-    } else {
-        return isset($data) ? $data : $default;
-    }
-}
-
 /**
  * 获取Request参数
  * @param string $key
@@ -107,8 +90,8 @@ function isMobile() {
     $useragent_commentsblock = preg_match('|\(.*?\)|', $useragent, $matches) > 0 ? $matches[0] : '';
     $mobile_os_list = array('Google Wireless Transcoder', 'Windows CE', 'WindowsCE', 'Symbian', 'Android', 'armv6l', 'armv5', 'Mobile', 'CentOS', 'mowser', 'AvantGo', 'Opera Mobi', 'J2ME/MIDP', 'Smartphone', 'Go.Web', 'Palm', 'iPAQ');
     $mobile_token_list = array('Profile/MIDP', 'Configuration/CLDC-', '160×160', '176×220', '240×240', '240×320', '320×240', 'UP.Browser', 'UP.Link', 'SymbianOS', 'PalmOS', 'PocketPC', 'SonyEricsson', 'Nokia', 'BlackBerry', 'Vodafone', 'BenQ', 'Novarra-Vision', 'Iris', 'NetFront', 'HTC_', 'Xda_', 'SAMSUNG-SGH', 'Wapaka', 'DoCoMo', 'iPhone', 'iPod');
-    $found_mobile = CheckSubstrs($mobile_os_list, $useragent_commentsblock) ||
-        CheckSubstrs($mobile_token_list, $useragent);
+    $found_mobile = checkSubstrs($mobile_os_list, $useragent_commentsblock) ||
+        checkSubstrs($mobile_token_list, $useragent);
     if ($found_mobile) {
         return true;
     } else {
@@ -122,7 +105,7 @@ function isMobile() {
  * @param $text string
  * @return boolean
  */
-function CheckSubstrs($substrs, $text) {
+function checkSubstrs($substrs, $text) {
     foreach ($substrs as $substr)
         if (false !== strpos($text, $substr)) {
             return true;
@@ -184,7 +167,7 @@ function arrayToObject($arr) {
  * @param string $url
  * @return boolean
  */
-function _check_file_exists($url) {
+function checkFileExists($url) {
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_NOBODY, true);
     $result = curl_exec($curl);
