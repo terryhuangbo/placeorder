@@ -20,6 +20,12 @@ use common\base\BaseModel;
 class Card extends BaseModel
 {
     /**
+     * 卡密状态
+     */
+    const STATUS_YES = 1;//启用
+    const STATUS_NO  = 2;//禁用
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -36,7 +42,13 @@ class Card extends BaseModel
             [['points', 'group_id', 'status', 'create_time', 'update_time'], 'integer'],
             [['card_bn'], 'string', 'max' => 8],
             [['pwd'], 'string', 'max' => 50],
-            [['card_bn'], 'unique']
+            [['create_time', 'default', 'value' => time()]],
+            [['card_bn'], 'unique', 'message' => '卡密必须唯一'],
+            //卡密状态
+            ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '卡密状态错误'],
+            //卡组号必须存在
+            ['group_id', 'exist', 'targetAttribute' => 'id', 'targetClass' => CardGroup::className(), 'message' => '卡组号不存在']
+
         ];
     }
 

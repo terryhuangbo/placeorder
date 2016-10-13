@@ -33,7 +33,8 @@ class User extends BaseModel
     {
         return [
             [['qq', 'reg_time', 'login_time', 'update_time'], 'integer'],
-            [['username', 'pwd'], 'string', 'max' => 50]
+            [['username', 'pwd'], 'string', 'max' => 50],
+            [['reg_time', 'update_time'], 'default', 'value' => time()]
         ];
     }
 

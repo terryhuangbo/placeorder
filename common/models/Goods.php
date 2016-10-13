@@ -20,6 +20,12 @@ use common\base\BaseModel;
 class Goods extends BaseModel
 {
     /**
+     * 商品状态
+     */
+    const STATUS_YES = 1;//启用
+    const STATUS_NO  = 2;//禁用
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -35,7 +41,10 @@ class Goods extends BaseModel
         return [
             [['num', 'price', 'status', 'create_time', 'update_time'], 'integer'],
             [['name'], 'string', 'max' => 30],
-            [['images'], 'string', 'max' => 600]
+            [['images'], 'string', 'max' => 600],
+            ['create_time', 'default', 'value' => time()],
+            //商品状态
+            ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '商品状态错误'],
         ];
     }
 
