@@ -70,7 +70,7 @@ use yii\helpers\Html;
 <body>
 <div class="demo-content">
     <form id="Goods_Form" action="" class="form-horizontal" onsubmit="return false;" >
-        <h2>添加商品</h2>
+        <h2>编辑商品</h2>
         <input name="gid" type="hidden" value="<?php echo $goods['gid'] ?>">
         <div class="control-group">
             <label class="control-label"><s>*</s>商品名称：</label>
@@ -82,7 +82,7 @@ use yii\helpers\Html;
         <div class="control-group">
             <label class="control-label"><s>*</s>兑换积分：</label>
             <div class="controls">
-                <input name="goods[redeem_pionts]" type="text" class="input-medium" data-rules="{number:true}" value="<?php echo $goods['redeem_pionts'] ?>">
+                <input name="goods[price]" type="text" class="input-medium" data-rules="{number:true}" value="<?php echo $goods['price'] ?>">
             </div>
         </div>
         
@@ -95,12 +95,12 @@ use yii\helpers\Html;
         <div class="row" >
             <div class="span16 layout-outer-content">
                 <div id="thumbpic-content" class="layout-content" aria-disabled="false" aria-pressed="false" >
-                    <?php if(!empty($goods['thumb'])): ?>
+                    <?php if(!empty($goods['images'])): ?>
                         <div id="" class=" pull-left img-content-li">
-                            <a href="javaScript:;"><span class="label label-important img-delete" file-path="<?php echo $goods['thumb'] ?>">删除</span></a>
+                            <a href="javaScript:;"><span class="label label-important img-delete" file-path="<?php echo $goods['images'] ?>">删除</span></a>
                             <div aria-disabled="false"  class="" aria-pressed="false">
-                                <img  src="<?php echo $goods['thumb'] ?>" />
-                                <input type="hidden" name="goods[thumb]" value="<?php echo $goods['thumb'] ?>">
+                                <img  src="<?php echo $goods['images'] ?>" />
+                                <input type="hidden" name="goods[images]" value="<?php echo $goods['images'] ?>">
                                 <p></p>
                             </div>
                         </div>
@@ -118,7 +118,7 @@ use yii\helpers\Html;
         <div class="row" >
             <div class="span16 layout-outer-content">
                 <div id="thumblistpic-content" class="layout-content content-list" aria-disabled="false" aria-pressed="false" >
-                    <?php $thumb_list = json_decode($goods['thumb_list']);?>
+                    <?php $thumb_list = json_decode($goods['images']);?>
                     <?php if(!empty($thumb_list)): ?>
                         <?php foreach($thumb_list as $k => $val): ?>
                             <div id="" class=" pull-left img-content-li">
@@ -135,13 +135,13 @@ use yii\helpers\Html;
             </div>
         </div>
 
-        <div class="control-group" id="description_content">
-            <label class="control-label">商品描述：</label>
-            <div class="controls  control-row-auto">
-                <!--                <textarea name="goods[description]" id="" class="control-row3 input-large" data-rules="{required : true}"></textarea>-->
-                <script type="text/plain" id="editor_content" name="goods[description]"></script>
-            </div>
-        </div>
+<!--        <div class="control-group" id="description_content">-->
+<!--            <label class="control-label">商品描述：</label>-->
+<!--            <div class="controls  control-row-auto">-->
+<!--                <!--                <textarea name="goods[description]" id="" class="control-row3 input-large" data-rules="{required : true}"></textarea>-->
+<!--                <script type="text/plain" id="editor_content" name="goods[description]"></script>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="row actions-bar">
             <div class="form-actions span13 offset3">
                 <button type="submit" class="button button-primary" id="save-goods">保存</button>
@@ -165,7 +165,7 @@ use yii\helpers\Html;
                     $._ajax('/goods/goods/update', param, 'POST', 'JSON', function(json){
                         if(json.code > 0){
                             BUI.Message.Alert(json.msg, function(){
-                                window.location.href = '/goods/goods/list';
+//                                window.location.href = '/goods/goods/list';
                             }, 'success');
 
                         }else{
@@ -177,7 +177,7 @@ use yii\helpers\Html;
             });
             //返回
             $("#cancel-goods").on('click', function(){
-                window.location.href = '/goods/goods/list';
+//                window.location.href = '/goods/goods/list';
             });
         });
     </script>
@@ -188,10 +188,10 @@ use yii\helpers\Html;
             var editor = UE.getEditor('editor_content', {
                 "initialFrameWidth": "700",
                 "initialFrameHeight": "360",
-                "lang": "zh-cn",
+                "lang": "zh-cn"
             });
             editor.ready(function(){
-                editor.setContent('<?php echo $goods['description'] ?>');
+                editor.setContent('<?php echo '' ?>');
             });
         })
 
@@ -220,7 +220,7 @@ use yii\helpers\Html;
                 },
                 //传递的参数
                 formData: {
-                    objtype: 'goods',
+                    objtype: 'goods'
                 }
             });
             // 当有文件添加进来之前
@@ -244,7 +244,7 @@ use yii\helpers\Html;
                         '<a href="javaScript:;"><span class="label label-important img-delete" file-path="'+ data.filePath +'">删除</span></a>'+
                         '<div aria-disabled="false"  class="" aria-pressed="false">'+
                         '<img  src="'+ data.filePath +'" />'+
-                        '<input type="hidden" name="goods[thumb]" value="'+ data.filePath +'">'+
+                        '<input type="hidden" name="goods[images]" value="'+ data.filePath +'">'+
                         '<p>'+ file.name +'</p>'+
                         '</div>'+
                         '</div>';

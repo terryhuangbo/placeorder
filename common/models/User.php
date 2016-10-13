@@ -41,7 +41,6 @@ class User extends BaseModel
         return [
             [['qq', 'points', 'reg_time', 'login_time', 'update_time'], 'integer'],
             [['username', 'pwd'], 'string', 'max' => 50],
-            [['reg_time', 'update_time'], 'default', 'value' => time()],
             //用户账号必须唯一
             ['username', 'unique', 'message' => '用户账号必须唯一'],
         ];

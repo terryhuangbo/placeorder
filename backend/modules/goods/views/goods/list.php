@@ -93,7 +93,7 @@ use yii\helpers\Html;
             <div class="control-group style="">
             <label class="control-label"></label>
             <div class="controls">
-                <span><b>提示：</b>输入字数不能超过<?php echo yiiParams('checkdeny_reason_limit') ?>个字</span>
+                <span><b>提示：</b>输入字数不能超过12个字</span>
             </div>
         </div>
     </form>
@@ -139,7 +139,6 @@ use yii\helpers\Html;
                 selectedEvent: 'click',
                 columns: [
                     {title: '商品序号', dataIndex: 'gid', width: 80, elCls : 'center'},
-                    {title: '商品编号', dataIndex: 'goods_id', width: 150, elCls : 'center'},
                     {title: '商品名称', dataIndex: 'name', width: 90, elCls : 'center',},
                     {
                         title: '缩略图',
@@ -149,18 +148,19 @@ use yii\helpers\Html;
                             return "<img class='user_avatar' src='"+ obj.thumb +"'>";
                         }
                     },
-                    {title: '兑换积分', dataIndex: 'redeem_pionts', width: 80, elCls : 'center'},
+                    {title: '兑换积分', dataIndex: 'price', width: 80, elCls : 'center'},
                     {title: '商品状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
-                    {title: '创建时间', dataIndex: 'create_at', width: 150, elCls : 'center'},
+                    {title: '创建时间', dataIndex: 'create_time', width: 150, elCls : 'center'},
+                    {title: '更新时间', dataIndex: 'update_time', width: 150, elCls : 'center'},
                     {
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
-                            if(obj.goods_status == 1){
+                            if(obj.status == 1){
                                 return "<a class='button button-primary page-action' title='编辑商品' href='/goods/goods/update/?gid="+ obj.gid +"' data-href='/goods/goods/update/?gid="+ obj.gid +"' >编辑</a>" +
                                 " <a class='button button-primary' onclick='offShelf(" + obj.gid + ")'>下架</a>"+
                                 " <a class='button button-danger' onclick='del(" + obj.gid + ")'>删除</a>";
-                            }else if(obj.goods_status == 2){
+                            }else if(obj.status == 2){
                                 return "<a class='button button-primary page-action' title='编辑商品信息' data-href='/goods/goods/update/?gid="+ obj.gid +"' >编辑</a>" +
                                 " <a class='button button-primary' onclick='upShelf(" + obj.gid + ")'>上架</a>"+
                                 " <a class='button button-danger' onclick='del(" + obj.gid + ")'>删除</a>";

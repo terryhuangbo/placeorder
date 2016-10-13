@@ -43,6 +43,20 @@ class BaseModel extends ActiveRecord
     }
 
     /**
+     * 行为
+     */
+    public function behaviors()
+    {
+        return [
+            'timeStamp' => [
+                'class' => TimeBehavior::className(),
+                'create' => 'create_time',
+                'update' => 'update_time',
+            ],
+        ];
+    }
+
+    /**
      * 以数组形式获取AR列表
      * @param array $where
      * @param string $order

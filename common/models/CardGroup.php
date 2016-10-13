@@ -44,7 +44,6 @@ class CardGroup extends BaseModel
             [['group_bn'], 'string', 'max' => 21],
             [['pwd'], 'string', 'max' => 50],
             [['comment'], 'string', 'max' => 200],
-            [['create_time', 'update_time'], 'default', 'value' => time()],
             //卡组
             [['group_bn'], 'unique', 'message' => '卡组必须唯一'],
             //卡组状态

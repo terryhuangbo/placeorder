@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use common\base\BaseModel;
+use common\base\TimeBehavior;
 
 /**
  * This is the model class for table "{{%goods}}".
@@ -42,7 +43,6 @@ class Goods extends BaseModel
             [['num', 'price', 'status', 'create_time', 'update_time'], 'integer'],
             [['name'], 'string', 'max' => 30],
             [['images'], 'string', 'max' => 600],
-            ['create_time', 'default', 'value' => time()],
             //商品状态
             ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '商品状态错误'],
         ];
@@ -64,4 +64,55 @@ class Goods extends BaseModel
             'update_time' => '更新时间',
         ];
     }
+
+    /**
+     * 商品状态
+     * @param $status int
+     * @return array|boolean
+     */
+    public static function getGoodsStatus($status = null){
+        $statusArr = [
+            self::STATUS_YES => '启用',
+            self::STATUS_NO  => '禁用',
+        ];
+        return is_null($status) ? $statusArr : (isset($statusArr[$status]) ? $statusArr[$status] : '');
+    }
+
+    /**
+     * 添加/更新商品
+     * @param $param array
+     * @param $scenario string 场景
+     * @return array
+     * @throw yii\db\Exception
+     */
+    public function saveGoods($param, $scenario = 'default')
+    {
+        $mdl = !empty($param['gid']) ? static::findOne(['gid' => $param['gid']]) : new static;
+        if (empty($mdl))
+        {
+            return ['code' => -20001, 'msg' => '参数错误'];
+        }
+
+        //设置场景，块复制
+        $mdl->scenario = $scenario;
+        $mdl->attributes = $param;
+        //校验数据
+        if (!$mdl->validate())
+        {
+            $errors = $mdl->getFirstErrors();
+            return ['ret' => -20003, 'msg' => current($errors)];
+        }
+        //保存数据
+        if (!$mdl->save(false))
+        {
+            return ['code' => -20000, 'msg' => '保存失败'];
+        }
+        return ['code' => 20000, 'msg' => '保存成功'];
+    }
+
+
+
+
+
+
 }

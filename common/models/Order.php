@@ -40,7 +40,6 @@ class Order extends BaseModel
         return [
             [['pid', 'num', 'status', 'create_time', 'update_time'], 'integer'],
             [['order_bn'], 'string', 'max' => 30],
-            [['create_time', 'update_time'], 'default', 'value' => time()],
             //订单状态
             ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '订单状态错误'],
             //商品ID

@@ -32,7 +32,6 @@ class Pay extends BaseModel
     {
         return [
             [['uid', 'oid', 'cost', 'balance', 'create_time'], 'integer'],
-            ['create_time', 'default', 'value' => time()],
             //用户ID
             ['uid', 'exist', 'targetAttribute' => 'id', 'targetClass' => User::className(), 'message' => '用户不存在'],
             //商品ID
