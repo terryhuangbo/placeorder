@@ -31,7 +31,12 @@ class Pay extends BaseModel
     public function rules()
     {
         return [
-            [['uid', 'oid', 'cost', 'balance', 'create_time'], 'integer']
+            [['uid', 'oid', 'cost', 'balance', 'create_time'], 'integer'],
+            ['create_time', 'default', 'value' => time()],
+            //用户ID
+            ['uid', 'exist', 'targetAttribute' => 'id', 'targetClass' => User::className(), 'message' => '用户不存在'],
+            //商品ID
+            ['pid', 'exist', 'targetAttribute' => 'id', 'targetClass' => Goods::className(), 'message' => '商品不存在']
         ];
     }
 

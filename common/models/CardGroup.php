@@ -21,6 +21,12 @@ use common\base\BaseModel;
 class CardGroup extends BaseModel
 {
     /**
+     * 卡组状态
+     */
+    const STATUS_YES = 1;//启用
+    const STATUS_NO  = 2;//禁用
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -38,7 +44,12 @@ class CardGroup extends BaseModel
             [['group_bn'], 'string', 'max' => 21],
             [['pwd'], 'string', 'max' => 50],
             [['comment'], 'string', 'max' => 200],
-            [['group_bn'], 'unique']
+            [['create_time', 'update_time'], 'default', 'value' => time()],
+            //卡组
+            [['group_bn'], 'unique', 'message' => '卡组必须唯一'],
+            //卡组状态
+            ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '卡组状态错误'],
+
         ];
     }
 

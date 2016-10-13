@@ -42,7 +42,7 @@ class Card extends BaseModel
             [['points', 'group_id', 'status', 'create_time', 'update_time'], 'integer'],
             [['card_bn'], 'string', 'max' => 8],
             [['pwd'], 'string', 'max' => 50],
-            [['create_time', 'default', 'value' => time()]],
+            [['create_time', 'update_time'], 'default', 'value' => time()],
             [['card_bn'], 'unique', 'message' => '卡密必须唯一'],
             //卡密状态
             ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '卡密状态错误'],
