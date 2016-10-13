@@ -12,12 +12,19 @@ use common\base\BaseModel;
  * @property string $username
  * @property string $pwd
  * @property integer $qq
+ * @property integer $points
  * @property integer $reg_time
  * @property integer $login_time
  * @property integer $update_time
  */
 class User extends BaseModel
 {
+    /**
+     * 场景
+     */
+    const SCENARIO_REG   = 'register';//注册
+    const SCENARIO_LOGIN = 'login';   //登录
+
     /**
      * @inheritdoc
      */
@@ -32,9 +39,11 @@ class User extends BaseModel
     public function rules()
     {
         return [
-            [['qq', 'reg_time', 'login_time', 'update_time'], 'integer'],
+            [['qq', 'points', 'reg_time', 'login_time', 'update_time'], 'integer'],
             [['username', 'pwd'], 'string', 'max' => 50],
-            [['reg_time', 'update_time'], 'default', 'value' => time()]
+            [['reg_time', 'update_time'], 'default', 'value' => time()],
+            //用户账号必须唯一
+            ['username', 'unique', 'message' => '用户账号必须唯一'],
         ];
     }
 
@@ -47,10 +56,21 @@ class User extends BaseModel
             'uid' => '用户id',
             'username' => '用户名',
             'pwd' => '密码',
-            'qq' => 'qq',
+            'qq' => 'QQ',
+            'points' => '用户余额点数',
             'reg_time' => '注册时间',
             'login_time' => '最近登录时间',
             'update_time' => '更新时间',
         ];
     }
+
+    /**
+     * 应用场景
+     * @return array
+     */
+    public function scenarios(){
+
+    }
+
+
 }

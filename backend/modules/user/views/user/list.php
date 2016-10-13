@@ -15,13 +15,6 @@ use common\models\User;
     <script src="/js/page-min.js" type="text/javascript"></script>
     <script src="/js/common.js" type="text/javascript"></script>
     <script src="/js/tools.js" type="text/javascript"></script>
-    <style>
-        .user_avatar {
-            width: 120px;
-            height: 80px;
-            margin: 10px auto;
-        }
-    </style>
     <script>
         _BASE_LIST_URL =  "<?php echo yiiUrl('user/user/list?ajax=1') ?>";
     </script>
@@ -33,46 +26,32 @@ use common\models\User;
         <div class="search-bar form-horizontal well">
             <form id="usersearch" class="form-horizontal">
                 <div class="row">
-                    <div class="control-group span12">
-                        <label class="control-label">姓名：</label>
+                    <div class="control-group span13">
+                        <label class="control-label">用户账号：</label>
                         <div class="controls" data-type="city">
-                            <input type="text" class="control-text" name="name" id="name">
+                            <input type="text" class="control-text" name="username" id="username">
                         </div>
                     </div>
-                    <div class="control-group span10">
-                        <label class="control-label">手机号：</label>
+                    <div class="control-group span13">
+                        <label class="control-label">QQ：</label>
                         <div class="controls" data-type="city">
-                            <input type="text" class="control-text" name="mobile" id="name">
+                            <input type="text" class="control-text" name="qq" id="qq">
                         </div>
                     </div>
-                    <div class="control-group span10">
-                        <label class="control-label">用户类型：</label>
-                        <div class="controls" >
-                            <select name="user_type" id="grouptype">
-                                <option value="">请选择</option>
-                                <?php foreach (User::_get_user_type_list() as $key => $name): ?>
-                                    <option value="<?php echo $key ?>"><?php echo $name ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="row">
-                    <div class="control-group span10">
-                        <label class="control-label">用户状态：</label>
-                        <div class="controls" >
-                            <select name="user_status" id="checkstatus">
-                                <option value="">请选择</option>
-                                <?php foreach (User::_get_user_status_list() as $key => $name): ?>
-                                    <option value="<?php echo $key ?>"><?php echo  $name ?></option>
-                                <?php endforeach ?>
-                            </select>
+
+                    <div class="control-group span13">
+                        <label class="control-label">注册时间：</label>
+                        <div class="controls">
+                            <input type="text" class="calendar calendar-time" name="regtimeStart"><span> - </span><input name="regtimeEnd" type="text" class="calendar calendar-time">
                         </div>
                     </div>
-                    <div class="control-group span16">
-                        <label class="control-label">时间范围：</label>
+                    <div class="control-group span13">
+                        <label class="control-label">最近登录：</label>
                         <div class="controls">
-                            <input type="text" class="calendar calendar-time" name="uptimeStart"><span> - </span><input name="uptimeEnd" type="text" class="calendar calendar-time">
+                            <input type="text" class="calendar calendar-time" name="logtimeStart"><span> - </span><input name="logtimeEnd" type="text" class="calendar calendar-time">
                         </div>
                     </div>
 
@@ -146,45 +125,17 @@ use common\models\User;
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
-                    {title: '用户编号', dataIndex: 'uid', width: 80, elCls : 'center'},
-                    {title: '微信昵称', dataIndex: 'nick', width: 90, elCls : 'center',},
-                    {title: '真实姓名', dataIndex: 'name', width: 90, elCls : 'center',},
-                    {
-                        title: '微信头像',
-                        width: 140,
-                        elCls : 'center',
-                        renderer: function (v, obj) {
-                            return "<img class='user_avatar' src='"+ obj.avatar +"'>";
-                        }
-                    },
-                    {
-                        title: '名片',
-                        width: 140,
-                        elCls : 'center',
-                        renderer: function (v, obj) {
-                            return "<img class='user_avatar name_card'  onclick='viewNameCard(this)' src='"+ obj.name_card +"'>";
-                        }
-                    },
-                    {title: '手机号码', dataIndex: 'mobile', width: 90},
-                    {title: '电子邮箱', dataIndex: 'email', width: 130},
-                    {title: '积分', dataIndex: 'points', width: 80, elCls : 'center'},
-                    {title: '微信公众号', dataIndex: 'wechat', width: 120},
-                    {title: '用户类型', dataIndex: 'user_type', width: 80, elCls : 'center'},
-                    {title: '用户状态', dataIndex: 'user_status', width: 80, elCls : 'center'},
-                    {title: '更新时间', dataIndex: 'update_at', width: 150, elCls : 'center'},
+                    {title: '编号', dataIndex: 'uid', width: 80, elCls : 'center'},
+                    {title: '用户账号', dataIndex: 'username', width: 90, elCls : 'center'},
+                    {title: 'QQ', dataIndex: 'qq', width: 90},
+                    {title: '账户余额', dataIndex: 'points', width: 80, elCls : 'center'},
+                    {title: '注册时间', dataIndex: 'reg_time', width: 150, elCls : 'center'},
+                    {title: '最近登录', dataIndex: 'login_time', width: 150, elCls : 'center'},
                     {
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
-                            if(parseInt(obj.status) == <?php echo User::NO_DELETE ?>){
-                                return "<a class='button button-success' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
-                                " <a class='button button-primary' onclick='updateUser(" + obj.uid + ")'>编辑</a>"+
-                                " <a class='button button-danger' onclick='disableUser(" + obj.uid + ")'>禁用</a>";
-                            }else if(parseInt(obj.status) == <?php echo User::IS_DELETE ?>){
-                                return "<a class='button button-success' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>" +
-                                " <a class='button button-info' onclick='updateUser(" + obj.uid + ")'>编辑</a>"+
-                                " <a class='button button-primary' onclick='enableUser(" + obj.uid + ")'>启用</a>";
-                            }
+                            return "<a class='button button-success' title='用户信息' href='javascript:void(0);' onclick='showUserInfo(" + obj.uid + ")'>查看</a>";
 
                         }
                     }
@@ -207,7 +158,6 @@ use common\models\User;
 </script>
 
 <script>
-
 
 /**
  * 搜索用户,刷新列表
@@ -246,25 +196,17 @@ function getUserGridSearchConditions() {
  * 显示用户详情
  */
 function showUserInfo(uid) {
-    var width = 700;
-    var height = 450;
+    var width = 400;
+    var height = 350;
     var Overlay = BUI.Overlay;
-    var buttons = [];
-    buttons = [
+    var buttons = [
         {
             text:'确认',
             elCls : 'button button-primary',
             handler : function(){
                 this.close();
             }
-        },
-//        {
-//            text:'修改',
-//            elCls : 'button button-primary',
-//            handler : function(){
-//                window.location.href = '/user/user/update/?mid=' + id;
-//            }
-//        }
+        }
     ];
     dialog = new Overlay.Dialog({
         title: '用户信息',
@@ -275,118 +217,13 @@ function showUserInfo(uid) {
             url: "/user/user/info",
             autoLoad: true, //不自动加载
             params: {uid: uid},//附加的参数
-            lazyLoad: false, //不延迟加载
+            lazyLoad: false //不延迟加载
         },
         buttons: buttons,
         mask: false
     });
     dialog.show();
     dialog.get('loader').load({uid: uid});
-}
-
-/**
- * 更改用户详情
- */
-function updateUser(uid) {
-    var width = 400;
-    var height = 300;
-    var Overlay = BUI.Overlay;
-    var buttons = [];
-    dialog = new Overlay.Dialog({
-        title: '用户信息',
-        width: width,
-        height: height,
-        closeAction: 'destroy',
-        loader: {
-            url: "/user/user/update",
-            autoLoad: true, //不自动加载
-            params: {uid: uid},//附加的参数
-            lazyLoad: false, //不延迟加载
-        },
-        buttons: buttons,
-        mask: false
-    });
-    dialog.show();
-    dialog.get('loader').load({uid: uid});
-}
-
-
-
-/**
- * 启用用户
- */
-function enableUser(uid) {
-    var msg = '您确定要启用此用户？';
-    BUI.Message.Confirm(msg, function(){
-        var param = param || {};
-        param.uid = uid;
-        param.status = 1;
-        $._ajax('<?php echo yiiUrl('user/user/ajax-change-status') ?>', param, 'POST','JSON', function(json){
-            if(json.code > 0){
-                BUI.Message.Alert(json.msg, function(){
-                    window.location.href = '<?php echo yiiUrl('user/user/list') ?>';
-                }, 'success');
-
-            }else{
-                BUI.Message.Alert(json.msg, 'error');
-                this.close();
-            }
-        });
-    }, 'success');
-
-}
-
-/**
- * 启用用户
- */
-function disableUser(uid) {
-    var msg = '您确定要禁用此用户？';
-    BUI.Message.Confirm(msg, function(){
-        var param = param || {};
-        param.uid = uid;
-        param.status = 2;
-        $._ajax('<?php echo yiiUrl('user/user/ajax-change-status') ?>', param, 'POST','JSON', function(json){
-            if(json.code > 0){
-                BUI.Message.Alert(json.msg, function(){
-                    window.location.href = '<?php echo yiiUrl('user/user/list') ?>';
-                },  'success');
-            }else{
-                BUI.Message.Alert(json.msg, 'error');
-                this.close();
-            }
-        });
-    }, 'error');
-
-}
-
-/**
- * 查看名片
- */
-function viewNameCard(dom){
-    var src = $(dom).attr('src');
-    BUI.use('bui/overlay',function(Overlay){
-        var dialog = new Overlay.Dialog({
-            title:'名片',
-            width:600,
-            height:500,
-            closeAction: 'destroy',
-            buttons: [
-                {
-                    text:'确认',
-                    elCls : 'button button-primary',
-                    handler : function(){
-                        this.close();
-                    }
-                },
-            ],
-            //配置文本
-            bodyContent:'<div style="text-align: center"><img style="width: 560px; height:400px;" src="'+ src +'"></div>',
-            success:function () {
-                this.close();
-            }
-        });
-        dialog.show();
-    });
 }
 
 </script>

@@ -182,11 +182,7 @@ class IndexController extends Controller
             'top' => ['用户管理' => 'home'],
             '用户管理' => [
                 ['用户列表' => 'user/user/list'],
-            ],
-            '认证管理' => [
-                ['审核列表' => 'auth/auth/list'],
-            ],
-
+            ]
         ];
         $menu[] = [
             'top' => ['商品管理' => 'home'],
