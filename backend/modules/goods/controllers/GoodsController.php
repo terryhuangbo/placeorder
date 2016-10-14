@@ -81,10 +81,11 @@ class GoodsController extends BaseController
         $goodsList = ArrayHelper::toArray($goodsArr, [
             'common\models\Goods' => [
                 'gid',
+                'goods_bn',
                 'name',
                 'price',
-                'goods_bn',
                 'status',
+                'num',
                 'thumb' => function($m){
                     return $m->images;
                 },

@@ -143,7 +143,8 @@ use common\models\Goods;
                             return "<img class='user_avatar' src='"+ obj.thumb +"'>";
                         }
                     },
-                    {title: '价格', dataIndex: 'price', width: 80, elCls : 'center'},
+                    {title: '商品价格', dataIndex: 'price', width: 80, elCls : 'center'},
+                    {title: '剩余数量', dataIndex: 'num', width: 80, elCls : 'center'},
                     {title: '商品状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
                     {title: '创建时间', dataIndex: 'create_time', width: 150, elCls : 'center'},
                     {title: '更新时间', dataIndex: 'update_time', width: 150, elCls : 'center'},

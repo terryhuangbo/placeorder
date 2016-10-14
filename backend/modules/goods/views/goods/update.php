@@ -89,7 +89,7 @@ use yii\helpers\Html;
         <div class="control-group">
             <label class="control-label"><s>*</s>商品数量：</label>
             <div class="controls">
-                <input name="goods[num]" type="text" class="input-medium" data-rules="{min:1, required : true}">
+                <input name="goods[num]" type="text" class="input-medium" data-rules="{min:1, required : true}" value="<?php echo $goods['num'] ?>">
             </div>
         </div>
         
