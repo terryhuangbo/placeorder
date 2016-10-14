@@ -200,10 +200,12 @@ class IndexController extends Controller
         $menu[] = [
             'top' => ['卡密管理' => 'home'],
             '卡密配置' => [
-                ['积分列表' => 'card/card/list'],
+                ['卡密列表' => 'card/card/list'],
+                ['添加卡密' => 'card/card/add'],
             ],
             '卡组配置' => [
-                ['积分类型' => 'card/card/list'],
+                ['卡组列表' => 'card/card-group/list'],
+                ['添加卡组' => 'card/card-group/add'],
             ],
 
         ];

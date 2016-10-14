@@ -5,7 +5,7 @@ use yii\helpers\Html;
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>编辑商品信息</title>
+    <title>编辑卡密</title>
 
     <link href="/css/dpl.css" rel="stylesheet">
     <link href="/css/bui.css" rel="stylesheet">
@@ -70,56 +70,33 @@ use yii\helpers\Html;
 <body>
 <div class="demo-content">
     <form id="Goods_Form" action="" class="form-horizontal" onsubmit="return false;" >
-        <h2>编辑商品</h2>
-        <input name="gid" type="hidden" value="<?php echo $goods['gid'] ?>">
+        <h2>编辑卡密</h2>
+        <input type="hidden" name="id" value="<?php echo $card['id'] ?>"/>
         <div class="control-group">
-            <label class="control-label"><s>*</s>商品名称：</label>
+            <label class="control-label"><s>*</s>面值：</label>
             <div class="controls">
-                <input name="goods[name]" type="text" class="input-medium" data-rules="{required : true}" value="<?php echo $goods['name'] ?>">
+                <input name="card[points]" type="text" class="input-medium" data-rules="{min:1, required : true}" value="<?php echo $card['points'] ?>">
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label"><s>*</s>商品价格：</label>
+            <label class="control-label"><s>*</s>密码：</label>
             <div class="controls">
-                <input name="goods[price]" type="text" class="input-medium" data-rules="{number:true}" value="<?php echo $goods['price'] ?>">
+                <input name="card[pwd]" type="text" class="input-medium" data-rules="{required : true}" value="<?php echo $card['pwd'] ?>">
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label"><s>*</s>商品数量：</label>
+            <label class="control-label"><s>*</s>卡组：</label>
             <div class="controls">
-                <input name="goods[num]" type="text" class="input-medium" data-rules="{min:1, required : true}" value="<?php echo $goods['num'] ?>">
-            </div>
-        </div>
-        
-        <div class="control-group">
-            <label class="control-label"><s>*</s>商品缩略图：</label>
-            <div id="thumbpic" class="controls">
-                <span class="button button-primary">上传图片</span>
-            </div>
-        </div>
-        <div class="row" >
-            <div class="span16 layout-outer-content">
-                <div id="thumbpic-content" class="layout-content" aria-disabled="false" aria-pressed="false" >
-                    <?php if(!empty($goods['images'])): ?>
-                        <div id="" class=" pull-left img-content-li">
-                            <a href="javaScript:;"><span class="label label-important img-delete" file-path="<?php echo $goods['images'] ?>">删除</span></a>
-                            <div aria-disabled="false"  class="" aria-pressed="false">
-                                <img  src="<?php echo $goods['images'] ?>" />
-                                <input type="hidden" name="goods[thumb]" value="<?php echo $goods['images'] ?>">
-                                <p></p>
-                            </div>
-                        </div>
-                    <?php endif ?>
-                </div>
+                <input name="card[group_id]" type="text" class="input-medium" data-rules="{required : true}" value="1" value="<?php echo $card['group_id'] ?>">
             </div>
         </div>
 
         <div class="row actions-bar">
             <div class="form-actions span13 offset3">
-                <button type="submit" class="button button-primary" id="save-goods">保存</button>
-                <button type="reset" class="button" id="cancel-goods">返回</button>
+                <button type="submit" class="button button-primary" id="save-card">保存</button>
+                <button type="reset" class="button" id="cancel-card">返回</button>
             </div>
         </div>
     </form>
@@ -133,13 +110,13 @@ use yii\helpers\Html;
             form.render();
 
             //保存
-            $("#save-goods").on('click', function(){
+            $("#save-card").on('click', function(){
                 if(form.isValid()){
                     var param = $._get_form_json("#Goods_Form");
-                    $._ajax('/goods/goods/update', param, 'POST', 'JSON', function(json){
+                    $._ajax('/card/card/update', param, 'POST', 'JSON', function(json){
                         if(json.code > 0){
                             BUI.Message.Alert(json.msg, function(){
-                                window.location.href = '/goods/goods/list';
+//                                window.location.href = '/card/card/list';
                             }, 'success');
 
                         }else{
@@ -150,139 +127,12 @@ use yii\helpers\Html;
                 }
             });
             //返回
-            $("#cancel-goods").on('click', function(){
-                window.location.href = '/goods/goods/list';
+            $("#cancel-card").on('click', function(){
+//                window.location.href = '/card/card/list';
             });
         });
     </script>
     <!-- script end -->
-
-    <script>
-        $(function () {
-            var editor = UE.getEditor('editor_content', {
-                "initialFrameWidth": "700",
-                "initialFrameHeight": "360",
-                "lang": "zh-cn"
-            });
-            editor.ready(function(){
-                editor.setContent('<?php echo '' ?>');
-            });
-        })
-
-        $(function () {
-            /*上传缩略图*/
-            var uploader = WebUploader.create({
-                // 选完文件后，是否自动上传。
-                auto: true,
-                //文件名称
-                fileVal: 'attachment',
-                // swf文件路径
-                swf: '/plugins/webuploader/Uploader.swf',
-                // 文件接收服务端。
-                server: "/common/file/upload",
-                // 选择文件的按钮。可选。
-                pick: '#thumbpic',
-                //文件数量
-                fileNumLimit: 1,
-                //文件大小 byte
-                fileSizeLimit: 5 * 1024 * 1024,
-                // 只允许选择图片文件。
-                accept: {
-                    title: 'Images',
-                    extensions: 'gif,jpg,jpeg,bmp,png',
-                    mimeTypes: 'image/*'
-                },
-                //传递的参数
-                formData: {
-                    objtype: 'goods'
-                }
-            });
-            // 当有文件添加进来之前
-            uploader.on('beforeFileQueued', function (handler) {
-
-            });
-            // 当有文件添加进来的时候-执行队列
-            uploader.on( 'fileQueued', function( file ) {
-
-            });
-            //文件数量，格式等出错
-            uploader.on('error', function (handler) {
-                _file_upload_notice(handler);
-            });
-            // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-            uploader.on('uploadSuccess', function (file, response) {
-                if(response.code > 0){
-                    var data = response.data;
-                    var div =
-                        '<div id="'+ file.id +'" class=" pull-left img-content-li">'+
-                        '<a href="javaScript:;"><span class="label label-important img-delete" file-path="'+ data.filePath +'">删除</span></a>'+
-                        '<div aria-disabled="false"  class="" aria-pressed="false">'+
-                        '<img  src="'+ data.filePath +'" />'+
-                        '<input type="hidden" name="goods[thumb]" value="'+ data.filePath +'">'+
-                        '<p>'+ file.name +'</p>'+
-                        '</div>'+
-                        '</div>';
-                    $('#thumbpic-content').html(div);
-
-                    $('.img-delete').off('click').on('click', function(){
-                        var dom = $(this);
-                        var filePath = dom.attr('file-path');
-                        deleteFile(filePath, function(json){
-                            if(json.code > 0){
-                                dom.closest('div').remove();
-                                uploader.reset();
-                            }else{
-                                BUI.Message.Alert('删除失败！');
-                            }
-                        });
-                    });
-                }else{
-                    BUI.Message.Alert('上传失败！');
-                }
-            });
-            // 文件上传失败，显示上传出错。
-            uploader.on('uploadError', function (file) {
-
-            });
-
-        });
-
-        var _file_upload_notice = function (handler) {
-            switch (handler) {
-                case 'Q_TYPE_DENIED':
-                    alert('文件类型不正确！');
-                    break;
-                case 'Q_EXCEED_SIZE_LIMIT':
-                    alert('上传文件总大小超过限制！');
-                    break;
-                case 'Q_EXCEED_NUM_LIMIT':
-                    alert('上传文件总数量超过限制！');
-                    break;
-            }
-        };
-
-        var deleteFile = function (filePath, callback){
-            $._ajax('/common/file/delete', {filepath: filePath},  'POST', 'Json', function(json){
-                if(typeof (callback) == 'function'){
-                    callback(json);
-                }
-            });
-        }
-
-        $('.img-delete').off('click').on('click', function(){
-            var dom = $(this);
-            var filePath = dom.attr('file-path');
-            deleteFile(filePath, function(json){
-                if(json.code > 0){
-                    dom.closest('div').remove();
-                }else{
-                    BUI.Message.Alert('删除失败！');
-                }
-            });
-        });
-
-    </script>
-
 </div>
 </body>
 </html>

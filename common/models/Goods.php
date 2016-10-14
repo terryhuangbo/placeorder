@@ -37,8 +37,6 @@ class Goods extends BaseModel
      */
     public $len  = 5;
 
-
-
     /**
      * @inheritdoc
      */

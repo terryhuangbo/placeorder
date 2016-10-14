@@ -6,7 +6,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
 use common\lib\Tools;
-use common\models\Goods;
+use common\models\Card;
 
 /**
  * 卡密相关操作
@@ -35,7 +35,7 @@ class CardController extends BaseController
     }
 
     /**
-     * 商品列表
+     * 卡密列表
      * @return type
      */
     public function actionListView()
@@ -44,20 +44,20 @@ class CardController extends BaseController
     }
 
     /**
-     * 商品数据
+     * 卡密数据
      */
     public function actionList()
     {
         if ($this->isGet()) {
             return $this->render('list');
         }
-        $mdl = new Goods();
+        $mdl = new Card();
         $query = $mdl::find();
         $search = $this->req('search');
         $page = $this->req('page', 0);
         $pageSize = $this->req('pageSize', 10);
         $offset = $page * $pageSize;
-        $query->where(['status' => [Goods::STATUS_UPSHELF, Goods::STATUS_OFFSHELF]]);
+        $query->where(['status' => [Card::STATUS_YES, Card::STATUS_NO]]);
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
             {
@@ -76,26 +76,23 @@ class CardController extends BaseController
             }
         }
         //只能是上架，或者下架的产品
-        $_order_by = 'gid DESC';
+        $_order_by = 'id DESC';
         $count = $query->count();
-        $goodsArr = $query
+        $cardArr = $query
             ->offset($offset)
             ->limit($pageSize)
             ->orderby($_order_by)
             ->all();
-        $goodsList = ArrayHelper::toArray($goodsArr, [
-            'common\models\Goods' => [
-                'gid',
-                'goods_bn',
-                'name',
-                'price',
+        $cardList = ArrayHelper::toArray($cardArr, [
+            'common\models\Card' => [
+                'id',
+                'card_bn',
+                'points',
                 'status',
-                'num',
-                'thumb' => function($m){
-                    return $m->images;
-                },
+                'group_id',
+                'pwd',
                 'status_name' => function ($m) {
-                    return Goods::getGoodsStatus($m->status);
+                    return Card::getCardStatus($m->status);
                 },
                 'create_time' => function ($m) {
                     return date('Y-m-d h:i:s', $m->create_time);
@@ -106,14 +103,14 @@ class CardController extends BaseController
             ],
         ]);
         $_data = [
-            'goodsList' => $goodsList,
+            'cardList' => $cardList,
             'totalCount' => $count,
         ];
         return json_encode($_data);
     }
 
     /**
-     * 添加商品
+     * 添加卡密
      * @return array
      */
     function actionAdd()
@@ -121,64 +118,84 @@ class CardController extends BaseController
         if(!$this->isAjax()){
             return $this->render('add');
         }
-        $goods = $this->req('goods', []);
-        if(isset($goods['gid'])){
-            unset($goods['gid']);
+        $card = $this->req('card', []);
+        if(isset($card['id'])){
+            unset($card['id']);
         }
-        $mdl = new Goods();
-        $goods['images'] = getValue($goods, 'thumb', '');
-        $res = $mdl->saveGoods($goods);
-        return $this->toJson($res['code'], $res['msg']);
+        $card_num = intval(getValue($card, 'card_num', 0));
+        if(empty($card_num)) {
+            return $this->toJson(-20002, '生成卡密数量不能为空');
+        }
+
+        $valid_mdl = new Card();
+        $valid_mdl->scenario = Card::SCENARIO_ADD;
+        $valid_mdl->setAttributes($card);
+        //校验数据
+        if (!$valid_mdl->validate())
+        {
+            $errors = $valid_mdl->getFirstErrors();
+            return $this->toJson(-20003, reset($errors));
+        }
+        //保存数据
+        for($i=0; $i<$card_num; $i++){
+            $mdl = new Card();
+            $mdl->setAttributes($card);
+            if (!$mdl->save(false))
+            {
+                $errors = $mdl->getFirstErrors();
+                return $this->toJson(-20004, reset($errors));
+            }
+        }
+        return $this->toJson(20000, '卡密添加成功');
     }
 
     /**
-     * 添加商品
+     * 添加卡密
      * @return array
      */
     function actionUpdate()
     {
-        $gid = intval($this->req('gid'));
-        $goods_info = $this->req('goods', []);
+        $id = intval($this->req('id'));
+        $card_info = $this->req('card', []);
 
         //检验参数是否合法
-        if (empty($gid)) {
-            return $this->toJson(-20001, '商品序号gid不能为空');
+        if (empty($id)) {
+            return $this->toJson(-20001, '卡密序号id不能为空');
         }
 
-        //检验商品是否存在
-        $mdl = new Goods();
-        $goods = $mdl->getOne(['gid' => $gid]);
-        if (!$goods) {
-            return $this->toJson(-20002, '商品信息不存在');
+        //检验卡密是否存在
+        $mdl = new Card();
+        $card = $mdl->getOne(['id' => $id]);
+        if (!$card) {
+            return $this->toJson(-20002, '卡密信息不存在');
         }
         //加载
         if(!$this->isAjax()){
             $_data = [
-                'goods' => $goods
+                'card' => $card
             ];
             return $this->render('update', $_data);
         }
         //保存
-        $goods_info['gid'] = $gid;
-        $goods_info['images'] = getValue($goods_info, 'thumb', '');
-        $ret = $mdl->saveGoods($goods_info);
+        $card_info['id'] = $id;
+        $ret = $mdl->saveCard($card_info, Card::SCENARIO_UPDATE);
         return $this->toJson($ret['code'], $ret['msg']);
     }
 
     /**
-     * 改变商品状态
+     * 改变卡密状态
      * @return array
      */
     function actionAjaxChangeStatus()
     {
-        $gid = intval($this->req('gid', 0));
-        $goods_status = $this->req('goods_status', 0);
-        $mdl = new Goods();
+        $id = intval($this->req('id', 0));
+        $card_status = $this->req('card_status', 0);
+        $mdl = new Card();
         $update_info = [
-            'gid' => $gid,
-            'status' => $goods_status,
+            'id' => $id,
+            'status' => $card_status,
         ];
-        $ret = $mdl->saveGoods($update_info);
+        $ret = $mdl->saveCard($update_info);
         return $this->toJson($ret['code'], $ret['msg']);
     }
 
