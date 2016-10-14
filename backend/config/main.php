@@ -36,9 +36,13 @@ return [
         'order' => [
             'class' => 'backend\modules\order\Module',
         ],
-        // 信用
+        // 卡密
         'card' => [
             'class' => 'backend\modules\card\Module',
+        ],
+        // 财务
+        'pay' => [
+            'class' => 'backend\modules\pay\Module',
         ],
     ],
     'components' => [

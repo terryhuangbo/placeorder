@@ -112,8 +112,7 @@ class OrderController extends BaseController
             'orderList' => $orderList,
             'totalCount' => $count
         ];
-        lg($orderList);
-        exit(json_encode($_data));
+        return json_encode($_data);
     }
 
     /**
@@ -239,7 +238,6 @@ class OrderController extends BaseController
 
         //检验用户是否存在
         $order = $mdl->getRelationOne(['oid' => $oid], ['with' => ['goods']]);
-        lg($order);
         if (!$order) {
             $this->toJson(-20003, '用户信息不存在');
         }
@@ -249,8 +247,5 @@ class OrderController extends BaseController
         ];
         return $this->render('info', $_data);
     }
-
-
-
 
 }

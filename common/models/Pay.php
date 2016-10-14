@@ -53,4 +53,20 @@ class Pay extends BaseModel
             'create_time' => '创建时间',
         ];
     }
+
+    /**
+     * 关联表-hasOne
+     **/
+    public function getUser() {
+        return $this->hasOne(Goods::className(), ['uid' => 'uid']);
+    }
+
+    /**
+     * 关联表-hasOne
+     **/
+    public function getOrder() {
+        return $this->hasOne(Order::className(), ['oid' => 'oid']);
+    }
+
+
 }

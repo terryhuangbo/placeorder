@@ -207,7 +207,12 @@ class IndexController extends Controller
                 ['卡组列表' => 'card/card-group/list'],
                 ['添加卡组' => 'card/card-group/add'],
             ],
-
+        ];
+        $menu[] = [
+            'top' => ['财务管理' => 'home'],
+            '卡密配置' => [
+                ['卡密列表' => 'pay/pay/list'],
+            ]
         ];
 
         return $menu;
