@@ -87,15 +87,6 @@ class Order extends BaseModel
     }
 
     /**
-     * @inheritdoc
-     */
-    public function transactions() {
-        return [
-            self::SCENARIO_DEFAULT => self::OP_INSERT | self::OP_UPDATE,
-        ];
-    }
-
-    /**
      * 关联表-hasOne
      **/
     public function getUser() {

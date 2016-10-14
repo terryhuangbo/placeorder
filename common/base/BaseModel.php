@@ -59,6 +59,16 @@ class BaseModel extends ActiveRecord
     }
 
     /**
+     * 默认的场景写操作由事物执行
+     * @inheritdoc
+     */
+    public function transactions() {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_INSERT | self::OP_UPDATE,
+        ];
+    }
+
+    /**
      * 以数组形式获取AR列表
      * @param array $where
      * @param string $order
