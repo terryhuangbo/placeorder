@@ -4,12 +4,13 @@ namespace common\models;
 
 use Yii;
 use common\base\BaseModel;
-use common\base\TimeBehavior;
+use common\lib\Tools;
 
 /**
  * This is the model class for table "{{%goods}}".
  *
  * @property integer $gid
+ * @property string $goods_bn
  * @property string $name
  * @property string $images
  * @property integer $num
@@ -25,6 +26,17 @@ class Goods extends BaseModel
      */
     const STATUS_YES = 1;//启用
     const STATUS_NO  = 2;//禁用
+
+    /**
+     * 商品编号固定前缀
+     */
+    public $prefix  = 'BD-V-';
+    /**
+     * 商品编号后部分位数
+     */
+    public $len  = 5;
+
+
 
     /**
      * @inheritdoc
@@ -43,8 +55,14 @@ class Goods extends BaseModel
             [['num', 'price', 'status', 'create_time', 'update_time'], 'integer'],
             [['name'], 'string', 'max' => 30],
             [['images'], 'string', 'max' => 600],
+            //商品编号
+            [['goods_bn'], 'unique', 'message' => '商品编号必须唯一'],
+            //商品价格
+            ['price', 'required', 'message' => '商品价格不能为空'],
             //商品状态
             ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '商品状态错误'],
+            //商品图片
+            ['images', 'required', 'message' => '必须上传商品图片'],
         ];
     }
 
@@ -55,6 +73,7 @@ class Goods extends BaseModel
     {
         return [
             'gid' => '商品ID',
+            'goods_bn' => '商品编号',
             'name' => '商品名称',
             'images' => '商品图片',
             'num' => '商品数量',
@@ -100,7 +119,7 @@ class Goods extends BaseModel
         if (!$mdl->validate())
         {
             $errors = $mdl->getFirstErrors();
-            return ['ret' => -20003, 'msg' => current($errors)];
+            return ['code' => -20003, 'msg' => current($errors)];
         }
         //保存数据
         if (!$mdl->save(false))
@@ -108,6 +127,35 @@ class Goods extends BaseModel
             return ['code' => -20000, 'msg' => '保存失败'];
         }
         return ['code' => 20000, 'msg' => '保存成功'];
+    }
+
+    /**
+     * 生成商品编号
+     * @param bool $insert 是否是插入操作
+     * @return array
+     * @throw yii\db\Exception
+     */
+    public function beforeSave($insert) {
+        if(parent::beforeSave($insert)){
+            if($insert){
+                $this->goods_bn = $this->genGoodsBn();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 生成唯一商品编号，格式为BD-V-XXXXX  XXXXX为大写字母和数字的组合
+     * @return string
+     */
+    protected function genGoodsBn() {
+        $rand_bn = $this->prefix . Tools::genUpcharNum($this->len);
+        $exist = static::find()->where(['goods_bn' => $rand_bn])->exists();
+        if($exist){
+            $this->genGoodsBn();
+        }
+        return $rand_bn;
     }
 
 

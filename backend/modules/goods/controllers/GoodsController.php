@@ -5,8 +5,8 @@ namespace backend\modules\goods\controllers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
+use common\lib\Tools;
 use common\models\Goods;
-use common\models\City;
 use app\modules\team\models\Team;
 
 class GoodsController extends BaseController
@@ -139,7 +139,8 @@ class GoodsController extends BaseController
             unset($goods['gid']);
         }
         $mdl = new Goods();
-        $res = $mdl->_save_goods($goods);
+        $goods['images'] = getValue($goods, 'thumb', '');
+        $res = $mdl->saveGoods($goods);
         return $this->toJson($res['code'], $res['msg']);
     }
 
@@ -172,6 +173,7 @@ class GoodsController extends BaseController
         }
         //保存
         $goods_info['gid'] = $gid;
+        $goods_info['images'] = getValue($goods_info, 'thumb', '');
         $ret = $mdl->saveGoods($goods_info);
         return $this->toJson($ret['code'], $ret['msg']);
     }

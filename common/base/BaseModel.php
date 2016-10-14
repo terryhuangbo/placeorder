@@ -43,7 +43,8 @@ class BaseModel extends ActiveRecord
     }
 
     /**
-     * 行为
+     * 公共模型的行为，比如对某些字段自动更新时间戳操作
+     * @return array
      */
     public function behaviors()
     {
