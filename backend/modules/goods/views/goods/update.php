@@ -132,7 +132,7 @@ use yii\helpers\Html;
                     $._ajax('/goods/goods/update', param, 'POST', 'JSON', function(json){
                         if(json.code > 0){
                             BUI.Message.Alert(json.msg, function(){
-//                                window.location.href = '/goods/goods/list';
+                                window.location.href = '/goods/goods/list';
                             }, 'success');
 
                         }else{
@@ -144,7 +144,7 @@ use yii\helpers\Html;
             });
             //返回
             $("#cancel-goods").on('click', function(){
-//                window.location.href = '/goods/goods/list';
+                window.location.href = '/goods/goods/list';
             });
         });
     </script>

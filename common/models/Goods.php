@@ -24,8 +24,9 @@ class Goods extends BaseModel
     /**
      * 商品状态
      */
-    const STATUS_YES = 1;//启用
-    const STATUS_NO  = 2;//禁用
+    const STATUS_UPSHELF  = 1;//上架
+    const STATUS_OFFSHELF = 2;//下架
+    const STATUS_DELETE   = 3;//删除
 
     /**
      * 商品编号固定前缀
@@ -60,7 +61,7 @@ class Goods extends BaseModel
             //商品价格
             ['price', 'required', 'message' => '商品价格不能为空'],
             //商品状态
-            ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '商品状态错误'],
+            ['status', 'in', 'range' => [self::STATUS_UPSHELF, self::STATUS_OFFSHELF, self::STATUS_DELETE], 'message' => '商品状态错误'],
             //商品图片
             ['images', 'required', 'message' => '必须上传商品图片'],
         ];
@@ -91,8 +92,8 @@ class Goods extends BaseModel
      */
     public static function getGoodsStatus($status = null){
         $statusArr = [
-            self::STATUS_YES => '启用',
-            self::STATUS_NO  => '禁用',
+            self::STATUS_UPSHELF   => '启用',
+            self::STATUS_OFFSHELF  => '禁用',
         ];
         return is_null($status) ? $statusArr : (isset($statusArr[$status]) ? $statusArr[$status] : '');
     }
@@ -109,7 +110,7 @@ class Goods extends BaseModel
         $mdl = !empty($param['gid']) ? static::findOne(['gid' => $param['gid']]) : new static;
         if (empty($mdl))
         {
-            return ['code' => -20001, 'msg' => '参数错误'];
+            return ['code' => -20001, 'msg' => '参数错误，或者商品不存在。'];
         }
 
         //设置场景，块复制

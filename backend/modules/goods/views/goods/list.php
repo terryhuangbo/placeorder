@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use common\models\Goods;
 ?>
 <!doctype html>
 <html>
@@ -34,24 +35,17 @@ use yii\helpers\Html;
 
                 <div class="row">
                     <div class="control-group span12">
-                        <label class="control-label">商品：</label>
+                        <label class="control-label">商品名称：</label>
                         <div class="controls" data-type="city">
-                            <select name="filtertype" id="filtertype">
-                                <option value="">请选择</option>
-                                <option value="1">商品注册ID</option>
-                                <option value="2">商品名称</option>
-                            </select>
-                        </div>
-                        <div class="controls">
-                            <input type="text" class="control-text" name="filtercontent" id="name">
+                            <input type="text" class="control-text" name="name" id="name">
                         </div>
                     </div>
                     <div class="control-group span10">
-                        <label class="control-label">审核状态：</label>
+                        <label class="control-label">商品状态：</label>
                         <div class="controls" >
-                            <select name="checkstatus" id="checkstatus">
+                            <select name="status" id="status">
                                 <option value="">请选择</option>
-                                <?php foreach ([] as $key => $name): ?>
+                                <?php foreach (Goods::getGoodsStatus() as $key => $name): ?>
                                     <option value="<?= $key ?>"><?= $name ?></option>
                                 <?php endforeach ?>
                             </select>
@@ -59,8 +53,8 @@ use yii\helpers\Html;
                     </div>
                 </div>
                 <div class="row">
-                    <div class="control-group span20">
-                        <label class="control-label">时间范围：</label>
+                    <div class="control-group span14">
+                        <label class="control-label">发布时间：</label>
                         <div class="controls">
                             <input type="text" class="calendar calendar-time" name="uptimeStart"><span> - </span><input name="uptimeEnd" type="text" class="calendar calendar-time">
                         </div>
@@ -157,12 +151,12 @@ use yii\helpers\Html;
                         width: 300,
                         renderer: function (v, obj) {
                             if(obj.status == 1){
-                                return "<a class='button button-primary page-action' title='编辑商品' href='/goods/goods/update/?gid="+ obj.gid +"' data-href='/goods/goods/update/?gid="+ obj.gid +"' >编辑</a>" +
-                                " <a class='button button-primary' onclick='offShelf(" + obj.gid + ")'>下架</a>"+
+                                return "<a class='button button-success page-action' title='编辑商品' href='/goods/goods/update/?gid="+ obj.gid +"' data-href='/goods/goods/update/?gid="+ obj.gid +"' >编辑</a>" +
+                                " <a class='button button-primary' onclick='offShelf(" + obj.gid + ")'>禁用</a>"+
                                 " <a class='button button-danger' onclick='del(" + obj.gid + ")'>删除</a>";
                             }else if(obj.status == 2){
-                                return "<a class='button button-primary page-action' title='编辑商品信息' data-href='/goods/goods/update/?gid="+ obj.gid +"' >编辑</a>" +
-                                " <a class='button button-primary' onclick='upShelf(" + obj.gid + ")'>上架</a>"+
+                                return "<a class='button button-success page-action' title='编辑商品信息' data-href='/goods/goods/update/?gid="+ obj.gid +"' >编辑</a>" +
+                                " <a class='button button-primary' onclick='upShelf(" + obj.gid + ")'>启用</a>"+
                                 " <a class='button button-danger' onclick='del(" + obj.gid + ")'>删除</a>";
                             }
                         }
