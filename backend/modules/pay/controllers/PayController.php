@@ -1,16 +1,14 @@
 <?php
 
-namespace backend\modules\order\controllers;
+namespace backend\modules\pay\controllers;
 
 use common\models\Goods;
 use Yii;
-use yii\base\Object;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
-use common\models\User;
-use common\models\Order;
+use common\models\Pay;
 
-class OrderController extends BaseController
+class PayController extends BaseController
 {
 
     /**
@@ -26,12 +24,10 @@ class OrderController extends BaseController
             'info',
             'save',
             'update',
-            'logistic',
             'ajax-save',
             'ajax-delete',
             'ajax-change-status',
             'ajax-save-logestic',
-            'logestic-detail',
         ];
     }
 
@@ -52,13 +48,13 @@ class OrderController extends BaseController
         if ($this->isGet()) {
             return $this->render('list');
         }
-        $mdl = new Order();
+        $mdl = new Pay();
         $query = $mdl::find();
         $search = $this->req('search');
         $page = $this->req('page', 0);
         $pageSize = $this->req('pageSize', 10);
         $offset = $page * $pageSize;
-        $or_tb = Order::tableName();
+        $or_tb = Pay::tableName();
         $ur_tb = Goods::tableName();
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
@@ -73,9 +69,9 @@ class OrderController extends BaseController
             {
                 $query = $query->andWhere(['goods_id' => $search['goods_id']]);
             }
-            if (isset($search['order_status'])) //订单状态
+            if (isset($search['pay_status'])) //订单状态
             {
-                $query = $query->andWhere(['order_status' => $search['order_status']]);
+                $query = $query->andWhere(['pay_status' => $search['pay_status']]);
             }
             if (isset($search['goods_name'])) //商品名称
             {
@@ -83,36 +79,34 @@ class OrderController extends BaseController
             }
         }
 
-        $_order_by = 'oid DESC';
+        $_pay_by = 'oid DESC';
         $query_count = clone($query);
-        $orderArr = $query
-            ->joinWith('goods')
+        $payArr = $query
+            ->joinWith('order')
+            ->joinWith('user')
             ->offset($offset)
             ->limit($pageSize)
-            ->orderby($_order_by)
+            ->orderBy($_pay_by)
             ->all();
 
         $count = $query_count->count();
-        $orderList = ArrayHelper::toArray($orderArr, [
-            'common\models\Order' => [
+        $payList = ArrayHelper::toArray($payArr, [
+            'common\models\Pay' => [
                 'oid',
-                'gid',
-                'order_bn',
-                'goods_bn' => 'goods.goods_bn',
-                'goods_name' => 'goods.name',
-                'num',
-                'amount',
-                'status',
-                'status_name' => function ($m) {
-                    return Order::getOrderStatus($m->status);
-                },
+                'uid',
+                'cost',
+                'username' => 'user.username',
+                'balance',
+                'order_bn' => 'order.order_bn',
+                'goods_bn' => 'order.goods.goods_bn',
+                'goods_name' => 'order.goods.name',
                 'create_time' => function ($m) {
                     return date('Y-m-d h:i:s', $m->create_time);
                 },
             ],
         ]);
         $_data = [
-            'orderList' => $orderList,
+            'payList' => $payList,
             'totalCount' => $count
         ];
         return json_encode($_data);
@@ -127,12 +121,12 @@ class OrderController extends BaseController
         if(!$this->isAjax()){
             return $this->render('add');
         }
-        $order = $this->req('order', []);
-        if(isset($order['oid'])){
-            unset($order['oid']);
+        $pay = $this->req('pay', []);
+        if(isset($pay['oid'])){
+            unset($pay['oid']);
         }
-        $mdl = new Order();
-        $res = $mdl->saveOrder($order);
+        $mdl = new Pay();
+        $res = $mdl->savePay($pay);
         $this->toJson($res['code'], $res['msg']);
     }
 
@@ -143,20 +137,20 @@ class OrderController extends BaseController
     function actionUpdate()
     {
         $oid = intval($this->req('oid'));
-        $mdl = new Order();
+        $mdl = new Pay();
         //检验参数是否合法
         if (empty($oid)) {
             $this->toJson(-20001, '订单序号oid不能为空');
         }
 
         //检验订单是否存在
-        $order = $mdl->getOne(['oid' => $oid]);
-        if (!$order) {
+        $pay = $mdl->getOne(['oid' => $oid]);
+        if (!$pay) {
             $this->toJson(-20002, '订单信息不存在');
         }
         $_data = [
-            'order' => $order,
-            'status_list' => $mdl::getOrderStatus(),
+            'pay' => $pay,
+            'status_list' => $mdl::getPayStatus(),
         ];
         return $this->render('update', $_data);
     }
@@ -168,25 +162,25 @@ class OrderController extends BaseController
     function actionAjaxSave()
     {
         $oid = intval($this->req('oid'));
-        $order_info = $this->req('order', []);
+        $pay_info = $this->req('pay', []);
 
-        $mdl = new Order();
+        $mdl = new Pay();
         //检验参数是否合法
         if (empty($oid)) {
             $this->toJson(-20001, '订单序号oid不能为空');
         }
-        if(empty($order_info['order_status'])){
+        if(empty($pay_info['pay_status'])){
             $this->toJson(-20002, '订单状态不能为空');
         }
 
         //检验订单是否存在
-        $order = $mdl->_get_info(['oid' => $oid]);
-        if (!$order) {
+        $pay = $mdl->_get_info(['oid' => $oid]);
+        if (!$pay) {
             $this->toJson(-20002, '订单信息不存在');
         }
         $res = $mdl->_save([
             'oid' => $oid,
-            'order_status' => intval($order_info['order_status']),
+            'pay_status' => intval($pay_info['pay_status']),
         ]);
         if(!$res){
             $this->toJson(-20003, '保存失败');
@@ -204,15 +198,15 @@ class OrderController extends BaseController
     {
         $oid = intval($this->req('oid'));
 
-        $mdl = new Order();
+        $mdl = new Pay();
         //检验参数是否合法
         if (empty($oid)) {
             $this->toJson(-20001, '订单序号oid不能为空');
         }
 
         //检验订单是否存在
-        $order = $mdl->_get_info(['oid' => $oid]);
-        if (!$order) {
+        $pay = $mdl->_get_info(['oid' => $oid]);
+        if (!$pay) {
             $this->toJson(-20002, '订单信息不存在');
         }
 
@@ -233,22 +227,25 @@ class OrderController extends BaseController
     {
         $oid = intval($this->req('oid'));
 
-        $mdl = new Order();
+        $mdl = new Pay();
         //检验参数是否合法
         if (empty($oid)) {
             $this->toJson(-20001, '用户编号id不能为空');
         }
 
         //检验用户是否存在
-        $order = $mdl->getRelationOne(['oid' => $oid], ['with' => ['goods']]);
-        if (!$order) {
+        $pay = $mdl->getRelationOne(['oid' => $oid], ['with' => ['goods']]);
+        if (!$pay) {
             $this->toJson(-20003, '用户信息不存在');
         }
-        $order['create_time'] = date('Y-m-d h:i:s', $order['create_time']);
+        $pay['create_time'] = date('Y-m-d h:i:s', $pay['create_time']);
         $_data = [
-            'order' => $order
+            'pay' => $pay
         ];
         return $this->render('info', $_data);
     }
+
+
+
 
 }

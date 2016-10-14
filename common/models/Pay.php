@@ -33,9 +33,9 @@ class Pay extends BaseModel
         return [
             [['uid', 'oid', 'cost', 'balance', 'create_time'], 'integer'],
             //用户ID
-            ['uid', 'exist', 'targetAttribute' => 'id', 'targetClass' => User::className(), 'message' => '用户不存在'],
-            //商品ID
-            ['pid', 'exist', 'targetAttribute' => 'id', 'targetClass' => Goods::className(), 'message' => '商品不存在']
+            ['uid', 'exist', 'targetAttribute' => 'uid', 'targetClass' => User::className(), 'message' => '用户不存在'],
+            //订单ID
+            ['oid', 'exist', 'targetAttribute' => 'oid', 'targetClass' => Order::className(), 'message' => '订单不存在']
         ];
     }
 
@@ -58,7 +58,7 @@ class Pay extends BaseModel
      * 关联表-hasOne
      **/
     public function getUser() {
-        return $this->hasOne(Goods::className(), ['uid' => 'uid']);
+        return $this->hasOne(User::className(), ['uid' => 'uid']);
     }
 
     /**

@@ -210,8 +210,8 @@ class IndexController extends Controller
         ];
         $menu[] = [
             'top' => ['财务管理' => 'home'],
-            '卡密配置' => [
-                ['卡密列表' => 'pay/pay/list'],
+            '财务管理' => [
+                ['财务列表' => 'pay/pay/list'],
             ]
         ];
 

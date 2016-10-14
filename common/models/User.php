@@ -6,7 +6,6 @@ use Yii;
 use common\base\BaseModel;
 use common\behavior\TimeBehavior;
 
-
 /**
  * This is the model class for table "{{%user}}".
  *
@@ -79,14 +78,5 @@ class User extends BaseModel
             ],
         ];
     }
-
-    /**
-     * 应用场景
-     * @return array
-     */
-    public function scenarios(){
-
-    }
-
 
 }

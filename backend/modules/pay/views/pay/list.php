@@ -23,7 +23,7 @@ use common\models\Order;
         }
     </style>
     <script>
-        _BASE_LIST_URL =  "<?php echo yiiUrl('order/order/list') ?>";
+        _BASE_LIST_URL =  "<?php echo yiiUrl('pay/pay/list') ?>";
     </script>
 </head>
 
@@ -49,7 +49,7 @@ use common\models\Order;
                     <div class="control-group span8">
                         <label class="control-label">订单状态：</label>
                         <div class="controls" >
-                            <select name="order_status" id="checkstatus">
+                            <select name="pay_status" id="checkstatus">
                                 <option value="">请选择</option>
                                 <?php foreach (Order::getOrderStatus() as $key => $name): ?>
                                     <option value="<?php echo $key ?>"><?php echo  $name ?></option>
@@ -76,7 +76,7 @@ use common\models\Order;
         </div>
         <div class="bui-grid-tbar">
         </div>
-        <div id="order_grid">
+        <div id="pay_grid">
         </div>
     </div>
 </div>
@@ -111,24 +111,23 @@ use common\models\Order;
                 autoLoad: true, //自动加载数据
                 params: {
                 },
-                root: 'orderList',//数据返回字段,支持深成次属性root : 'data.records',
+                root: 'payList',//数据返回字段,支持深成次属性root : 'data.records',
                 totalProperty: 'totalCount',//总计字段
                 pageSize: 10// 配置分页数目,
             });
             var grid = new Grid.Grid({
-                render: '#order_grid',
+                render: '#pay_grid',
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
                     {title: '序号', dataIndex: 'oid', width: 80, elCls : 'center'},
                     {title: '订单编号', dataIndex: 'order_bn', width: 200, elCls : 'center'},
+                    {title: '买家账号', dataIndex: 'username', width: 120, elCls : 'center'},
                     {title: '商品编号', dataIndex: 'goods_bn', width: 120, elCls : 'center'},
                     {title: '商品名称', dataIndex: 'goods_name', width: 90, elCls : 'center',},
-                    {title: '商品数量', dataIndex: 'num', width: 90, elCls : 'center',},
-                    {title: '订单金额', dataIndex: 'amount', width: 90, elCls : 'center'},
-                    {title: '订单状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
+                    {title: '消费金额', dataIndex: 'cost', width: 90, elCls : 'center',},
+                    {title: '账户余额', dataIndex: 'balance', width: 90, elCls : 'center',},
                     {title: '创建时间', dataIndex: 'create_time', width: 150, elCls : 'center'},
-
                     {
                         title: '操作',
                         width: 300,
@@ -147,7 +146,7 @@ use common\models\Order;
                 plugins: Grid.Plugins.CheckSelection,// 插件形式引入多选表格
             });
             grid.render();
-            $("#order_grid").data("BGrid", grid);
+            $("#pay_grid").data("BGrid", grid);
 
         });
 
@@ -166,7 +165,7 @@ function searchOrder() {
             search[field.name] = field.value;
         }
     });
-    var store = $("#order_grid").data("BGrid").get('store');
+    var store = $("#pay_grid").data("BGrid").get('store');
     var lastParams = store.get("lastParams");
     lastParams.search = search;
     store.load(lastParams);//刷新
@@ -209,7 +208,7 @@ function showOrderInfo(oid) {
         height: height,
         closeAction: 'destroy',
         loader: {
-            url: "/order/order/info",
+            url: "/pay/pay/info",
             autoLoad: true, //不自动加载
             params: {oid: oid},//附加的参数
             lazyLoad: false //不延迟加载
@@ -236,7 +235,7 @@ function updateOrder(oid) {
         height: height,
         closeAction: 'destroy',
         loader: {
-            url: "/order/order/update",
+            url: "/pay/pay/update",
             autoLoad: true, //不自动加载
             params: {oid: oid},//附加的参数
             lazyLoad: false, //不延迟加载
@@ -255,10 +254,10 @@ function del(oid) {
     BUI.Message.Confirm('您确定要删除？', function(){
         var param = param || {};
         param.oid = oid;
-        $._ajax('<?php echo yiiUrl('order/order/ajax-delete') ?>', param, 'POST','JSON', function(json){
+        $._ajax('<?php echo yiiUrl('pay/pay/ajax-delete') ?>', param, 'POST','JSON', function(json){
             if(json.code > 0){
                 BUI.Message.Alert(json.msg, function(){
-                    window.location.href = '<?php echo yiiUrl('order/order/list') ?>';
+                    window.location.href = '<?php echo yiiUrl('pay/pay/list') ?>';
                 }, 'success');
             }else{
                 BUI.Message.Alert(json.msg, 'error');
