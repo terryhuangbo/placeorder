@@ -62,8 +62,12 @@ class Goods extends BaseModel
             ['price', 'required', 'message' => '商品价格不能为空'],
             //商品状态
             ['status', 'in', 'range' => [self::STATUS_UPSHELF, self::STATUS_OFFSHELF, self::STATUS_DELETE], 'message' => '商品状态错误'],
+            //商品数量
+            ['num', 'required', 'message' => '商品数量不能为空'],
+            ['num', 'integer', 'min' => 1, 'tooSmall' => '商品数量不能为0'],
             //商品图片
             ['images', 'required', 'message' => '必须上传商品图片'],
+
         ];
     }
 
@@ -107,7 +111,7 @@ class Goods extends BaseModel
      */
     public function saveGoods($param, $scenario = 'default')
     {
-        $mdl = !empty($param['gid']) ? static::findOne(['gid' => $param['gid']]) : new static;
+        $mdl = isset($param['gid']) ? static::findOne(['gid' => $param['gid']]) : new static;
         if (empty($mdl))
         {
             return ['code' => -20001, 'msg' => '参数错误，或者商品不存在。'];

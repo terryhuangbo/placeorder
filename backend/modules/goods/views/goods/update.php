@@ -85,6 +85,13 @@ use yii\helpers\Html;
                 <input name="goods[price]" type="text" class="input-medium" data-rules="{number:true}" value="<?php echo $goods['price'] ?>">
             </div>
         </div>
+
+        <div class="control-group">
+            <label class="control-label"><s>*</s>商品数量：</label>
+            <div class="controls">
+                <input name="goods[num]" type="text" class="input-medium" data-rules="{min:1, required : true}">
+            </div>
+        </div>
         
         <div class="control-group">
             <label class="control-label"><s>*</s>商品缩略图：</label>
