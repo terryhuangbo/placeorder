@@ -59,13 +59,11 @@ class BaseModel extends ActiveRecord
     }
 
     /**
-     * 默认的场景写操作由事物执行
+     * 所有的场景对数据库的写操作都由事物执行
      * @inheritdoc
      */
     public function transactions() {
-        return [
-            self::SCENARIO_DEFAULT => self::OP_INSERT | self::OP_UPDATE,
-        ];
+        return array_fill_keys(array_keys($this->scenarios()), self::OP_INSERT | self::OP_UPDATE);
     }
 
     /**
