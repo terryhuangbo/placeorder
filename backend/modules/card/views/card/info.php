@@ -14,9 +14,6 @@ use common\models\Auth;
         width: 120px;
         margin: 10px 40px;
     }
-    .pic-content{
-        margin-bottom: 15px;
-    }
 
 </style>
 <!--<link rel="stylesheet" href="/plugins/webuploader/webuploader.css" type="text/css"/>-->
@@ -39,7 +36,7 @@ use common\models\Auth;
             </div>
         </div>
 
-        <div class="row pic-content">
+        <div class="row">
 
             <div class="control-group span10 avatar_content" >
                 <label class="control-label">微信头像：</label>
@@ -48,15 +45,11 @@ use common\models\Auth;
                 </div>
             </div>
             <div  class="control-group span10 avatar_content" >
-<!--                <label class="control-label --><?php //echo $auth['auth_status'] != Auth::CHECK_PASS ? 'upload_name_card' : ''  ?><!--" id="upload_img">-->
-<!--                    名片：--><?php //echo $auth['auth_status'] != Auth::CHECK_PASS ? '【点击更改】' : ''  ?>
-<!--                </label>-->
-                <label class="control-labe id="upload_img">
-                    名片：
+                <label class="control-label <?php echo $auth['auth_status'] != Auth::CHECK_PASS ? 'upload_name_card' : ''  ?>">
+                    名片：<?php echo $auth['auth_status'] != Auth::CHECK_PASS ? '【点击更改】' : ''  ?>
                 </label>
-
                 <div  class="controls <?php echo $auth['auth_status'] != Auth::CHECK_PASS ? 'upload_name_card' : ''  ?>" >
-                    <img id="name_card_img" class="avatar_img" onclick="viewNameCard(this)" src="<?php echo $auth['name_card'] ?>">
+                    <img id="name_card_img" class="avatar_img" src="<?php echo $auth['name_card'] ?>">
                     <input id="name_card_input" type="hidden" value="<?php echo $auth['name_card'] ?>">
                 </div>
             </div>
@@ -144,7 +137,7 @@ use common\models\Auth;
             // 文件接收服务端。
             server: "/auth/auth/upload-name-card",
             // 选择文件的按钮。可选。
-            pick: '#upload_img',
+            pick: '.upload_name_card',
             fileNumLimit: 1,
             fileSizeLimit: 2 * 1024 * 1024,
             // 只允许选择图片文件。
@@ -206,35 +199,4 @@ use common\models\Auth;
             $('#' + file.id).find('.progress').remove();
         });
     });
-
-    /**
-     * 查看名片
-     */
-    function viewNameCard(dom){
-        var src = $(dom).attr('src');
-        BUI.use('bui/overlay',function(Overlay){
-            var dialog = new Overlay.Dialog({
-                title:'名片',
-                width:600,
-                height:500,
-                closeAction: 'destroy',
-                buttons: [
-                    {
-                        text:'确认',
-                        elCls : 'button button-primary',
-                        handler : function(){
-                            this.close();
-                        }
-                    },
-                ],
-                //配置文本
-                bodyContent:'<div style="text-align: center"><img style="width: 560px; height:400px;" src="'+ src +'"></div>',
-                success:function () {
-                    this.close();
-                }
-            });
-            dialog.show();
-        });
-    }
-
 </script>

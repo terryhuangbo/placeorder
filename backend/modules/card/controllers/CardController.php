@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\modules\goods\controllers;
+namespace backend\modules\card\controllers;
 
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -9,11 +9,11 @@ use common\lib\Tools;
 use common\models\Goods;
 
 /**
- * 商品相关操作
+ * 卡密相关操作
  * @author Bo Huang <Terry1987101@163.com>
  * @since 2016-10-13
  **/
-class GoodsController extends BaseController
+class CardController extends BaseController
 {
 
     /**

@@ -4,6 +4,8 @@ namespace common\models;
 
 use Yii;
 use common\base\BaseModel;
+use common\base\TimeBehavior;
+
 
 /**
  * This is the model class for table "{{%user}}".
@@ -60,6 +62,21 @@ class User extends BaseModel
             'reg_time' => '注册时间',
             'login_time' => '最近登录时间',
             'update_time' => '更新时间',
+        ];
+    }
+
+    /**
+     * 注册时间，登录时间，更新时间自动更新时间戳
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            'timeStamp' => [
+                'class' => TimeBehavior::className(),
+                'create' => 'reg_time',
+                'update' => 'update_time',
+            ],
         ];
     }
 

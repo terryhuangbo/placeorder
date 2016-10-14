@@ -37,20 +37,8 @@ return [
             'class' => 'backend\modules\order\Module',
         ],
         // 信用
-        'trust' => [
-            'class' => 'backend\modules\trust\Module',
-        ],
-        // 认证
-        'auth' => [
-            'class' => 'backend\modules\auth\Module',
-        ],
-        // 行业
-        'industry' => [
-            'class' => 'backend\modules\industry\Module',
-        ],
-        // 会员
-        'vip' => [
-            'class' => 'backend\modules\vip\Module',
+        'card' => [
+            'class' => 'backend\modules\card\Module',
         ],
     ],
     'components' => [

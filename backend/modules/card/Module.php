@@ -1,10 +1,10 @@
 <?php
 
-namespace backend\modules\auth;
+namespace backend\modules\card;
 
 class Module extends \yii\base\Module
 {
-    public $controllerNamespace = 'backend\modules\auth\controllers';
+    public $controllerNamespace = 'backend\modules\card\controllers';
 
     public function init()
     {
