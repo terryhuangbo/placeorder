@@ -2,29 +2,16 @@
 
 namespace backend\modules\order\controllers;
 
+use common\models\Goods;
 use Yii;
+use yii\base\Object;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
-use common\lib\Logistic;
 use common\models\User;
 use common\models\Order;
-use common\models\Address;
 
 class OrderController extends BaseController
 {
-
-    public $layout = 'layout';
-    public $enableCsrfValidation = false;
-    public $checker_id = '';
-
-    /**
-     * 放置需要初始化的信息
-     */
-    public function init()
-    {
-        //后台登录人员ID
-        $this->checker_id = Yii::$app->user->identity->uid;
-    }
 
     /**
      * 路由权限控制
@@ -67,13 +54,12 @@ class OrderController extends BaseController
         }
         $mdl = new Order();
         $query = $mdl::find();
-        $search = $this->_request('search');
-        $page = $this->_request('page', 0);
-        $pageSize = $this->_request('pageSize', 10);
+        $search = $this->req('search');
+        $page = $this->req('page', 0);
+        $pageSize = $this->req('pageSize', 10);
         $offset = $page * $pageSize;
-        $ad_tb = Address::tableName();
         $or_tb = Order::tableName();
-        $ur_tb = User::tableName();
+        $ur_tb = Goods::tableName();
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
             {
@@ -97,13 +83,10 @@ class OrderController extends BaseController
             }
         }
 
-        //只能是上架，或者下架的产品
-        $query->andWhere([$or_tb . '.is_deleted' => $mdl::NO_DELETE]);
         $_order_by = 'oid DESC';
         $query_count = clone($query);
         $orderArr = $query
-            ->joinWith('address')
-            ->joinWith('user')
+            ->joinWith('goods')
             ->offset($offset)
             ->limit($pageSize)
             ->orderby($_order_by)
@@ -113,27 +96,15 @@ class OrderController extends BaseController
             'common\models\Order' => [
                 'oid',
                 'gid',
-                'order_id',
-                'goods_id',
-                'goods_name',
-                'order_status',
-                'express_num',
-                'express_type',
+                'order_bn',
+                'goods_bn' => 'goods.goods_bn',
+                'goods_name' => 'goods.name',
+                'status',
                 'status_name' => function ($m) {
-                    return Order::_get_order_status($m->order_status);
+                    return Order::getOrderStatus($m->status);
                 },
-                'buyer_name' => function ($m) {
-                    return getValue($m, 'user.name', '');
-                },
-                'buyer_phone' => function ($m) {
-                    return getValue($m, 'user.mobile', '');
-                },
-
-                'address' => function ($m) {
-                    return _value($m['address']['detail']);
-                },
-                'create_at' => function ($m) {
-                    return date('Y-m-d h:i:s', $m->create_at);
+                'create_time' => function ($m) {
+                    return date('Y-m-d h:i:s', $m->create_time);
                 },
             ],
         ]);
@@ -141,6 +112,7 @@ class OrderController extends BaseController
             'orderList' => $orderList,
             'totalCount' => $count
         ];
+        lg($orderList);
         exit(json_encode($_data));
     }
 
@@ -153,13 +125,13 @@ class OrderController extends BaseController
         if(!$this->isAjax()){
             return $this->render('add');
         }
-        $order = $this->_request('order', []);
+        $order = $this->req('order', []);
         if(isset($order['oid'])){
             unset($order['oid']);
         }
         $mdl = new Order();
-        $res = $mdl->_save_order($order);
-        $this->_json($res['code'], $res['msg']);
+        $res = $mdl->saveOrder($order);
+        $this->toJson($res['code'], $res['msg']);
     }
 
     /**
@@ -168,21 +140,21 @@ class OrderController extends BaseController
      */
     function actionUpdate()
     {
-        $oid = intval($this->_request('oid'));
+        $oid = intval($this->req('oid'));
         $mdl = new Order();
         //检验参数是否合法
         if (empty($oid)) {
-            $this->_json(-20001, '订单序号oid不能为空');
+            $this->toJson(-20001, '订单序号oid不能为空');
         }
 
         //检验订单是否存在
-        $order = $mdl->_get_info(['oid' => $oid]);
+        $order = $mdl->getOne(['oid' => $oid]);
         if (!$order) {
-            $this->_json(-20002, '订单信息不存在');
+            $this->toJson(-20002, '订单信息不存在');
         }
         $_data = [
             'order' => $order,
-            'status_list' => $mdl::_get_status_list(),
+            'status_list' => $mdl::getOrderStatus(),
         ];
         return $this->render('update', $_data);
     }
@@ -193,33 +165,33 @@ class OrderController extends BaseController
      */
     function actionAjaxSave()
     {
-        $oid = intval($this->_request('oid'));
-        $order_info = $this->_request('order', []);
+        $oid = intval($this->req('oid'));
+        $order_info = $this->req('order', []);
 
         $mdl = new Order();
         //检验参数是否合法
         if (empty($oid)) {
-            $this->_json(-20001, '订单序号oid不能为空');
+            $this->toJson(-20001, '订单序号oid不能为空');
         }
         if(empty($order_info['order_status'])){
-            $this->_json(-20002, '订单状态不能为空');
+            $this->toJson(-20002, '订单状态不能为空');
         }
 
         //检验订单是否存在
         $order = $mdl->_get_info(['oid' => $oid]);
         if (!$order) {
-            $this->_json(-20002, '订单信息不存在');
+            $this->toJson(-20002, '订单信息不存在');
         }
         $res = $mdl->_save([
             'oid' => $oid,
             'order_status' => intval($order_info['order_status']),
         ]);
         if(!$res){
-            $this->_json(-20003, '保存失败');
+            $this->toJson(-20003, '保存失败');
         }
 
         //保存
-        $this->_json(20000, '保存成功');
+        $this->toJson(20000, '保存成功');
     }
 
     /**
@@ -228,18 +200,18 @@ class OrderController extends BaseController
      */
     function actionAjaxDelete()
     {
-        $oid = intval($this->_request('oid'));
+        $oid = intval($this->req('oid'));
 
         $mdl = new Order();
         //检验参数是否合法
         if (empty($oid)) {
-            $this->_json(-20001, '订单序号oid不能为空');
+            $this->toJson(-20001, '订单序号oid不能为空');
         }
 
         //检验订单是否存在
         $order = $mdl->_get_info(['oid' => $oid]);
         if (!$order) {
-            $this->_json(-20002, '订单信息不存在');
+            $this->toJson(-20002, '订单信息不存在');
         }
 
         $res = $mdl->_save([
@@ -247,111 +219,36 @@ class OrderController extends BaseController
             'is_deleted' => $mdl::IS_DELETE,
         ]);
         if(!$res){
-            $this->_json(-20003, '删除失败');
+            $this->toJson(-20003, '删除失败');
         }
-        $this->_json(20000, '删除成功');
+        $this->toJson(20000, '删除成功');
     }
 
     /**
-     * 物流单号
-     * @return array
+     * 加载订单详情
      */
-    function actionLogistic()
+    function actionInfo()
     {
-        $oid = intval($this->_request('oid'));
+        $oid = intval($this->req('oid'));
 
         $mdl = new Order();
         //检验参数是否合法
         if (empty($oid)) {
-            $this->_json(-20001, '订单序号oid不能为空');
+            $this->toJson(-20001, '用户编号id不能为空');
         }
 
-        //检验订单是否存在
-        $order = $mdl->_get_info(['oid' => $oid]);
+        //检验用户是否存在
+        $order = $mdl->getRelationOne(['oid' => $oid], ['with' => ['goods']]);
+        lg($order);
         if (!$order) {
-            $this->_json(-20002, '订单信息不存在');
+            $this->toJson(-20003, '用户信息不存在');
         }
-
-        $lgt = new Logistic();
-        $res = $lgt->express2();
-        $exp_array = ArrayHelper::map($res['result'], 'type', 'name');
-
+        $order['create_time'] = date('Y-m-d h:i:s', $order['create_time']);
         $_data = [
-            'order' => $order,
-            'exp_array' => $exp_array,
+            'order' => $order
         ];
-        return $this->render('logestic', $_data);
+        return $this->render('info', $_data);
     }
-
-    /**
-     * 异步保存物流公司和物流单号
-     * @return array
-     */
-    function actionAjaxSaveLogestic()
-    {
-        $oid = intval($this->_request('oid'));
-        $express_type = trim($this->_request('express_type'));
-        $express_num = trim($this->_request('express_num'));
-
-        $mdl = new Order();
-        //检验参数是否合法
-        if (empty($oid)) {
-            $this->_json(-20001, '订单序号oid不能为空');
-        }
-
-        //检验订单是否存在
-        $order = $mdl->_get_info(['oid' => $oid]);
-        if (!$order) {
-            $this->_json(-20002, '订单信息不存在');
-        }
-
-        $ret = $mdl->_save([
-            'oid' => $oid,
-            'order_status' => Order::STATUS_RECEIVE,
-            'express_type' => $express_type,
-            'express_num' => $express_num,
-        ]);
-        if(!$ret){
-            $this->_json(-20000, '保存失败');
-        }
-
-        $this->_json(20000, '保存成功');
-    }
-
-    /**
-     * 异步获取订单信息
-     * @return array
-     */
-    function actionLogesticDetail()
-    {
-        $oid = intval($this->_request('oid'));
-        $express_type = trim($this->_request('express_type'));
-        $express_num = trim($this->_request('express_num'));
-
-        $mdl = new Order();
-        //检验参数是否合法
-        if (empty($oid)) {
-            $this->_json(-20001, '订单序号oid不能为空');
-        }
-
-        //检验订单是否存在
-        $order = $mdl->_get_info(['oid' => $oid]);
-        if (!$order) {
-            $this->_json(-20002, '订单信息不存在');
-        }
-
-        $lgt = new Logistic();
-        $res = $lgt->express1($order['express_type'], $order['express_num']);
-
-        $_data = [
-            'log_list' => getValue($res, 'result.list', [])
-        ];
-        return $this->render('logestic-detail', $_data);
-    }
-
-
-
-
 
 
 

@@ -8,7 +8,6 @@
 namespace common\behavior;
 
 use yii\db\ActiveRecord;
-use yii\db\BaseActiveRecord;
 use yii\db\Expression;
 use yii\base\Behavior;
 use yii\db\Exception;
