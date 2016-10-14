@@ -5,7 +5,7 @@ use yii\helpers\Html;
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>编辑卡密</title>
+    <title>添加卡组</title>
 
     <link href="/css/dpl.css" rel="stylesheet">
     <link href="/css/bui.css" rel="stylesheet">
@@ -70,33 +70,32 @@ use yii\helpers\Html;
 <body>
 <div class="demo-content">
     <form id="Goods_Form" action="" class="form-horizontal" onsubmit="return false;" >
-        <h2>编辑卡密</h2>
-        <input type="hidden" name="id" value="<?php echo $card['id'] ?>"/>
+        <h2>添加卡组</h2>
         <div class="control-group">
             <label class="control-label"><s>*</s>面值：</label>
             <div class="controls">
-                <input name="card[points]" type="text" class="input-medium" data-rules="{min:1, required : true}" value="<?php echo $card['points'] ?>">
+                <input name="card-group[points]" type="text" class="input-medium" data-rules="{min : 1, required : true}">
             </div>
         </div>
 
         <div class="control-group">
             <label class="control-label"><s>*</s>密码：</label>
             <div class="controls">
-                <input name="card[pwd]" type="text" class="input-medium" data-rules="{required : true}" value="<?php echo $card['pwd'] ?>">
+                <input name="card-group[pwd]" type="text" class="input-medium" data-rules="{required : true}">
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label"><s>*</s>卡组：</label>
+            <label class="control-label"><s>*</s>备注：</label>
             <div class="controls">
-                <input name="card[group_bn]" type="text" class="input-medium" data-rules="{required : true}" value="<?php echo $card['group_bn'] ?>">
+                <input name="card-group[comment]" type="text" class="input-medium" data-rules="{required : true}">
             </div>
         </div>
 
         <div class="row actions-bar">
             <div class="form-actions span13 offset3">
-                <button type="submit" class="button button-primary" id="save-card">保存</button>
-                <button type="reset" class="button" id="cancel-card">返回</button>
+                <button type="submit" class="button button-primary" id="save-card-group">保存</button>
+                <button type="reset" class="button" id="cancel-card-group">返回</button>
             </div>
         </div>
     </form>
@@ -110,13 +109,13 @@ use yii\helpers\Html;
             form.render();
 
             //保存
-            $("#save-card").on('click', function(){
+            $("#save-card-group").on('click', function(){
                 if(form.isValid()){
                     var param = $._get_form_json("#Goods_Form");
-                    $._ajax('/card/card/update', param, 'POST', 'JSON', function(json){
+                    $._ajax('/card/card-group/add', param, 'POST', 'JSON', function(json){
                         if(json.code > 0){
                             BUI.Message.Alert(json.msg, function(){
-//                                window.location.href = '/card/card/list';
+//                                window.location.href = '/card/card-group/list';
                             }, 'success');
 
                         }else{
@@ -127,8 +126,8 @@ use yii\helpers\Html;
                 }
             });
             //返回
-            $("#cancel-card").on('click', function(){
-//                window.location.href = '/card/card/list';
+            $("#cancel-card-group").on('click', function(){
+//                window.location.href = '/card-group/card-group/list';
             });
         });
     </script>

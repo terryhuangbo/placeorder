@@ -6,14 +6,14 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
 use common\lib\Tools;
-use common\models\Card;
+use common\models\CardGroup;
 
 /**
  * 卡密相关操作
  * @author Bo Huang <Terry1987101@163.com>
  * @since 2016-10-13
  **/
-class CardController extends BaseController
+class CardGroupController extends BaseController
 {
 
     /**
@@ -51,13 +51,13 @@ class CardController extends BaseController
         if ($this->isGet()) {
             return $this->render('list');
         }
-        $mdl = new Card();
+        $mdl = new CardGroup();
         $query = $mdl::find();
         $search = $this->req('search');
         $page = $this->req('page', 0);
         $pageSize = $this->req('pageSize', 10);
         $offset = $page * $pageSize;
-        $query->where(['status' => [Card::STATUS_YES, Card::STATUS_NO]]);
+        $query->where(['status' => [CardGroup::STATUS_YES, CardGroup::STATUS_NO]]);
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
             {
@@ -84,15 +84,15 @@ class CardController extends BaseController
             ->orderby($_order_by)
             ->all();
         $cardList = ArrayHelper::toArray($cardArr, [
-            'common\models\Card' => [
+            'common\models\CardGroup' => [
                 'id',
-                'card_bn',
-                'points',
-                'status',
                 'group_bn',
+                'card_num',
+                'status',
                 'pwd',
+                'comment',
                 'status_name' => function ($m) {
-                    return Card::getCardStatus($m->status);
+                    return CardGroup::getCardGroupStatus($m->status);
                 },
                 'create_time' => function ($m) {
                     return date('Y-m-d h:i:s', $m->create_time);
@@ -122,31 +122,14 @@ class CardController extends BaseController
         if(isset($card['id'])){
             unset($card['id']);
         }
-        $card_num = intval(getValue($card, 'card_num', 0));
-        if(empty($card_num)) {
-            return $this->toJson(-20002, '生成卡密数量不能为空');
-        }
 
-        $valid_mdl = new Card();
-        $valid_mdl->scenario = Card::SCENARIO_ADD;
-        $valid_mdl->setAttributes($card);
-        //校验数据
-        if (!$valid_mdl->validate())
-        {
-            $errors = $valid_mdl->getFirstErrors();
-            return $this->toJson(-20003, reset($errors));
+        $card_group = $this->req('card-group', []);
+        if(isset($card_group['id'])){
+            unset($card_group['id']);
         }
-        //保存数据
-        for($i=0; $i<$card_num; $i++){
-            $mdl = new Card();
-            $mdl->setAttributes($card);
-            if (!$mdl->save(false))
-            {
-                $errors = $mdl->getFirstErrors();
-                return $this->toJson(-20004, reset($errors));
-            }
-        }
-        return $this->toJson(20000, '卡密添加成功');
+        $mdl = new CardGroup();
+        $res = $mdl->saveCardGroup($card_group);
+        return $this->toJson($res['code'], $res['msg']);
     }
 
     /**
@@ -156,7 +139,7 @@ class CardController extends BaseController
     function actionUpdate()
     {
         $id = intval($this->req('id'));
-        $card_info = $this->req('card', []);
+        $card_info = $this->req('card-group', []);
 
         //检验参数是否合法
         if (empty($id)) {
@@ -164,7 +147,7 @@ class CardController extends BaseController
         }
 
         //检验卡密是否存在
-        $mdl = new Card();
+        $mdl = new CardGroup();
         $card = $mdl->getOne(['id' => $id]);
         if (!$card) {
             return $this->toJson(-20002, '卡密信息不存在');
@@ -178,7 +161,7 @@ class CardController extends BaseController
         }
         //保存
         $card_info['id'] = $id;
-        $ret = $mdl->saveCard($card_info, Card::SCENARIO_UPDATE);
+        $ret = $mdl->saveCardGroup($card_info);
         return $this->toJson($ret['code'], $ret['msg']);
     }
 
@@ -190,12 +173,12 @@ class CardController extends BaseController
     {
         $id = intval($this->req('id', 0));
         $card_status = $this->req('card_status', 0);
-        $mdl = new Card();
+        $mdl = new CardGroup();
         $update_info = [
             'id' => $id,
             'status' => $card_status,
         ];
-        $ret = $mdl->saveCard($update_info);
+        $ret = $mdl->saveCardGroup($update_info);
         return $this->toJson($ret['code'], $ret['msg']);
     }
 

@@ -6,6 +6,7 @@ use yii;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
+use common\behavior\TimeBehavior;
 
 /**
  * 对ActiveRecord功能的扩展

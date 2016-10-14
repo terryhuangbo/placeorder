@@ -4,7 +4,7 @@ namespace common\models;
 
 use Yii;
 use common\base\BaseModel;
-use common\base\TimeBehavior;
+use common\behavior\TimeBehavior;
 
 
 /**

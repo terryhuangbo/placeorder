@@ -88,7 +88,7 @@ use yii\helpers\Html;
         <div class="control-group">
             <label class="control-label"><s>*</s>卡组：</label>
             <div class="controls">
-                <input name="card[group_id]" type="text" class="input-medium" data-rules="{required : true}" value="1">
+                <input name="card[group_bn]" type="text" class="input-medium" data-rules="{required : true}">
             </div>
         </div>
 

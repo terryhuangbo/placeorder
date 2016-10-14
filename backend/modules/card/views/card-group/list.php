@@ -1,12 +1,12 @@
 <?php
 use yii\helpers\Html;
-use common\models\Card;
+use common\models\CardGroup;
 ?>
 <!doctype html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>卡密列表</title>
+    <title>卡组列表</title>
     <link href="/css/dpl.css" rel="stylesheet">
     <link href="/css/bui.css" rel="stylesheet">
     <link href="/css/page-min.css" rel="stylesheet">
@@ -23,7 +23,7 @@ use common\models\Card;
         }
     </style>
     <script>
-        _BASE_LIST_URL =  "<?php echo yiiUrl('card/card/list') ?>";
+        _BASE_LIST_URL =  "<?php echo yiiUrl('card/card-group/list') ?>";
     </script>
 </head>
 
@@ -35,17 +35,17 @@ use common\models\Card;
 
                 <div class="row">
                     <div class="control-group span12">
-                        <label class="control-label">卡密名称：</label>
+                        <label class="control-label">卡组名称：</label>
                         <div class="controls" data-type="city">
                             <input type="text" class="control-text" name="name" id="name">
                         </div>
                     </div>
                     <div class="control-group span10">
-                        <label class="control-label">卡密状态：</label>
+                        <label class="control-label">卡组状态：</label>
                         <div class="controls" >
                             <select name="status" id="status">
                                 <option value="">请选择</option>
-                                <?php foreach (Card::getCardStatus() as $key => $name): ?>
+                                <?php foreach (CardGroup::getCardGroupStatus() as $key => $name): ?>
                                     <option value="<?= $key ?>"><?= $name ?></option>
                                 <?php endforeach ?>
                             </select>
@@ -61,7 +61,7 @@ use common\models\Card;
                     </div>
                     <div class="row">
                         <div class="control-group span10">
-                            <button type="button" id="btnSearch" class="button button-primary"  onclick="searchCard()">查询</button>
+                            <button type="button" id="btnSearch" class="button button-primary"  onclick="searchCardGroup()">查询</button>
                         </div>
                     </div>
                 </div>
@@ -133,11 +133,10 @@ use common\models\Card;
                 selectedEvent: 'click',
                 columns: [
                     {title: '序号', dataIndex: 'id', width: 80, elCls : 'center'},
-                    {title: '卡密编号', dataIndex: 'card_bn', width: 120, elCls : 'center'},
                     {title: '卡组编号', dataIndex: 'group_bn', width: 120, elCls : 'center'},
-                    {title: '面值', dataIndex: 'points', width: 80, elCls : 'center'},
                     {title: '密码', dataIndex: 'pwd', width: 80, elCls : 'center'},
-                    {title: '卡密状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
+                    {title: '卡密数量', dataIndex: 'card_num', width: 80, elCls : 'center'},
+                    {title: '卡组状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
                     {title: '创建时间', dataIndex: 'create_time', width: 150, elCls : 'center'},
                     {title: '更新时间', dataIndex: 'update_time', width: 150, elCls : 'center'},
                     {
@@ -145,10 +144,10 @@ use common\models\Card;
                         width: 300,
                         renderer: function (v, obj) {
                             if(obj.status == 1){
-                                return "<a class='button button-success page-action' title='编辑卡密' href='/card/card/update/?id="+ obj.id +"' data-href='/card/card/update/?id="+ obj.id +"' >编辑</a>" +
+                                return "<a class='button button-success page-action' title='编辑卡组' href='/card/card-group/update/?id="+ obj.id +"' data-href='/card/card/update/?id="+ obj.id +"' >编辑</a>" +
                                 " <a class='button button-danger' onclick='offShelf(" + obj.id + ")'>禁用</a>";
                             }else if(obj.status == 2){
-                                return "<a class='button button-success page-action' title='编辑卡密信息' data-href='/card/card/update/?id="+ obj.id +"' >编辑</a>" +
+                                return "<a class='button button-success page-action' title='编辑卡组信息' data-href='/card/card-group/update/?id="+ obj.id +"' >编辑</a>" +
                                 " <a class='button button-primary' onclick='upShelf(" + obj.id + ")'>启用</a>";
                             }
                         }
@@ -173,9 +172,9 @@ use common\models\Card;
 
 <script>
 /**
- * 搜索卡密,刷新列表
+ * 搜索卡组,刷新列表
  */
-function searchCard() {
+function searchCardGroup() {
     var search = {};
     var fields = $("#authsearch").serializeArray();//获取表单信息
     jQuery.each(fields, function (i, field) {
@@ -191,7 +190,7 @@ function searchCard() {
 /**
  * 获取过滤项
  */
-function getCardGridSearchConditions() {
+function getCardGroupGridSearchConditions() {
     var search = {};
     var upusername = $("#upusername").val();
     if (upusername != "") {
@@ -205,7 +204,7 @@ function getCardGridSearchConditions() {
 }
 
 /**
- * 显示卡密详情
+ * 显示卡组详情
  */
 function showCheckInfo(id) {
     var width = 700;
@@ -222,7 +221,7 @@ function showCheckInfo(id) {
         },
     ];
     dialog = new Overlay.Dialog({
-        title: '卡密信息',
+        title: '卡组信息',
         width: width,
         height: height,
         closeAction: 'destroy',
@@ -262,7 +261,7 @@ function offShelf(id) {
     ajax_change_status(id, 2, function(json){
         if(json.code > 0){
             BUI.Message.Alert(json.msg, function(){
-                window.location.href = '/card/card/list';
+                window.location.href = '/card/card-group/list';
             }, 'success');
         }else{
             BUI.Message.Alert(json.msg, 'error');
@@ -278,7 +277,7 @@ function del(id) {
         ajax_change_status(id, 3, function(json){
             if(json.code > 0){
                 BUI.Message.Alert(json.msg, function(){
-                    window.location.href = '/card/card/list';
+                    window.location.href = '/card/card-group/list';
                 }, 'success');
             }else{
                 BUI.Message.Alert(json.msg, 'error');
@@ -288,13 +287,13 @@ function del(id) {
 }
 
 /**
- *改变卡密状态
+ *改变卡组状态
  */
 function ajax_change_status(id, status, callback){
     var param = param || {};
     param.id = id;
     param.card_status = status;
-    $._ajax('<?php echo yiiUrl('card/card/ajax-change-status') ?>', param, 'POST','JSON', function(json){
+    $._ajax('<?php echo yiiUrl('card/card-group/ajax-change-status') ?>', param, 'POST','JSON', function(json){
         if(typeof callback == 'function'){
             callback(json);
         }
