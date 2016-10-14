@@ -83,6 +83,7 @@ class GoodsController extends BaseController
                 'gid',
                 'name',
                 'price',
+                'goods_bn',
                 'status',
                 'thumb' => function($m){
                     return $m->images;

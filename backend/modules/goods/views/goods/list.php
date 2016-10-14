@@ -132,8 +132,9 @@ use common\models\Goods;
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
-                    {title: '商品序号', dataIndex: 'gid', width: 80, elCls : 'center'},
-                    {title: '商品名称', dataIndex: 'name', width: 90, elCls : 'center',},
+                    {title: '序号', dataIndex: 'gid', width: 80, elCls : 'center'},
+                    {title: '商品编号', dataIndex: 'goods_bn', width: 120, elCls : 'center'},
+                    {title: '商品名称', dataIndex: 'name', width: 90, elCls : 'center'},
                     {
                         title: '缩略图',
                         width: 140,
@@ -142,7 +143,7 @@ use common\models\Goods;
                             return "<img class='user_avatar' src='"+ obj.thumb +"'>";
                         }
                     },
-                    {title: '兑换积分', dataIndex: 'price', width: 80, elCls : 'center'},
+                    {title: '价格', dataIndex: 'price', width: 80, elCls : 'center'},
                     {title: '商品状态', dataIndex: 'status_name', width: 80, elCls : 'center'},
                     {title: '创建时间', dataIndex: 'create_time', width: 150, elCls : 'center'},
                     {title: '更新时间', dataIndex: 'update_time', width: 150, elCls : 'center'},
