@@ -100,6 +100,7 @@ class OrderController extends BaseController
                 'order_bn',
                 'goods_bn' => 'goods.goods_bn',
                 'goods_name' => 'goods.name',
+                'qq',
                 'num',
                 'amount',
                 'status',

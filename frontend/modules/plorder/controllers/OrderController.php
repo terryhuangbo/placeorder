@@ -3,6 +3,7 @@
 namespace frontend\modules\plorder\controllers;
 
 use common\models\CartGoods;
+use common\models\Goods;
 use common\models\Order;
 use Yii;
 use app\base\BaseController;
@@ -19,41 +20,38 @@ class OrderController extends BaseController
 
 
     /**
+     * 用户中心
+     * @return type
+     */
+    public function actionIndex()
+    {
+        $user = $this->user;
+        $gid = $this->req('gid', 47);
+        $user['login_time'] = date('Y-m-d H:i:s', $user['login_time']);
+        $goods = (new Goods())->getOne(['gid'  => $gid]);
+        //商品为空，跳转到商品首页
+        if(empty($goods)){
+            $this->redirect('/plorder/goods/index');
+        }
+        $_data = [
+            'user' => $user,
+            'goods' => $goods,
+        ];
+        return $this->render('index', $_data);
+    }
+
+    /**
      * 生成订单
      * @return type
      */
     public function actionAdd()
     {
-        $gids = json_decode($this->_request('gids'));
-        if(empty($gids)){
-            $this->_json(-20001, '没有选择购物车的任何商品');
-        }
+        $post = $this->req();
+        $post['uid'] = $this->uid;
+        $mdl = new Order();
+        $ret = $mdl->saveOrder($post);
+        return json_encode($ret);
 
-        $m_mdl = new Address();
-
-        $cg_mdl = new CartGoods();
-        $total_points = 0;
-        $list = $cg_mdl->_get_list_all(['in' , 'id', $gids]);
-        if($list){
-            foreach($list as $val){
-                $total_points += $val['count'] * getValue($val, 'goods.plorder_pionts', 0);
-            }
-        }
-
-        //收货地址
-        $address = $m_mdl->_get_info([
-            'uid' => $this->uid,
-            'is_default' => $m_mdl::DEFAULT_YES,
-            'is_deleted' => $m_mdl::NO_DELETE
-        ]);
-        $address['type_name'] = $m_mdl::_get_address_type_name($address['type']);
-
-        $_data = [
-            'cart_goods' => $list,
-            'total_points' => $total_points,
-            'address' => $address,
-        ];
-        return $this->render('add', $_data);
     }
 
     /**

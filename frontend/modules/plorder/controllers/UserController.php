@@ -110,18 +110,5 @@ class UserController extends BaseController
         return $this->toJson($ret['code'], $ret['msg']);
     }
 
-    /**
-     * 用户中心
-     * @return type
-     */
-    public function actionIndex()
-    {
-        $user = $this->user;
-        $user['login_time'] = date('Y-m-d H:i:s', $user['login_time']);
-        $_data = [
-            'user' => $user,
-        ];
-        return $this->render('index', $_data);
-    }
 
 }

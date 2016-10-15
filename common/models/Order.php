@@ -14,6 +14,7 @@ use yii\db\Exception;
  * @property string $order_bn
  * @property integer $uid
  * @property integer $gid
+ * @property integer $qq
  * @property integer $num
  * @property integer $amount
  * @property integer $status
@@ -64,7 +65,8 @@ class Order extends BaseModel
             //商品ID
             ['gid', 'required', 'message' => '商品ID必须存在'],
             ['gid', 'exist', 'targetAttribute' => 'gid', 'targetClass' => Goods::className(), 'message' => '订单不存在'],
-            //订单金额
+            //qq
+            ['qq', 'required', 'message' => 'qq不能为空'],
         ];
     }
 
@@ -155,6 +157,21 @@ class Order extends BaseModel
                 if($this->user->points < $this->amount){
                     throw new Exception('用户账户余额不足');
                 }
+                //用户账户抵扣
+                $this->user->points = $this->user->points - $this->amount;
+                $ret = $this->user->save();
+                if($ret['code'] < 0){
+                    throw new Exception('用户账户抵扣失败');
+                }
+                //商品库存
+                if($this->goods->num < $this->num){
+                    throw new Exception('商品库存不足');
+                }
+                $this->goods->num = $this->goods->num - $this->num;
+                $ret = $this->goods->save();
+                if($ret['code'] < 0){
+                    throw new Exception('商品库存更新失败');
+                }
             }
             return true;
         }
@@ -168,12 +185,6 @@ class Order extends BaseModel
     public function afterSave($insert, $changedAttributes) {
         parent::afterSave($insert, $changedAttributes);
         if($insert){
-            //用户账户抵扣
-            $this->user->points =  $this->user->points - $this->amount;
-            $ret = $this->user->save();
-            if($ret['code'] < 0){
-                throw new Exception('用户账户抵扣失败');
-            }
             //生成财务数据
             $pay = new Pay();
             $pay->attributes = [
