@@ -7,15 +7,15 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-frontend',
+    'id' => 'plorder',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'defaultRoute' => '/redeem/home/index',
+    'defaultRoute' => '/plorder/home/index',
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
-        //积分兑换
-        'redeem' => [
-            'class' => 'frontend\modules\redeem\Module',
+        //下单
+        'plorder' => [
+            'class' => 'frontend\modules\plorder\Module',
         ],
         //积分兑换
         'common' => [
@@ -30,8 +30,8 @@ return [
             'showScriptName' => false,
             'rules' => [
                 "<module:\w+>/<controller:\w+>/<action:\D+>" => "<module>/<controller>/<action>",
-                "<controller:\w+>/<action:\w+>/<id:\d+>" => "redeem/<controller>/<action>",
-                "<controller:\w+>/<action:\w+>" => "redeem/<controller>/<action>",
+                "<controller:\w+>/<action:\w+>/<id:\d+>" => "plorder/<controller>/<action>",
+                "<controller:\w+>/<action:\w+>" => "plorder/<controller>/<action>",
             ],
         ],
 
