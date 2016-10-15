@@ -10,7 +10,7 @@ return [
     'id' => 'plorder',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'defaultRoute' => '/plorder/home/index',
+    'defaultRoute' => '/plorder/goods/index',
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
         //下单
