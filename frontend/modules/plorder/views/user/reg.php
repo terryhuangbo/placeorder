@@ -99,7 +99,8 @@
 
 					</div>
 
-					<form method="post" class="jwxh_form_data kmcz_cye" cardno_login_action="/index.php?m=Home&c=Card&a=login&id=350&goods_type=6" username_login_action="/index.php?m=Home&c=User&a=login&id=350&goods_type=6" user_sendpass_action="/index.php?m=Home&c=User&a=sendpass" username_register_action="/index.php?m=Home&c=User&a=register&id=350&goods_type=6" check_cardno_ajax_href="/index.php?m=Home&c=Card&a=cardinfo_no&id=350&goods_type=6" >
+<!--					<form method="post" class="jwxh_form_data kmcz_cye" cardno_login_action="/index.php?m=Home&c=Card&a=login&id=350&goods_type=6" username_login_action="/index.php?m=Home&c=User&a=login&id=350&goods_type=6" user_sendpass_action="/index.php?m=Home&c=User&a=sendpass" username_register_action="/index.php?m=Home&c=User&a=register&id=350&goods_type=6" check_cardno_ajax_href="/index.php?m=Home&c=Card&a=cardinfo_no&id=350&goods_type=6" >-->
+					<form method="post" class="jwxh_form_data kmcz_cye" onsubmit="return false">
                         <div class="panel-body">
                             <ul id="myTab" class="nav nav-tabs">
                                <li class="active">
@@ -204,8 +205,8 @@
                                         <div class="input-group" >
                                           <div class="input-group-addon">性别</div>
                                             <label class="checkbox-inline form-control">
-                                                  <input type="radio" name="reg_sex" value="0" checked>男生
-                                                  <input type="radio" name="reg_sex" value="1">女生
+                                                  <input type="radio" name="reg_sex" value="1" checked>男生
+                                                  <input type="radio" name="reg_sex" value="2">女生
                                             </label>
                                         </div>
                                       </div>
@@ -268,7 +269,29 @@
         });
 
         $('.username_login_btn').click(function (e) {
-            form_submit('username_login_action');
+            var param = {};
+            var username = $.trim($("[name=username]").val());
+            var password = $.trim($("[name=username_password]").val());
+            if(username == ''){
+                $("[name=username]").closest('div')._error('账号不能为空');
+                return
+            }
+            if(password == ''){
+                $("[name=username_password]").closest('div')._error('密码不能为空');
+                return
+            }
+            param = {
+                username: username,
+                pwd: password
+            };
+            $._ajax('/plorder/user/login', param, 'POST', 'JSON', function(json){
+                if(json.code > 0){
+                    alert(json.msg);
+                }else{
+                    $("[name=username_password]").closest('div')._error(json.msg);
+                    return
+                }
+            });
             return false;
         });
 
@@ -278,8 +301,37 @@
         });
 
         $('.username_register_btn').click(function (e) {
-            form_submit('username_register_action');
-            alert(23);
+            var param = {};
+            var username = $.trim($("[name=reg_username]").val());
+            var password = $.trim($("[name=reg_password]").val());
+            var sex = $("[name=reg_sex]:checked").val();
+            var qq = $("[name=reg_qq]").val();
+            if(username == ''){
+                $("[name=reg_username]").closest('div')._error('账号不能为空');
+                return
+            }
+            if(password == ''){
+                $("[name=reg_password]").closest('div')._error('密码不能为空');
+                return
+            }
+            if(qq == ''){
+                $("[name=reg_qq]").closest('div')._error('QQ不能为空');
+                return
+            }
+            param = {
+                username: username,
+                pwd: password,
+                gender: sex,
+                qq: qq
+            };
+            $._ajax('/plorder/user/reg', param, 'POST', 'JSON', function(json){
+                if(json.code > 0){
+                    alert('注册成功');
+                }else{
+                    $("[name=reg_qq]").closest('div')._error(json.msg);
+                    return
+                }
+            });
             return false;
         });
 

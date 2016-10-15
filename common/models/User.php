@@ -57,6 +57,8 @@ class User extends BaseModel
             ['qq', 'unique', 'message' => 'qq必须唯一'],
             //性别
             ['gender', 'in', 'range' => [self::SEX_MALE, self::SEX_FEMALE], 'message' => '性别错误'],
+            //密码，进行加密操作
+            ['pwd', 'filter', 'filter' => [$this, 'genPwd']],
             //账户余额
             ['points', 'integer', 'min' => 0],
         ];
@@ -89,7 +91,7 @@ class User extends BaseModel
         return [
             'timeStamp' => [
                 'class' => TimeBehavior::className(),
-                'create' => 'reg_time',
+                'create' => ['reg_time', 'login_time'],
                 'update' => 'update_time',
             ],
         ];
@@ -118,6 +120,12 @@ class User extends BaseModel
         return $scenarios;
     }
 
-
+    /**
+     * 生成密码，对原始密码进行加密操作
+     * @return string
+     */
+    public static function genPwd($pwd){
+        return md5(sha1($pwd));
+    }
 
 }

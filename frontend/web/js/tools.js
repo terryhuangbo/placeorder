@@ -9,7 +9,7 @@
     $._alert = function (title, msg) {
         _generate_html._alert_html(title, msg);
         _btn_ok();
-        _btn_no(); 
+        _btn_no();
     };
 
     //确认框Confirm
@@ -18,7 +18,7 @@
         _btn_ok(callback);
         _btn_no();
     };
-  
+
     //生成HTML
     var _generate_html = {
         _alert_html : function (title, msg) {
@@ -42,7 +42,7 @@
             $("body").append(_html);
             _generate_css._msg_css();
         },
-        
+
 
     };
 
@@ -329,7 +329,41 @@
         },
         flush : function(){
             localStorage.clear();
-        },
+        }
+    };
+
+    //显示错误信息
+    $.fn._error = function (msg, el, location, fading, css) {
+        var dom = this;
+        if (msg == undefined || msg == '') {
+            return;
+        }
+        if (el == undefined) {
+            el = 'p';
+        }
+        if (fading == undefined) {
+            fading = 1500;
+        }
+        var error = $('<' + el + ' class="msg-error">' + msg + '</' + el + '>');
+        if (location == undefined || location == 'after') {
+            $(dom).siblings('.msg-error').remove();
+            $(dom).after(error);
+        }
+        else if (location == 'append') {
+            $(dom).children('.msg-error').remove();
+            $(dom).append(error);
+        }
+        else if (location == 'prepend') {
+            $(dom).children('.msg-error').remove();
+            $(dom).prepend(error);
+        }
+        if (css != undefined) {
+            $(".msg-error").css(css);
+        }
+        else {
+            $(".msg-error").css({'color': '#e73847', 'font-size': '12px', 'text-align': 'center'});
+        }
+        error.fadeOut(fading);
     };
 
     //加载文件,可以用于临时性的引入js,css等文件，不必在header部分添加
@@ -364,7 +398,7 @@
             else {
                 callback();
             }
-        },
+        }
     };
 
     //随机字符串
