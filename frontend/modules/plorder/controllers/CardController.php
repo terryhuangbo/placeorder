@@ -31,7 +31,6 @@ class CardController extends BaseController
         if(empty($card_bn)){
             return $this->toJson('-20001', '请输入卡密');
         }
-        lg($card_bn);
         $where = [
             'card_bn' => $card_bn,
         ];

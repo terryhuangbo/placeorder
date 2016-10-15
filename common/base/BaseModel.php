@@ -127,7 +127,7 @@ class BaseModel extends ActiveRecord
             $query->where($where);
         }
 
-        if(empty($order)){
+        if(!empty($order)){
             $query->orderBy($order);
         }
 
