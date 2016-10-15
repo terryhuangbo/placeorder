@@ -5,6 +5,7 @@ namespace common\base;
 use yii;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\db\Exception;
 use yii\helpers\ArrayHelper;
 use common\behavior\TimeBehavior;
 
@@ -64,6 +65,44 @@ class BaseModel extends ActiveRecord
      */
     public function transactions() {
         return array_fill_keys(array_keys($this->scenarios()), self::OP_INSERT | self::OP_UPDATE);
+    }
+
+    /**
+     * Saves the current record.
+     * This method overwrite the [[save()]] of ActiveRecord only to handle the yii\db\Exception.
+     * @param boolean $runValidation whether to perform validation before saving the record.
+     * @param array $attributeNames list of attribute names that need to be saved.
+     * @return array
+     **/
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        try {
+            $result = parent::save($runValidation = true, $attributeNames = null);
+            if(!$result) {
+                return ['code' => -20000, 'msg' => '保存失败'];
+            }
+            return ['code' => 20000, 'msg' => '保存成功'];
+        } catch (Exception $e) {
+            return ['code' => -20001, 'msg' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Deletes the table row corresponding to this active record.
+     * This method overwrite the [[delete()]] of ActiveRecord only to handle the yii\db\Exception.
+     * @return array
+     **/
+    public function delete()
+    {
+        try {
+            $result = parent::delete();
+            if(!$result) {
+                return ['code' => -20000, 'msg' => '删除失败'];
+            }
+            return ['code' => 20000, 'msg' => '删除成功'];
+        } catch (Exception $e) {
+            return ['code' => -20001, 'msg' => $e->getMessage()];
+        }
     }
 
     /**
