@@ -138,11 +138,7 @@ class Order extends BaseModel
             return ['code' => -20003, 'msg' => current($errors)];
         }
         //保存数据
-        if (!$mdl->save(false))
-        {
-            return ['code' => -20000, 'msg' => '保存失败'];
-        }
-        return ['code' => 20000, 'msg' => '保存成功'];
+        return $mdl->save(false);
     }
 
     /**
