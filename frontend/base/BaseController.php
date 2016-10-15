@@ -23,7 +23,7 @@ class BaseController extends Controller
         //不用校验的页面，自动跳过
         $action_id = Yii::$app->controller->action->id;
         if(in_array($action_id, $this->_uncheck)){
-            return true;
+//            return true;
         }
 
         //从session中校验用户登录信息
@@ -32,6 +32,7 @@ class BaseController extends Controller
             $session->open();
         }
         $this->uid = $session->get('user_id');
+        $this->uid = 10;
         if(empty($this->uid)){
             $this->redirect('/plorder/user/reg');
             return false;

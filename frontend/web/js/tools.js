@@ -113,6 +113,7 @@
         var o = {};
         var a = $(form).serializeArray();
         $.each(a, function () {
+            this.value = $.trim(this.value);
             if (o[this.name] !== undefined) {
                 if (!o[this.name].push) {
                     o[this.name] = [o[this.name]];

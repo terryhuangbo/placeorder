@@ -121,6 +121,34 @@ class User extends BaseModel
     }
 
     /**
+     * 添加/更新用户
+     * @param $param array
+     * @param $scenario string 场景
+     * @return array
+     * @throw yii\db\Exception
+     */
+    public function saveUser($param, $scenario = 'default')
+    {
+        $mdl = isset($param['uid']) ? static::findOne(['uid' => $param['uid']]) : new static;
+        if (empty($mdl))
+        {
+            return ['code' => -20001, 'msg' => '参数错误，或者用户不存在。'];
+        }
+
+        //设置场景，块复制
+        $mdl->scenario = $scenario;
+        $mdl->attributes = $param;
+        //校验数据
+        if (!$mdl->validate())
+        {
+            $errors = $mdl->getFirstErrors();
+            return ['code' => -20003, 'msg' => current($errors)];
+        }
+        //保存数据
+        return $mdl->save(false);
+    }
+
+    /**
      * 生成密码，对原始密码进行加密操作
      * @return string
      */

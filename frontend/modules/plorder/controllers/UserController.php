@@ -84,13 +84,44 @@ class UserController extends BaseController
     }
 
     /**
+     * 用户账号登录
+     * @return type
+     */
+    public function actionAlterPwd()
+    {
+        $opwd = $this->req('oldpwd', '');
+        $pwd = $this->req('pwd', '');
+        if(empty($opwd) || empty($pwd)){
+            return $this->toJson('-20001', '请输入旧密码和新密码');
+        }
+        $user = User::findOne(['uid' => $this->uid, 'pwd' => User::genPwd($opwd)]);
+        if(empty($user)){
+            return $this->toJson('-20002', '旧密码输入错误，请重新输入');
+        }
+        $user->pwd = $pwd;
+        //校验数据
+        if (!$user->validate())
+        {
+            $errors = $user->getFirstErrors();
+            return $this->toJson('-20003', reset($errors));
+        }
+        //保存数据
+        $ret = $user->save();
+        return $this->toJson($ret['code'], $ret['msg']);
+    }
+
+    /**
      * 用户中心
      * @return type
      */
     public function actionIndex()
     {
-
-        return $this->render('index');
+        $user = $this->user;
+        $user['login_time'] = date('Y-m-d H:i:s', $user['login_time']);
+        $_data = [
+            'user' => $user,
+        ];
+        return $this->render('index', $_data);
     }
 
 }

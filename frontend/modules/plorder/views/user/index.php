@@ -108,18 +108,16 @@
 				</div>
 				<div class="panel-body">
 					<ul class="card_info" ajax_href="/index.php?m=Home&amp;c=Card&amp;a=cardinfo&amp;id=1260&amp;goods_type=135">
-						<li><span>用户帐号：</span><span class="user_name">zhaozzwei</span>　<a style="color:red;" href="javascript:void(0);" class="kmzh_gaimi">改密</a></li>
-						<li><span>类型余额：</span><span class="card_kye">0</span>点</li>
+						<li><span>用户帐号：</span><span class="user_name"><?php echo $user['username'] ?></span>　<a style="color:red;" href="javascript:void(0);" class="kmzh_gaimi">改密</a></li>
+						<li><span>类型余额：</span><span class="card_kye"><?php echo $user['points'] ?></span>点</li>
 						<li><span>当前类型：</span><span class="user_goods_type_title">QQ空间人气_手工</span></li>
-						<li><span>最后登录：</span><span class="user_last_login">2016-09-12 19:58:46 </span></li>
+						<li><span>最后登录：</span><span class="user_last_login"><?php echo $user['login_time'] ?></span></li>
 					</ul>
 				</div>
 			</div>
-				</div>
-
+        </div>
 
 		<div class="col-md-4">
-
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h2 class="panel-title">
@@ -138,7 +136,6 @@
 					</form>
 				</div>
 			</div>
-
 		</div>
 
 		<div class="col-md-4">
@@ -574,36 +571,35 @@
          </div>
          <div class="modal-body">
 			<div class="container-fluid">
-				<form role="form" class="Form_KMZH_XiuGaiMima form-horizontal" ajax_href="/index.php?m=Home&amp;c=User&amp;a=xiugaimima&amp;goods_type=135">
-
-						<div class="form-group">
+				<form role="form" class="Form_KMZH_XiuGaiMima form-horizontal alter-pwd-form" onsubmit="return false;">
+                        <div class="form-group">
 							<label class="col-sm-2 control-label">原密码</label>
 							<div class="col-sm-10">
-								<input type="text" name="oldpassword" class="form-control" placeholder="旧密码,若无则不写">
+								<input type="password" name="oldpassword" class="form-control" placeholder="旧密码,若无则不写">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label">新的密码</label>
 							<div class="col-sm-10">
-								<input type="text" name="newpassword" class="form-control" placeholder="请输入新的密码">
+								<input type="password" name="newpassword" class="form-control" placeholder="请输入新的密码">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label">确认新密码</label>
 							<div class="col-sm-10">
-								<input type="text" name="renewpassword" class="form-control" placeholder="重复输入新密码，和上方相同">
+								<input type="password" name="renewpassword" class="form-control" placeholder="重复输入新密码，和上方相同">
 							</div>
 						</div>
-
 				</form>
 			</div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">取消
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                取消
             </button>
-            <button type="button" class="btn Form_KMZH_XiuGaiMima_submit">
+            <button type="button" class="btn alter-pwd">
                提交更改密码
             </button>
          </div>
@@ -612,10 +608,45 @@
 </div><!-- /.modal -->
 
 <script src="/static/js/jwxh.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/tools.js" type="text/javascript" charset="utf-8"></script>
 
 <div style="display:none;">
 	<script src="/static/z_stat.php" language="JavaScript"></script><script src="/static/core.php" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=1257842329" target="_blank" title="站长统计">站长统计</a>
 </div>
+
+<script type="text/javascript">
+    //修改密码
+    $(".alter-pwd").on('click', function(){
+        var param = $._get_form_json(".alter-pwd-form");
+
+//        if(param.newpassword)
+        if(param.oldpassword == ''){
+            $("[name=oldpassword]").closest('div')._error('请输入旧密码');
+            return
+        }
+        if(param.newpassword == ''){
+            $("[name=newpassword]").closest('div')._error('请输入新密码');
+            return
+        }
+        if(param.renewpassword == ''){
+            $("[name=renewpassword]").closest('div')._error('请再次输入新密码');
+            return
+        }
+        if(param.renewpassword != param.newpassword){
+            $("[name=renewpassword]").closest('div')._error('两次输入的密码不匹配，请重新输入');
+            return
+        }
+
+        $._ajax('/plorder/user/alter-pwd', {oldpwd: param.oldpassword, pwd: param.newpassword}, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                alert(json.msg);
+            }else{
+                $(".alter-pwd").closest('div')._error(json.msg, 'p', 'prepend');
+            }
+        });
+    });
+
+</script>
 
 
 </body></html>
