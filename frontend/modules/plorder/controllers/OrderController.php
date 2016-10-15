@@ -97,17 +97,15 @@ class OrderController extends BaseController
             $ret = $mdl->saveOrder($order);
             if($ret['code'] < 0){
                 $_pre_msg = "QQ为{$order['qq']}下单失败：";
-                $_suf_msg = count($success) > 0 ? '已成功下单：' . implode($success, '，') . '！' : '';
+                $_suf_msg = count($success) > 0 ? '。已成功下单QQ：' . implode($success, '，') : '';
                 return $this->toJson('-20001', $_pre_msg . $ret['msg'] . $_suf_msg);
             }
             $success[] = $order['qq'];
         }
-        $_suf_msg = count($success) > 0 ? '已成功下单QQ：' . implode($success, '，') . '！' : '';
+        $_suf_msg = count($success) > 0 ? '已成功下单QQ：' . implode($success, '，') : '';
         return $this->toJson('20000', $_suf_msg);
 
     }
-
-
 
     /**
      * 订单列表
@@ -123,36 +121,6 @@ class OrderController extends BaseController
         return $this->render('list', $_data);
     }
 
-    /**
-     * 生成订单
-     * @return type
-     */
-    public function actionAjaxAdd()
-    {
-        $gids = json_decode($this->_request('gids'));
-        if(empty($gids)){
-            $this->_json(-20001, '没有选择购物车的任何商品');
-        }
 
-        $order = new Order();
-        $res = $order->_add_orders($this->uid, $gids);
-        $this->_json($res['code'], $res['msg']);
-    }
-
-    /**
-     * 兑换
-     * @return type
-     */
-    public function actionPay()
-    {
-        $oids = json_decode($this->_request('oids'));
-        if(empty($oids)){
-            $this->_json(-20001, '您没有选择任何订单');
-        }
-
-        $order = new Order();
-        $res = $order->_pay_orders($this->uid, $oids);
-        $this->_json($res['code'], $res['msg']);
-    }
 
 }
