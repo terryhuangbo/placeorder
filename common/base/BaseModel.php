@@ -77,7 +77,7 @@ class BaseModel extends ActiveRecord
     public function save($runValidation = true, $attributeNames = null)
     {
         try {
-            $result = parent::save($runValidation = true, $attributeNames = null);
+            $result = parent::save($runValidation, $attributeNames);
             if(!$result) {
                 return ['code' => -20000, 'msg' => '保存失败'];
             }
