@@ -48,55 +48,33 @@
 <!--顶部-->
 <header>
 	<div class="container-fluid menu">
-
 		<div class="container">
-
 			<div class="row">
-
 				<div class="col-md-8 col-sm-7 col-xs-7 ">
-
 					<h2><a href="index.html">新版post社区</a></h2>
-
 				</div>
-
 				<div class="col-md-4 col-sm-5 col-xs-5 text-right">
-
 					<span class="nav_top_right"><a href="index.html">切换到首页</a></span>
-
 				</div>
-
 			</div>
-
 		</div>
-
 	</div>
-
 </header>
-
 
 
 <!--内容-->
 
 <div class="container">
-
 	<div class="empty-height hidden-xs">
-
 	</div>
-
 	<div class="row">
-
 		<div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
-
 			<div class=" vertical-center">
-
 				<div class="panel panel-default">
-
 					<div class="panel-heading">
-
 						<h2 class="panel-title">
 							空间人气快刷
                         </h2>
-
 					</div>
 
 <!--					<form method="post" class="jwxh_form_data kmcz_cye" cardno_login_action="/index.php?m=Home&c=Card&a=login&id=350&goods_type=6" username_login_action="/index.php?m=Home&c=User&a=login&id=350&goods_type=6" user_sendpass_action="/index.php?m=Home&c=User&a=sendpass" username_register_action="/index.php?m=Home&c=User&a=register&id=350&goods_type=6" check_cardno_ajax_href="/index.php?m=Home&c=Card&a=cardinfo_no&id=350&goods_type=6" >-->
@@ -123,7 +101,7 @@
                                       </div>
                                     </p>
 
-                                    <p class="login_form_cardno_group_password" style="display:none;">
+                                    <p class="login_form_cardno_group_password" style="display:block;">
                                       <div class="form-group login_form_cardno_group_password" style="display:none;">
                                         <div class="input-group" >
                                           <div class="input-group-addon">密码</div>
@@ -262,10 +240,27 @@
     jQuery(document).ready(function() {
         $('.card_login_btn').click(function (e) {
             //卡密登录之前,先测试下有没有密码
-            login_is_password();
-            form_submit('cardno_login_action');
-            return false;
+            var param = {};
+            var cardno = $.trim($("[name=cardno]").val());
+            param.card_bn = cardno;
+            if($("div.login_form_cardno_group_password:visible").length > 0){
+                var password = $.trim($("[name=password]").val());
+                param.pwd = password;
+            }
 
+            $._ajax('/plorder/card/login', param, 'POST', 'JSON', function(json){
+                if(json.code > 0){
+                    alert(json.msg);
+                }else{
+                    //输入卡密密码
+                    if(json.code == -20004){
+                        $('.login_input_cardno_password').attr('placeholder','有密码，请输入此卡密密码！');
+                        $("div.login_form_cardno_group_password").show();
+                    }else{
+                        $(".card_login_btn").closest('p')._error(json.msg, 'p', 'prepend');
+                    }
+                }
+            });
         });
 
         $('.username_login_btn').click(function (e) {
@@ -288,8 +283,7 @@
                 if(json.code > 0){
                     alert(json.msg);
                 }else{
-                    $("[name=username_password]").closest('div')._error(json.msg);
-                    return
+                    $(".username_login_btn").closest('p')._error(json.msg, 'p', 'prepend');
                 }
             });
             return false;
@@ -328,8 +322,7 @@
                 if(json.code > 0){
                     alert('注册成功');
                 }else{
-                    $("[name=reg_qq]").closest('div')._error(json.msg);
-                    return
+                    $(".username_register_btn").closest('p')._error(json.msg, 'p', 'prepend');
                 }
             });
             return false;
@@ -370,6 +363,7 @@
         });
 
         function login_is_password() {
+            return;
             var login_input_cardno=$('.login_input_cardno').val();
             if(login_input_cardno.length>0){
                 $.post($('.kmcz_cye').attr('check_cardno_ajax_href'),"kmcz_cardno="+login_input_cardno,function (data){
