@@ -74,7 +74,7 @@ class BaseModel extends ActiveRecord
      * @param array $attributeNames list of attribute names that need to be saved.
      * @return array
      **/
-    public function save($runValidation = true, $attributeNames = null)
+    public function save($runValidation = false, $attributeNames = null)
     {
         try {
             $result = parent::save($runValidation, $attributeNames);

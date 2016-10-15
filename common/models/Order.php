@@ -170,7 +170,8 @@ class Order extends BaseModel
         if($insert){
             //用户账户抵扣
             $this->user->points =  $this->user->points - $this->amount;
-            if(!$this->user->save()){
+            $ret = $this->user->save();
+            if($ret['code'] < 0){
                 throw new Exception('用户账户抵扣失败');
             }
             //生成财务数据
@@ -181,7 +182,8 @@ class Order extends BaseModel
                 'cost' => $this->amount,
                 'balance' => $this->user->points,
             ];
-            if(!$pay->save()){
+            $ret = $pay->save();
+            if($ret['code'] < 0){
                 throw new Exception('生成财务数据失败');
             }
         }else{
