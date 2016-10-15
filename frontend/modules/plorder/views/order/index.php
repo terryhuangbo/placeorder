@@ -146,7 +146,7 @@
 					</h2>
 				</div>
 				<div class="panel-body">
-					<form role="form" method="post" class="card_chongzhi_form" action="http://www.xdzk.net/index.php?m=Home&amp;c=Card&amp;a=chongzhi&amp;goods_type=135">
+					<form role="form" method="post" class="card_chongzhi_form" onsubmit="return false;">
 					<ul>
 						<li>
 							<span class="fixed-width-right-80">注意：</span>是将他人的卡充值给自己
@@ -173,7 +173,7 @@
 					</h2>
 				</div>
 				<div class="panel-body">
-					<form role="form" method="post" class="card_chaika_form" action="http://www.xdzk.net/index.php?m=Home&amp;c=Card&amp;a=chaika&amp;goods_type=135">
+					<form role="form" method="post" class="card_chaika_form" onsubmit="return false;">
 					<ul>
 						<li><span class="fixed-width-right-80">拆分数量：</span><input name="cardnum" type="text" placeholder="需要生成子卡的张数"></li>
 						<li><span class="fixed-width-right-80">卡密面值：</span><input name="allnum" type="text" placeholder="每张子卡的面值是多少"></li>
@@ -201,19 +201,18 @@
 					</h2>
 				</div>
 				<div class="panel-body">
-					<form role="form" method="post" class="orders_xiadan_form" action="http://www.xdzk.net/index.php?m=home&amp;c=order&amp;a=add_orders&amp;id=1260&amp;goods_type=135">
-
+					<form role="form" method="post" class="orders_xiadan_form" onsubmit="return false;">
 						<div class="row jwxh_row_row">
 							<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-								<textarea name="OrderList" class="orders_textarea "></textarea>
+								<textarea name="OrderList" class="orders_textarea"></textarea>
 								<input type="hidden" name="goods_id" value="1260">
 								<input type="hidden" name="goods_type" value="135">
 							</div>
 							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 								<ul>
-																			<li>每次批量最高可下20单</li>
-										<li><button class="btn orders_xiadan_btn">【确定提交批量订单】</button></li>
-																	</ul>
+                                    <li>每次批量最高可下20单</li>
+                                    <li><button class="btn orders_xiadan_btn">【确定提交批量订单】</button></li>
+                                </ul>
 							</div>
 						</div>
 						<div class="row jwxh_row_row">
@@ -664,8 +663,28 @@
                 $(".order_post_btn").closest('li')._error(json.msg, 'p', 'prepend');
             }
         });
-        console.log(param);
     });
+
+    //批量下单
+    $(".orders_xiadan_btn").on('click', function(){
+        var param = {};
+        var text = $.trim($(".orders_textarea").val());
+        if(text == ''){
+            $(".orders_textarea").closest('div')._error('请输入下单QQ和下单数量', 'p', 'append');
+            return
+        }
+        param.text = text;
+        param.gid = <?php echo getValue($goods, 'gid', 0); ?>;
+        $._ajax('/plorder/order/batch-add', param, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                alert(json.msg);
+            }else{
+                alert(json.msg);
+            }
+        });
+    });
+
+
 
 </script>
 
