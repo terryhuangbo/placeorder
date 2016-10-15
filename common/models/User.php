@@ -12,6 +12,7 @@ use common\behavior\TimeBehavior;
  * @property integer $uid
  * @property string $username
  * @property string $pwd
+ * @property integer $gender
  * @property integer $qq
  * @property integer $points
  * @property integer $reg_time
@@ -27,6 +28,12 @@ class User extends BaseModel
     const SCENARIO_LOGIN = 'login';   //登录
 
     /**
+     * 性别
+     */
+    const SEX_MALE   = 1;//男
+    const SEX_FEMALE = 2;//女
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -40,10 +47,18 @@ class User extends BaseModel
     public function rules()
     {
         return [
-            [['qq', 'points', 'reg_time', 'login_time', 'update_time'], 'integer'],
+            [['qq','gender', 'qq', 'points', 'reg_time', 'login_time', 'update_time'], 'integer'],
             [['username', 'pwd'], 'string', 'max' => 50],
+            //用户名，密码，qq都不能为空
+            [['username', 'pwd', 'qq'], 'required'],
             //用户账号必须唯一
             ['username', 'unique', 'message' => '用户账号必须唯一'],
+            //qq必须唯一
+            ['qq', 'unique', 'message' => 'qq必须唯一'],
+            //性别
+            ['gender', 'in', 'range' => [self::SEX_MALE, self::SEX_FEMALE], 'message' => '性别错误'],
+            //账户余额
+            ['points', 'integer', 'min' => 0],
         ];
     }
 
@@ -55,6 +70,7 @@ class User extends BaseModel
         return [
             'uid' => '用户id',
             'username' => '用户名',
+            'gender' => '性别（1-男；2-女）',
             'pwd' => '密码',
             'qq' => 'QQ',
             'points' => '用户余额点数',
@@ -78,5 +94,30 @@ class User extends BaseModel
             ],
         ];
     }
+
+    /**
+     * 应用场景
+     * @return array
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        //注册
+        $scenarios[self::SCENARIO_REG] = [
+            'username',
+            'pwd',
+            'qq',
+            'gender',
+        ];
+        //登录
+        $scenarios[self::SCENARIO_LOGIN] = [
+            'username',
+            'pwd',
+        ];
+
+        return $scenarios;
+    }
+
+
 
 }

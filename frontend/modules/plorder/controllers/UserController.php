@@ -6,11 +6,6 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
 use common\models\User;
-use common\models\Auth;
-use common\models\Session;
-use common\models\VerifyCode;
-use common\lib\Sms;
-use common\lib\WechatAuth;
 
 
 class UserController extends BaseController
@@ -22,9 +17,6 @@ class UserController extends BaseController
     public function init(){
         $this->_uncheck = [
             'reg',
-            'send-sms',
-            'wechat',
-            'wechat-auth',
             'rect',
         ];
     }
