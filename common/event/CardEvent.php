@@ -21,4 +21,13 @@ class CardEvent extends Event
      * @var array The attribute values that had changed and were saved.
      */
     public $changedAttributes;
+    /**
+     * @var string 用户ID，用于给用户充值
+     */
+    public $user_id = null;
+
+    /**
+     * @var int 充值金额
+     */
+    public $charge_points = 0;
 }

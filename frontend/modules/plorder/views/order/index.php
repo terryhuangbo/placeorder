@@ -151,7 +151,10 @@
 						<li>
 							<span class="fixed-width-right-80">注意：</span>是将他人的卡充值给自己
 						</li>
-						<li><span class="fixed-width-right-80">输入卡密：</span><input class="kmcz_cardno" name="kmcz_cardno" type="text" placeholder="输入卡密"><a href="javascript:void(0);" ajax_href="/index.php?m=Home&amp;c=Card&amp;a=cardinfo_no&amp;id=1260&amp;goods_type=135" class="kmcz_cye">　查余额</a><span class="kmcz_yexs"></span></li>
+						<li><span class="fixed-width-right-80">输入卡密：</span><input class="kmcz_cardno" name="kmcz_cardno" type="text" placeholder="输入卡密">
+                            <a href="javascript:void(0);" class="kmcz_cye">　查余额</a>
+                            <span class="kmcz_yexs"></span>
+                        </li>
 						<li><span class="fixed-width-right-80">输入数量：</span><input name="usenum" type="text" placeholder="输入数量"></li>
 						<li><span class="fixed-width-right-80">&nbsp;</span><button class="btn card_chongzhi_btn">点击充值卡密</button></li>
 					</ul>
@@ -683,6 +686,31 @@
             }
         });
     });
+
+    //卡密充值
+    $(".card_chongzhi_btn").on('click', function(){
+        var param = $._get_form_json(".card_chongzhi_form");
+        if(param.kmcz_cardno == ''){
+            $("[name=kmcz_cardno]").closest('li')._error('请输入卡密');
+            return
+        }
+        if(param.usenum == ''){
+            $("[name=usenum]").closest('li')._error('请输入数量');
+            return
+        }
+        var val = {
+            card_bn: param.kmcz_cardno,
+            charge_points: param.usenum
+        };
+        $._ajax('/plorder/card/charge', val, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                alert(json.msg);
+            }else{
+                alert(json.msg);
+            }
+        });
+    });
+
 
 
 

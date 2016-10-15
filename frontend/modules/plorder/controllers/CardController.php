@@ -51,7 +51,7 @@ class CardController extends BaseController
 
     /**
      * 退出登录
-     * @return type
+     * @return string
      */
     public function actionLogout()
     {
@@ -59,5 +59,45 @@ class CardController extends BaseController
         $session->remove('user_id');
         $this->redirect('/plorder/user/reg');
     }
+
+    /**
+     * 卡密充值
+     * @return string
+     */
+    public function actionCharge()
+    {
+        $card_bn = $this->req('card_bn', '');
+        $charge_points = (int)$this->req('charge_points', 0);
+        $mdl = new Card();
+        $param = [
+            'uid' => $this->uid,
+            'card_bn' => $card_bn,
+            'charge_points' => $charge_points,
+        ];
+        $ret = $mdl->chargeUser($param);
+
+        return json_encode($ret);
+    }
+
+    /**
+     * 查看卡密余额
+     * @return string
+     */
+    public function actionRemain()
+    {
+        lg(21);
+    }
+
+    /**
+     * 拆分卡密
+     * @return string
+     */
+    public function actionSplit()
+    {
+        lg(21);
+    }
+
+
+
 
 }

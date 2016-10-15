@@ -7,6 +7,7 @@ use common\base\BaseModel;
 use common\lib\Tools;
 use common\behavior\TimeBehavior;
 use common\behavior\CardBehavior;
+use yii\db\Exception;
 
 /**
  * This is the model class for table "{{%card}}".
@@ -33,6 +34,11 @@ class Card extends BaseModel
      */
     const SCENARIO_UPDATE = 'update';  //修改
     const SCENARIO_ADD    = 'add';     //添加
+
+    /**
+     * 事件
+     */
+    const EVENT_CHARGE    = 'charge';  //充值
 
     /**
      * 商品编号固定前缀
@@ -202,5 +208,52 @@ class Card extends BaseModel
             $this->genCardBn();
         }
         return $rand_bn;
+    }
+
+    /**
+     * 用户账号充值
+     * @param array $param 是否是插入操作
+     * @return array
+     * @throw yii\db\Exception
+     */
+    public function chargeUser($param) {
+        if(empty($param['uid']) || empty($param['card_bn']) || empty($param['charge_points'])) {
+            return ['code' => -20001, 'msg' => '参数错误'];
+        }
+        if(($charge_points = $param['charge_points']) <= 0 ){
+            return ['code' => -20001, 'msg' => '充值金额必须为正'];
+        }
+
+        $user = User::findOne($param['uid']);
+        $card = static::findOne(['card_bn' => $param['card_bn']]);
+        if(!$user || !$card){
+            return ['code' => -20002, 'msg' => '卡密或者用户不存在'];
+        }
+        if($card->points < $charge_points){
+            return ['code' => -20003, 'msg' => '卡密余额不足'];
+        }
+        $transaction = static::getDb()->beginTransaction();
+        try{
+            $user->points += $charge_points;
+            $ret = $user->save();
+            if($ret['code'] < 0){
+                throw new Exception('用户充值失败');
+            }
+
+            $card->points -= $charge_points;
+            $ret = $card->save();
+            if($ret['code'] < 0){
+                throw new Exception('卡密扣款失败');
+            }
+
+            $transaction->commit();
+            return ['code' => 20000, 'msg' => '充值成功'];
+
+        }catch (Exception $e){
+            $transaction->rollBack();
+            return ['code' => -20000, 'msg' => $e->getMessage()];
+        }
+
+
     }
 }
