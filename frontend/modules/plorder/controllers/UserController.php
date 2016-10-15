@@ -35,49 +35,7 @@ class UserController extends BaseController
      */
     public function actionReg()
     {
-        $session = Yii::$app->session;
-        $redirect = $this->_request('redirect', '');
-        if(!empty($redirect)){
-            $session->set('REDIRECT_URL', $redirect);
-        }
-
-        //加载
-        if(!$this->isAjax()){
-            $key = $this->_request('key', '');
-            $_data = [
-                'key' => $key,
-            ];
-            return $this->render('reg', $_data);
-        }
-
-        //保存
-        $mobile = trim($this->_request('mobile'));
-        $verifycode = intval($this->_request('verifycode'));
-        $key = trim($this->_request('key'));
-
-        $param = [
-            'mobile' => $mobile,
-            'verifycode' => $verifycode,
-            'key' => $key,
-        ];
-        $res = (new User())->_add_user($param);
-        if($res['code'] < 0 ){
-            $this->_json($res['code'], $res['msg']);
-        }
-
-        //设置登录session
-        $session->set('user_id', $res['data']['uid']);
-
-        //判断是否有跳转
-        $redirect = $session->get('REDIRECT_URL');
-        if(!empty($redirect)){
-            $session->remove('REDIRECT_URL');
-        }
-        $_data = [
-            'redirect' => !empty($redirect) ? $redirect : '/plorder/home/index'
-        ];
-        //成功返回
-        $this->_json(20000, '成功', $_data);
+        return $this->render('reg');
     }
 
     /**
@@ -123,7 +81,7 @@ class UserController extends BaseController
      */
     public function actionRect()
     {
-        $uid = $this->_request('uid');
+        $uid = $this->req('uid');
         if(empty($uid)){
             return $this->redirect('/plorder/user/reg');
         }
@@ -138,7 +96,7 @@ class UserController extends BaseController
      */
     public function actionSendSms()
     {
-        $mobile = trim($this->_request('mobile'));
+        $mobile = trim($this->req('mobile'));
         $sms = new Sms();
         $randnum = $sms->randnum();
         $msg = "{$randnum} (动态验证码),请在30分钟内填写";
@@ -175,11 +133,11 @@ class UserController extends BaseController
 //        if(!$auth){
 //            $this->_json(-20001, '认证信息不存在，请先进行手机认证');
 //        }
-        $name = trim($this->_request('name'));
-        $email = trim($this->_request('email'));
-        $mobile = trim($this->_request('mobile'));
-        $user_type = intval($this->_request('user_type'));
-        $user_type_imgs = $this->_request('usetypeimg');
+        $name = trim($this->req('name'));
+        $email = trim($this->req('email'));
+        $mobile = trim($this->req('mobile'));
+        $user_type = intval($this->req('user_type'));
+        $user_type_imgs = $this->req('usetypeimg');
         $param = [
             'auth_id' => $auth['auth_id'],
             'uid' => $uid,
