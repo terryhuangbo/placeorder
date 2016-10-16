@@ -30,15 +30,12 @@ class OrderController extends BaseController
      */
     public function actionIndex()
     {
-        $user = $this->user;
         $gid = $this->req('gid', 0);
-        lg($gid);
         $goods = (new Goods())->getOne(['gid'  => $gid]);
         //商品为空，跳转到商品首页
         if(empty($goods)){
             $this->redirect('/plorder/goods/index');
         }
-        lg($this->userLog);
         if($this->userLog){
             $info = $this->user;
         }else{
