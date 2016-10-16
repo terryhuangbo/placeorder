@@ -75,7 +75,9 @@
 				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><a href="#"><h2>手工人气</h2></a></div>
 				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right">
 					<div class="top_nav">
-						<a href="#" class="hidden-xs">切换到首页</a> <span class="hidden-xs">|</span> <a class="exit_login_a" href="#">退出登录</a>
+						<a href="<?php echo yiiUrl('/plorder/goods/index') ?>" class="hidden-xs">切换到首页</a>
+                        <span class="hidden-xs">|</span>
+                        <a class="exit_login_a" href="<?php echo yiiUrl('/plorder/user/logout') ?>">退出登录</a>
 					</div>
 				</div>
 			</div>
@@ -86,12 +88,13 @@
 <div class="container">
    <div class="row">
       <div class="col-md-12 banner">
-																																																			<p>
-	<span style="color:#E53333;font-size:24px;"><strong>手工人气每天中午12点和晚上12点开刷 急单不要下</strong></span>
-</p>
-<p>
-	<span style="font-size:24px;color:#E53333;"><span style="font-size:24px;color:#E53333;"><b>下单的Q空间有说说即可 &nbsp;下单前空间必须设置允许任何人可访问</b></span></span>
-</p>                                                                                                                                                                        	  </div>
+            <p>
+                <span style="color:#E53333;font-size:24px;"><strong>手工人气每天中午12点和晚上12点开刷 急单不要下</strong></span>
+            </p>
+            <p>
+                <span style="font-size:24px;color:#E53333;"><span style="font-size:24px;color:#E53333;"><b>下单的Q空间有说说即可 &nbsp;下单前空间必须设置允许任何人可访问</b></span></span>
+            </p>
+       </div>
    </div>
 </div>
 

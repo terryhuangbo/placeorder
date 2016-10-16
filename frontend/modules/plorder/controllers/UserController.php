@@ -86,9 +86,9 @@ class UserController extends BaseController
      */
     public function actionLogout()
     {
-        $session = Yii::$app->session;
-        $session->remove('user_id');
-        $this->redirect('/plorder/user/reg');
+        $cookies = Yii::$app->response->cookies;
+        $cookies->remove('user_id');
+        return $this->redirect('/plorder/user/reg');
     }
 
     /**

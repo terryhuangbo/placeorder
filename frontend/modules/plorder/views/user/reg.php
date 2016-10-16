@@ -51,10 +51,10 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8 col-sm-7 col-xs-7 ">
-					<h2><a href="index.html">新版post社区</a></h2>
+					<h2><a href="<?php echo yiiUrl('/plorder/goods/index') ?>">新版post社区</a></h2>
 				</div>
 				<div class="col-md-4 col-sm-5 col-xs-5 text-right">
-					<span class="nav_top_right"><a href="index.html">切换到首页</a></span>
+					<span class="nav_top_right"><a href="<?php echo yiiUrl('/plorder/goods/index') ?>">切换到首页</a></span>
 				</div>
 			</div>
 		</div>
