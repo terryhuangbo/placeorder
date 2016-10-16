@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
 use common\models\Card;
+use common\models\User;
 
 
 class CardController extends BaseController
@@ -60,6 +61,25 @@ class CardController extends BaseController
         $this->redirect('/plorder/user/reg');
     }
 
+//    /**
+//     * 卡密充值
+//     * @return string
+//     */
+//    public function actionCharge()
+//    {
+//        $card_bn = $this->req('card_bn', '');
+//        $charge_points = (int)$this->req('charge_points', 0);
+//        $mdl = new Card();
+//        $param = [
+//            'uid' => $this->uid,
+//            'card_bn' => $card_bn,
+//            'charge_points' => $charge_points,
+//        ];
+//        $ret = $mdl->chargeUser($param);
+//
+//        return json_encode($ret);
+//    }
+
     /**
      * 卡密充值
      * @return string
@@ -68,15 +88,24 @@ class CardController extends BaseController
     {
         $card_bn = $this->req('card_bn', '');
         $charge_points = (int)$this->req('charge_points', 0);
-        $mdl = new Card();
-        $param = [
-            'uid' => $this->uid,
-            'card_bn' => $card_bn,
-            'charge_points' => $charge_points,
-        ];
-        $ret = $mdl->chargeUser($param);
+        $card = Card::findOne(['card_bn' => $card_bn]);
+        $user = User::findOne($this->uid);
+        if(!$card){
+            return $this->toJson('-20001', '卡密不存在');
+        }
+        if(!$user){
+            return $this->toJson('-20001', '充值用户不存在');
+        }
+        if($charge_points <= 0){
+            return $this->toJson('-20001', '充值金额正确');
+        }
+        $event = new \common\event\CardChargeEvent([
+            'chargedUser' => $user,
+            'points' => $charge_points,
+        ]);
+        $card->trigger(Card::EVENT_CHARGE, $event);
 
-        return json_encode($ret);
+        return $this->toJson($event->code, $event->msg);
     }
 
     /**
@@ -85,7 +114,7 @@ class CardController extends BaseController
      */
     public function actionRemain()
     {
-        lg(21);
+
     }
 
     /**
@@ -94,10 +123,18 @@ class CardController extends BaseController
      */
     public function actionSplit()
     {
-        lg(21);
+        $card_bn = trim($this->req('card_bn', ''));
+        $post = Yii::$app->request->post();
+        $card = Card::findOne(['card_bn' => $card_bn]);
+        if(!$card){
+            return $this->toJson('-20001', '卡密不存在');
+        }
+        unset($post['card_bn']);
+        $event = new \common\event\CardSplitEvent($post);
+        $card->trigger(Card::EVENT_SPLIT, $event);
+
+        return $this->toJson($event->code, $event->msg);
     }
-
-
 
 
 }

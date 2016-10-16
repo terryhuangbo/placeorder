@@ -39,6 +39,8 @@ class CardBehavior extends Behavior
         return [
             ActiveRecord::EVENT_AFTER_INSERT => 'handleInsert', //将事件和事件处理器绑定
             ActiveRecord::EVENT_AFTER_UPDATE => 'handleUpdate', //将事件和事件处理器绑定
+            Card::EVENT_CHARGE => 'handleCharge', //将事件和事件处理器绑定
+            Card::EVENT_SPLIT => 'handleSplit', //将事件和事件处理器绑定
         ];
 
     }
@@ -83,9 +85,10 @@ class CardBehavior extends Behavior
      * @inheritdoc
      */
     private function _updateCardGroup() {
+        $mdl = new Card();
         foreach($this->group_bns as $group_bn){
             //卡组之下卡密数量
-            $card_num = (new Card())->getCount(['group_bn' => $group_bn]);
+            $card_num = $mdl->getCount(['group_bn' => $group_bn]);
             CardGroup::getDb()->createCommand()
                 ->update(
                     CardGroup::tableName(),
@@ -94,5 +97,126 @@ class CardBehavior extends Behavior
                 )->execute();
         }
     }
+
+    /**
+     * 处理卡充值事件
+     */
+    public function handleCharge($event) {
+        $card = $this->owner;
+        $user = $event->chargedUser;
+        $points = $event->points;
+        if(!($user instanceof User)){
+            $event->code = -20002;
+            $event->msg = '充值用户不存在';
+        }
+        //判断充值金额是否足够
+        if($card->points < $points){
+            $event->code = -20003;
+            $event->msg = '此卡余额不足';
+        }
+        //保存
+        $transaction = Card::getDb()->beginTransaction();
+        try{
+            $user->points += $points;
+            $ret = $user->save();
+            if($ret['code'] < 0){
+                throw new Exception('用户充值失败');
+            }
+
+            $card->points -= $points;
+            $ret = $card->save();
+            if($ret['code'] < 0){
+                throw new Exception('卡密扣款失败');
+            }
+
+            $transaction->commit();
+            $event->code = 20000;
+            $event->msg = '充值成功';
+            $event->handled = true;
+
+        }catch (Exception $e){
+            $transaction->rollBack();
+            $event->code = -20000;
+            $event->msg = $e->getMessage();
+        }
+
+    }
+
+    /**
+     * 处理拆卡事件
+     */
+    public function handleSplit($event) {
+        $card = $this->owner;
+        $num = (int) $event->num;
+        $each_points = (int) $event->each_points;
+        $pwd = $event->pwd;
+        $comment = $event->comment;
+        //充值金额是否为正整数
+        if($each_points <= 0){
+            $event->code = -20001;
+            $event->msg = '充值金额错误';
+            return;
+        }
+        //卡余额是否足够
+        if($card->points < $num * $each_points){
+            $event->code = -20002;
+            $event->msg = '此卡余额不足';
+            return;
+        }
+
+        //保存
+        $transaction = Card::getDb()->beginTransaction();
+        try{
+
+            //原卡扣款
+            $card->points -= $num * $each_points;
+            $ret = $card->save();
+            if($ret['code'] < 0){
+                throw new Exception('卡密扣款失败');
+            }
+
+            //生成新的卡组
+            $group = new CardGroup();
+            $group->points = $each_points;
+            $group->pwd = $pwd;
+            $group->card_num = $num;
+            $group->comment = $comment;
+            $ret = $group->save();
+            if($ret['code'] < 0){
+                throw new Exception('卡组生成失败');
+            }
+            $group_bn = $group->group_bn;
+
+            //生成新卡
+            for($i=0; $i<$num; $i++){
+                $new_card = new Card();
+                $new_card->off(Card::EVENT_AFTER_INSERT);//解除更新卡组操作
+                $new_card->attributes = [
+                    'points' => $each_points,
+                    'pwd' => $pwd,
+                    'group_bn' => $group_bn,
+                ];
+                $ret = $new_card->save();
+                if($ret['code'] < 0){
+                    throw new Exception('生成新卡失败');
+                }
+            }
+
+            $transaction->commit();
+
+            $event->code = 20000;
+            $event->msg = '拆卡成功';
+            $event->handled = true;
+
+        }catch (Exception $e){
+            $transaction->rollBack();
+
+            $event->code = -20000;
+            $event->msg = $e->getMessage();
+        }
+
+    }
+
+
 
 }

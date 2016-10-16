@@ -159,7 +159,6 @@
 						<li><span class="fixed-width-right-80">&nbsp;</span><button class="btn card_chongzhi_btn">点击充值卡密</button></li>
 					</ul>
 					<input class="kmcz_password" name="password" type="hidden" value="">
-					<input name="goods_type" type="hidden" value="135">
 					</form>
 				</div>
 			</div>
@@ -178,12 +177,13 @@
 				<div class="panel-body">
 					<form role="form" method="post" class="card_chaika_form" onsubmit="return false;">
 					<ul>
+						<li><span class="fixed-width-right-80">输入卡密：</span><input name="cardbn" type="text" placeholder="待拆卡的卡密"></li>
 						<li><span class="fixed-width-right-80">拆分数量：</span><input name="cardnum" type="text" placeholder="需要生成子卡的张数"></li>
 						<li><span class="fixed-width-right-80">卡密面值：</span><input name="allnum" type="text" placeholder="每张子卡的面值是多少"></li>
 						<li><span class="fixed-width-right-80">设置密码：</span><input name="password" type="text" placeholder="可空,空则默认无密码"><span class="hidden-xs"></span></li>
 						<li>
 							<span class="fixed-width-right-80">操作备注：</span><input name="user_note" type="text" placeholder="比填,做什么的？卡给谁的？">
-							<button class="btn card_chaika_btn hidden-xs">点击拆卡</button>
+							<button class="btn card_splitcard_btn hidden-xs">点击拆卡</button>
 						</li>
 						<li class="hidden-lg hidden-md hidden-sm">
 							<span class="fixed-width-right-80">&nbsp;</span>
@@ -209,7 +209,6 @@
 							<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
 								<textarea name="OrderList" class="orders_textarea"></textarea>
 								<input type="hidden" name="goods_id" value="1260">
-								<input type="hidden" name="goods_type" value="135">
 							</div>
 							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 								<ul>
@@ -710,6 +709,39 @@
             }
         });
     });
+
+    //拆分卡密
+    $(".card_splitcard_btn").on('click', function(){
+        var param = $._get_form_json(".card_chaika_form");
+        if(param.cardbn == ''){
+            $("[name=cardbn]").closest('li')._error('请输入待拆卡卡密');
+            return
+        }
+        if(param.cardnum == ''){
+            $("[name=cardnum]").closest('li')._error('请输入拆分数量');
+            return
+        }
+        if(param.allnum == ''){
+            $("[name=allnum]").closest('li')._error('请输入卡密面值');
+            return
+        }
+        var val = {
+            card_bn: param.cardbn,
+            num: param.cardnum,
+            each_points: param.allnum,
+            pwd: param.password,
+            comment: param.user_note
+        };
+        $._ajax('/plorder/card/split', val, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                alert(json.msg);
+            }else{
+                $(".card_splitcard_btn").closest('li')._error(json.msg);
+            }
+        });
+    });
+
+
 
 
 

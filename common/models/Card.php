@@ -39,6 +39,7 @@ class Card extends BaseModel
      * 事件
      */
     const EVENT_CHARGE    = 'charge';  //充值
+    const EVENT_SPLIT     = 'split';  //拆卡
 
     /**
      * 商品编号固定前缀
