@@ -63,23 +63,23 @@ class OrderController extends BaseController
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
             {
-                $query = $query->andWhere(['>', $or_tb . '.update_at', strtotime($search['uptimeStart'])]);
+                $query = $query->andWhere(['>', $or_tb . '.create_time', strtotime($search['uptimeStart'])]);
             }
             if (isset($search['uptimeEnd'])) //时间范围
             {
-                $query = $query->andWhere(['<', $or_tb . '.update_at', strtotime($search['uptimeEnd'])]);
+                $query = $query->andWhere(['<', $or_tb . '.create_time', strtotime($search['uptimeEnd'])]);
             }
-            if (isset($search['goods_id'])) //商品编号
+            if (isset($search['goods_bn'])) //商品编号
             {
-                $query = $query->andWhere(['goods_id' => $search['goods_id']]);
+                $query = $query->andWhere(['goods_bn' => $search['goods_bn']]);
             }
             if (isset($search['order_status'])) //订单状态
             {
-                $query = $query->andWhere(['order_status' => $search['order_status']]);
+                $query = $query->andWhere([$or_tb . '.status' => $search['order_status']]);
             }
             if (isset($search['goods_name'])) //商品名称
             {
-                $query = $query->andWhere(['like', $or_tb . '.goods_name', $search['goods_name']]);
+                $query = $query->andWhere(['like', $ur_tb . '.name', $search['goods_name']]);
             }
         }
 

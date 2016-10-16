@@ -43,7 +43,22 @@ use common\models\Order;
                     <div class="control-group span8">
                         <label class="control-label">商品编号：</label>
                         <div class="controls">
-                            <input type="text" class="control-text" name="goods_id">
+                            <input type="text" class="control-text" name="goods_bn">
+                        </div>
+                    </div>
+                    <div class="control-group span8">
+                        <label class="control-label">QQ：</label>
+                        <div class="controls">
+                            <input type="text" class="control-text" name="qq">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="control-group span8">
+                        <label class="control-label">订单编号：</label>
+                        <div class="controls">
+                            <input type="text" class="control-text" name="order_bn">
                         </div>
                     </div>
                     <div class="control-group span8">
@@ -57,11 +72,8 @@ use common\models\Order;
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="control-group span18">
-                        <label class="control-label">时间范围：</label>
+                    <div class="control-group span16">
+                        <label class="control-label">下单时间：</label>
                         <div class="controls">
                             <input type="text" class="calendar calendar-time" name="uptimeStart"><span> - </span><input name="uptimeEnd" type="text" class="calendar calendar-time">
                         </div>
