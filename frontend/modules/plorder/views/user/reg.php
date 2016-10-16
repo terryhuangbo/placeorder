@@ -248,7 +248,7 @@
                 param.pwd = password;
             }
 
-            $._ajax('/plorder/card/login', param, 'POST', 'JSON', function(json){
+            $._ajax('/plorder/user/card-login', param, 'POST', 'JSON', function(json){
                 if(json.code > 0){
                     alert(json.msg);
                 }else{

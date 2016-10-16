@@ -3,9 +3,9 @@
 namespace frontend\modules\plorder\controllers;
 
 use Yii;
-use yii\helpers\ArrayHelper;
 use app\base\BaseController;
 use common\models\User;
+use common\models\Card;
 
 
 class UserController extends BaseController
@@ -18,6 +18,7 @@ class UserController extends BaseController
         $this->_uncheck = [
             'reg',
             'login',
+            'card-login',
             'index',
         ];
     }
@@ -70,14 +71,55 @@ class UserController extends BaseController
         }
         $user->touch('login_time');//更新登录时间
 
-        //保存登录信息
+        //保存账号登录信息
         $cookies = Yii::$app->response->cookies;
         $cookies->add(new \yii\web\Cookie([
             'name' => 'user_id',
             'value' => $user['uid'],
         ]));
+        $cookies->remove('card_bn');
 
         return $this->toJson('20000', '登录成功');
+    }
+
+    /**
+     * 卡密登录
+     */
+    public function actionCardLogin()
+    {
+        $card_bn = $this->req('card_bn', '');
+        $pwd = $this->req('pwd', '');
+        if(empty($card_bn)){
+            return $this->toJson('-20001', '请输入卡密');
+        }
+        $where = [
+            'card_bn' => $card_bn,
+        ];
+        $card = Card::findOne($where);
+        //判断是否登录成功
+        if(empty($card)){
+            $data = ['code' => '-20003', 'msg' => '卡密不存在'];
+        }else if(empty($card->pwd)){
+            $data = ['code' => '20000', 'msg' => '卡密卡密登录成功'];
+        }else if(!empty($card->pwd) && empty($pwd)){
+            $data = ['code' => '-20004', 'msg' => '请输入卡密密码'];
+        }else if(!empty($card->pwd) && $card->pwd != $pwd){
+            $data = ['code' => '-20005', 'msg' => '卡密密码输入错误，请重新输入'];
+        }else{
+            $data = ['code' => '20000', 'msg' => '卡密卡密登录成功'];
+        }
+
+        //卡密登录
+        if($data['code'] > 0){
+            //保存卡密登录信息
+            $cookies = Yii::$app->response->cookies;
+            $cookies->add(new \yii\web\Cookie([
+                'name' => 'card_bn',
+                'value' => $card['card_bn'],
+            ]));
+            $cookies->remove('user_id');
+        }
+        return $this->toJson($data['code'], $data['msg']);
     }
 
     /**
@@ -88,6 +130,7 @@ class UserController extends BaseController
     {
         $cookies = Yii::$app->response->cookies;
         $cookies->remove('user_id');
+        $cookies->remove('card_bn');
         return $this->redirect('/plorder/user/reg');
     }
 

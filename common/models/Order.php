@@ -12,8 +12,9 @@ use yii\db\Exception;
  *
  * @property integer $oid
  * @property string $order_bn
- * @property integer $uid
  * @property integer $gid
+ * @property integer $uid
+ * @property integer $card_bn
  * @property integer $qq
  * @property integer $num
  * @property integer $amount
@@ -28,6 +29,12 @@ class Order extends BaseModel
      */
     const STATUS_YES = 1;//下单成功
     const STATUS_NO  = 2;//下单失败
+
+    /**
+     * 场景
+     */
+    const SCENARIO_USER   = 'user';//用户下单
+    const SCENARIO_CARD   = 'card';//卡密下单
 
     /**
      * @inheritdoc
@@ -60,8 +67,11 @@ class Order extends BaseModel
             //订单状态
             ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '订单状态错误'],
             //用户ID
-            ['uid', 'required', 'message' => '用户ID必须存在'],
-            ['uid', 'exist', 'targetAttribute' => 'uid', 'targetClass' => User::className(), 'message' => '用户不存在'],
+            ['uid', 'required', 'message' => '用户ID必须存在', 'on' => self::SCENARIO_USER],
+            ['uid', 'exist', 'targetAttribute' => 'uid', 'targetClass' => User::className(), 'message' => '用户不存在', 'on' => self::SCENARIO_USER],
+            //卡密
+            ['card_bn', 'required', 'message' => '用户ID必须存在', 'on' => self::SCENARIO_USER],
+            ['card_bn', 'exist', 'targetAttribute' => 'card_bn', 'targetClass' => Card::className(), 'message' => '用户不存在', 'on' => self::SCENARIO_CARD],
             //商品ID
             ['gid', 'required', 'message' => '商品ID必须存在'],
             ['gid', 'exist', 'targetAttribute' => 'gid', 'targetClass' => Goods::className(), 'message' => '订单不存在'],
@@ -78,14 +88,40 @@ class Order extends BaseModel
         return [
             'oid' => '订单ID',
             'order_bn' => '订单编号',
-            'uid' => '用户ID',
             'gid' => '订单ID',
+            'uid' => '用户ID(用户下单)',
+            'card_bn' => '卡密（卡密下单）',
             'num' => '购买数量',
             'amount' => '订单金额',
             'status' => '订单状态（1-下单成功；2-下单失败）',
             'create_time' => '创建时间',
-            'update_time' => '创建时间',
+            'update_time' => '更新时间',
         ];
+    }
+
+    /**
+     * 应用场景
+     * @return array
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        //注册
+        $scenarios[self::SCENARIO_USER] = [
+            'gid',
+            'uid',
+            'qq',
+            'num',
+        ];
+        //登录
+        $scenarios[self::SCENARIO_CARD] = [
+            'gid',
+            'card_bn',
+            'qq',
+            'num',
+        ];
+
+        return $scenarios;
     }
 
     /**
@@ -100,6 +136,13 @@ class Order extends BaseModel
      **/
     public function getGoods() {
         return $this->hasOne(Goods::className(), ['gid' => 'gid']);
+    }
+
+    /**
+     * 关联表-hasOne
+     **/
+    public function getCard() {
+        return $this->hasOne(Goods::className(), ['card_bn' => 'card_bn']);
     }
 
     /**
@@ -154,15 +197,32 @@ class Order extends BaseModel
                 $this->order_bn = $this->genOrderBn();
                 //订单金额
                 $this->amount = $this->num * $this->goods->price;
-                if($this->user->points < $this->amount){
-                    throw new Exception('用户账户余额不足');
+
+                //用户下单的情况
+                if($this->scenario === self::SCENARIO_USER){
+                    //用户账户抵扣
+                    if($this->user->points < $this->amount){
+                        throw new Exception('用户账户余额不足');
+                    }
+                    $this->user->points -= $this->amount;
+                    $ret = $this->user->save();
+                    if($ret['code'] < 0){
+                        throw new Exception('用户账户抵扣失败');
+                    }
                 }
-                //用户账户抵扣
-                $this->user->points = $this->user->points - $this->amount;
-                $ret = $this->user->save();
-                if($ret['code'] < 0){
-                    throw new Exception('用户账户抵扣失败');
+                //卡密下单的情况
+                else if($this->scenario === self::SCENARIO_CARD){
+                    //卡密余额抵扣
+                    if($this->card->points < $this->amount){
+                        throw new Exception('用户账户余额不足');
+                    }
+                    $this->card->points -= $this->amount;
+                    $ret = $this->card->save();
+                    if($ret['code'] < 0){
+                        throw new Exception('用户账户抵扣失败');
+                    }
                 }
+
                 //商品库存
                 if($this->goods->num < $this->num){
                     throw new Exception('商品库存不足');

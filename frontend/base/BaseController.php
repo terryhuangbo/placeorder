@@ -6,13 +6,17 @@ use Yii;
 use yii\web\Controller;
 use common\lib\Tools;
 use common\models\User;
+use common\models\Card;
 
 class BaseController extends Controller
 {
     public $layout = 'layout';
     public $enableCsrfValidation = false;
-    public $uid = '';//用户ID
-    public $user = '';//用户信息
+    public $uid = null;//用户ID
+    public $user = null;//用户信息
+    public $card_bn = null;//卡密登录账号
+    public $card = null;//卡密信息
+    public $userLog = true;//是否是用户账号登录 true-用户账号登录；false-卡密登录
     public $_uncheck = []; //不用校验登录的方法,可子类复写
 
     /**
@@ -29,16 +33,31 @@ class BaseController extends Controller
         //从cookies中校验用户登录信息
         $cookies = Yii::$app->request->cookies;
         $this->uid = $cookies->getValue('user_id', '');
+        $this->card_bn = $cookies->getValue('card_bn', '');
 
-        if(empty($this->uid)){
+        //检查是否登录
+        if(empty($this->uid) && empty($this->card_bn)){
             $this->redirect('/plorder/user/reg');
             return false;
         }
-        $this->user = (new User())->getOne(['uid' => $this->uid]);
-        if(empty($this->user)){
-            $this->redirect('/plorder/user/reg');
-            return false;
+
+        //登录类型
+        if(!empty($this->uid)){
+            $this->userLog = true;
+            $this->user = (new User())->getOne(['uid' => $this->uid]);
+            if(empty($this->user)){
+                $this->redirect('/plorder/user/reg');
+                return false;
+            }
+        }elseif(!empty($this->card_bn)){
+            $this->userLog = false;
+            $this->card = (new Card())->getOne(['card_bn' => $this->card_bn]);
+            if(empty($this->card)){
+                $this->redirect('/plorder/user/reg');
+                return false;
+            }
         }
+
         return true;
     }
 

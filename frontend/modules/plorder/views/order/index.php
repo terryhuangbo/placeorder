@@ -110,11 +110,11 @@
 					</h2>
 				</div>
 				<div class="panel-body">
-					<ul class="card_info" ajax_href="/index.php?m=Home&amp;c=Card&amp;a=cardinfo&amp;id=1260&amp;goods_type=135">
-						<li><span>用户帐号：</span><span class="user_name"><?php echo $user['username'] ?></span>　<a style="color:red;" href="javascript:void(0);" class="kmzh_gaimi">改密</a></li>
-						<li><span>类型余额：</span><span class="card_kye"><?php echo $user['points'] ?></span>点</li>
+					<ul class="card_info">
+						<li><span>用户帐号：</span><span class="user_name"><?php echo $info['username'] ?></span>　<a style="color:red;" href="javascript:void(0);" class="kmzh_gaimi">改密</a></li>
+						<li><span>类型余额：</span><span class="card_kye"><?php echo $info['points'] ?></span>点</li>
 						<li><span>当前类型：</span><span class="user_goods_type_title"><?php echo getValue($goods, 'name', '') ?></span></li>
-						<li><span>最后登录：</span><span class="user_last_login"><?php echo $user['login_time'] ?></span></li>
+						<li><span>最后登录：</span><span class="user_last_login"><?php echo date('Y-m-d H:i:s', $info['login_time']) ?></span></li>
 					</ul>
 				</div>
 			</div>
@@ -623,7 +623,6 @@
     $(".alter-pwd").on('click', function(){
         var param = $._get_form_json(".alter-pwd-form");
 
-//        if(param.newpassword)
         if(param.oldpassword == ''){
             $("[name=oldpassword]").closest('div')._error('请输入旧密码');
             return
@@ -641,7 +640,8 @@
             return
         }
 
-        $._ajax('/plorder/user/alter-pwd', {oldpwd: param.oldpassword, pwd: param.newpassword}, 'POST', 'JSON', function(json){
+        var url = <?echo $userLog ?> ? '/plorder/user/alter-pwd' : '/plorder/card/alter-pwd';
+        $._ajax(url, {oldpwd: param.oldpassword, pwd: param.newpassword}, 'POST', 'JSON', function(json){
             if(json.code > 0){
                 alert(json.msg);
             }else{

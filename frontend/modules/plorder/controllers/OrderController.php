@@ -32,15 +32,24 @@ class OrderController extends BaseController
     {
         $user = $this->user;
         $gid = $this->req('gid', 0);
-        $user['login_time'] = date('Y-m-d H:i:s', $user['login_time']);
+        lg($gid);
         $goods = (new Goods())->getOne(['gid'  => $gid]);
         //商品为空，跳转到商品首页
         if(empty($goods)){
             $this->redirect('/plorder/goods/index');
         }
+        lg($this->userLog);
+        if($this->userLog){
+            $info = $this->user;
+        }else{
+            $info['username'] = $this->card['card_bn'];
+            $info['login_time'] = $this->card['create_time'];
+            $info['points'] = $this->card['points'];
+        }
         $_data = [
-            'user' => $user,
+            'info' => $info,
             'goods' => $goods,
+            'userLog' => (int) $this->userLog,
         ];
         return $this->render('index', $_data);
     }
@@ -52,9 +61,15 @@ class OrderController extends BaseController
     public function actionAdd()
     {
         $post = $this->req();
-        $post['uid'] = $this->uid;
+        if($this->userLog){
+            $post['uid'] = $this->uid;
+            $scenario = Order::SCENARIO_USER;
+        }else{
+            $post['card_bn'] = $this->card_bn;
+            $scenario = Order::SCENARIO_CARD;
+        }
         $mdl = new Order();
-        $ret = $mdl->saveOrder($post);
+        $ret = $mdl->saveOrder($post, $scenario);
         return json_encode($ret);
 
     }
