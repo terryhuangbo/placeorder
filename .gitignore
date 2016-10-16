@@ -8,7 +8,7 @@
 
 /backend/runtime/
 /backend/web/assets
-/backend/web/upload
+#/backend/web/upload
 
 backend/runtime/debug/index.data
 backend/runtime/logs/app.log

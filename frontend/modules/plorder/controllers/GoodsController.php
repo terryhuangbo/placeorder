@@ -41,49 +41,4 @@ class GoodsController extends BaseController
         return $this->render('index', $_data);
     }
 
-    /**
-     * 商品介绍
-     * @return type
-     */
-    public function actionView()
-    {
-        $gid = intval($this->req('gid'));
-        if(empty($gid)){
-            $this->toJson(-20001, '参数不能为空');
-        }
-        $mdl = new Goods();
-        $goods = $mdl->_get_info(['gid' => $gid]);
-        if(empty($goods)){
-            $this->toJson(-20002, '商品信息不存在');
-        }
-
-        $_data = [
-            'goods' => $goods
-        ];
-        return $this->render('view', $_data);
-    }
-
-    /**
-     * 商品图文详情
-     * @return type
-     */
-    public function actionDetail()
-    {
-        $gid = intval($this->req('gid'));
-        if(empty($gid)){
-            $this->toJson(-20001, '参数不能为空');
-        }
-        $mdl = new Goods();
-        $goods = $mdl->_get_info(['gid' => $gid]);
-        if(empty($goods)){
-            $this->toJson(-20002, '商品信息不存在');
-        }
-
-        $_data = [
-            'goods' => $goods
-        ];
-        return $this->render('detail', $_data);
-    }
-
-
 }

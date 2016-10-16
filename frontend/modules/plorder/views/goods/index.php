@@ -70,7 +70,7 @@
             <?php foreach($goods as $good): ?>
                 <div class="div_url col-xs-6 col-sm-3 col-md-2">
                     <div class="thumbnail">
-                        <a target="_blank" href="page1-1.html">
+                        <a target="_blank" href="<?php echo yiiUrl(['/plorder/order/index', 'gid' => $good['gid']]) ?>">
                             <img class="img-rounded img-responsive"  src="<?php echo $good['images'] ?>" alt="<?php echo $good['name'] ?>" title="<?php echo $good['name'] ?>">
                         </a>
                     </div>

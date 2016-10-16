@@ -18,6 +18,11 @@ class OrderController extends BaseController
     public $layout = 'layout';
     public $enableCsrfValidation = false;
 
+    public function init(){
+        $this->_uncheck = [
+
+        ];
+    }
 
     /**
      * 用户中心
@@ -26,7 +31,7 @@ class OrderController extends BaseController
     public function actionIndex()
     {
         $user = $this->user;
-        $gid = $this->req('gid', 47);
+        $gid = $this->req('gid', 0);
         $user['login_time'] = date('Y-m-d H:i:s', $user['login_time']);
         $goods = (new Goods())->getOne(['gid'  => $gid]);
         //商品为空，跳转到商品首页
