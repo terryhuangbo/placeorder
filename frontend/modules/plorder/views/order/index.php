@@ -72,10 +72,10 @@
 	<div class="container-fluid menu">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><a href="http://www.xdzk.net/index.php?m=Home&amp;c=Index&amp;a=index"><h2>手工人气</h2></a></div>
+				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><a href="#"><h2>手工人气</h2></a></div>
 				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right">
 					<div class="top_nav">
-						<a href="http://www.xdzk.net/index.php?m=Home&amp;c=Index&amp;a=index" class="hidden-xs">切换到首页</a> <span class="hidden-xs">|</span> <a class="exit_login_a" href="http://www.xdzk.net/index.php?m=Home&amp;c=Card&amp;a=logout&amp;id=1260&amp;goods_type=135">退出登录</a>
+						<a href="#" class="hidden-xs">切换到首页</a> <span class="hidden-xs">|</span> <a class="exit_login_a" href="#">退出登录</a>
 					</div>
 				</div>
 			</div>
@@ -235,9 +235,9 @@
 			<div class="jwxh_main_div_nav_tabs">
 
 				<ul class="nav nav-tabs">
-				  <li class="active"><a href="http://www.xdzk.net/index.php?m=Home&amp;c=Goods&amp;a=detail&amp;id=1260#tab1" data-toggle="tab"><button type="button" class="btn btn_ddglq">订单管理</button></a></li>
-				  <li><a href="http://www.xdzk.net/index.php?m=Home&amp;c=Goods&amp;a=detail&amp;id=1260#tab2" data-toggle="tab"><button type="button" class="btn btn_zkmglq">卡组管理</button></a></li>
-				  <li><a href="http://www.xdzk.net/index.php?m=Home&amp;c=Goods&amp;a=detail&amp;id=1260#tab3" data-toggle="tab"><button type="button" class="btn btn_zkmglq">子卡管理</button></a></li>
+				  <li class="active"><a href="#" data-toggle="tab"><button type="button" class="btn btn_ddglq">订单管理</button></a></li>
+				  <li><a href="#" data-toggle="tab"><button type="button" class="btn btn_zkmglq">卡组管理</button></a></li>
+				  <li><a href="#" data-toggle="tab"><button type="button" class="btn btn_zkmglq">子卡管理</button></a></li>
 				</ul>
 
 				<div class="tab-content">

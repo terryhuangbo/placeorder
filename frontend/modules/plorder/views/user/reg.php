@@ -281,7 +281,9 @@
             };
             $._ajax('/plorder/user/login', param, 'POST', 'JSON', function(json){
                 if(json.code > 0){
-                    alert(json.msg);
+                    window.location.href = "/plorder/order/index";
+
+//                    alert(json.msg);
                 }else{
                     $(".username_login_btn").closest('p')._error(json.msg, 'p', 'prepend');
                 }

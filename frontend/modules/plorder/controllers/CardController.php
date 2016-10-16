@@ -61,25 +61,6 @@ class CardController extends BaseController
         $this->redirect('/plorder/user/reg');
     }
 
-//    /**
-//     * 卡密充值
-//     * @return string
-//     */
-//    public function actionCharge()
-//    {
-//        $card_bn = $this->req('card_bn', '');
-//        $charge_points = (int)$this->req('charge_points', 0);
-//        $mdl = new Card();
-//        $param = [
-//            'uid' => $this->uid,
-//            'card_bn' => $card_bn,
-//            'charge_points' => $charge_points,
-//        ];
-//        $ret = $mdl->chargeUser($param);
-//
-//        return json_encode($ret);
-//    }
-
     /**
      * 卡密充值
      * @return string

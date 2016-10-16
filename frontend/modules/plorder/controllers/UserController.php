@@ -69,6 +69,14 @@ class UserController extends BaseController
             return $this->toJson('-20003', '用户名不存在或者密码错误');
         }
         $user->touch('login_time');//更新登录时间
+
+        //保存登录信息
+        $cookies = Yii::$app->response->cookies;
+        $cookies->add(new \yii\web\Cookie([
+            'name' => 'user_id',
+            'value' => $user['uid'],
+        ]));
+
         return $this->toJson('20000', '登录成功');
     }
 
