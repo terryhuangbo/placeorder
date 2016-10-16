@@ -3,6 +3,7 @@
 namespace backend\modules\pay\controllers;
 
 use common\models\Goods;
+use common\models\Order;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
@@ -55,31 +56,27 @@ class PayController extends BaseController
         $pageSize = $this->req('pageSize', 10);
         $offset = $page * $pageSize;
         $or_tb = Pay::tableName();
-        $ur_tb = Goods::tableName();
+        $ur_tb = Order::tableName();
         if ($search) {
             if (isset($search['uptimeStart'])) //时间范围
             {
-                $query = $query->andWhere(['>', $or_tb . '.update_at', strtotime($search['uptimeStart'])]);
+                $query = $query->andWhere(['>', $or_tb . '.update_time', strtotime($search['uptimeStart'])]);
             }
             if (isset($search['uptimeEnd'])) //时间范围
             {
-                $query = $query->andWhere(['<', $or_tb . '.update_at', strtotime($search['uptimeEnd'])]);
+                $query = $query->andWhere(['<', $or_tb . '.update_time', strtotime($search['uptimeEnd'])]);
             }
-            if (isset($search['goods_id'])) //商品编号
+            if (isset($search['order_bn'])) //商品编号
             {
-                $query = $query->andWhere(['goods_id' => $search['goods_id']]);
+                $query = $query->andWhere([$ur_tb . '.order_bn' => $search['order_bn']]);
             }
-            if (isset($search['pay_status'])) //财务状态
+            if (isset($search['order_status'])) //财务状态
             {
-                $query = $query->andWhere(['pay_status' => $search['pay_status']]);
-            }
-            if (isset($search['goods_name'])) //商品名称
-            {
-                $query = $query->andWhere(['like', $or_tb . '.goods_name', $search['goods_name']]);
+                $query = $query->andWhere([$ur_tb . '.status' => $search['order_status']]);
             }
         }
-
         $_pay_by = 'id DESC';
+
         $query_count = clone($query);
         $payArr = $query
             ->joinWith('order')

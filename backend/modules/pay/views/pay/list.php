@@ -35,21 +35,15 @@ use common\models\Order;
 
                 <div class="row">
                     <div class="control-group span8">
-                        <label class="control-label">商品名称：</label>
+                        <label class="control-label">订单编号：</label>
                         <div class="controls">
-                            <input type="text" class="control-text" name="goods_name">
+                            <input type="text" class="control-text" name="order_bn">
                         </div>
                     </div>
                     <div class="control-group span8">
-                        <label class="control-label">商品编号：</label>
-                        <div class="controls">
-                            <input type="text" class="control-text" name="goods_id">
-                        </div>
-                    </div>
-                    <div class="control-group span8">
-                        <label class="control-label">财务状态：</label>
+                        <label class="control-label">订单状态：</label>
                         <div class="controls" >
-                            <select name="pay_status" id="checkstatus">
+                            <select name="order_status" id="checkstatus">
                                 <option value="">请选择</option>
                                 <?php foreach (Order::getOrderStatus() as $key => $name): ?>
                                     <option value="<?php echo $key ?>"><?php echo  $name ?></option>
@@ -121,7 +115,7 @@ use common\models\Order;
                 selectedEvent: 'click',
                 columns: [
                     {title: '序号', dataIndex: 'id', width: 80, elCls : 'center'},
-                    {title: '财务编号', dataIndex: 'order_bn', width: 200, elCls : 'center'},
+                    {title: '订单编号', dataIndex: 'order_bn', width: 200, elCls : 'center'},
                     {title: '买家账号', dataIndex: 'username', width: 120, elCls : 'center'},
                     {title: '商品编号', dataIndex: 'goods_bn', width: 120, elCls : 'center'},
                     {title: '商品名称', dataIndex: 'goods_name', width: 90, elCls : 'center',},
