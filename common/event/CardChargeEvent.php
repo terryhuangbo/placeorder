@@ -18,7 +18,7 @@ use yii\base\Event;
 class CardChargeEvent extends Event
 {
     /**
-     * @var User 待充值的用户
+     * @var User|Card 待充值的用户
      */
     public $chargedUser = null;
 

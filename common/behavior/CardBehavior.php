@@ -103,9 +103,9 @@ class CardBehavior extends Behavior
      */
     public function handleCharge($event) {
         $card = $this->owner;
-        $user = $event->chargedUser;
+        $user = $event->chargedUser;//用户或者卡密
         $points = $event->points;
-        if(!($user instanceof User)){
+        if(!($user instanceof User) && !($user instanceof Card)){
             $event->code = -20002;
             $event->msg = '充值用户不存在';
         }

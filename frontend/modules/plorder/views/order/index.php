@@ -15,6 +15,10 @@
 <script src="/static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="/static/js/jquery.dtGrid.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="/static/js/zh-cn.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" >
+    var IS_USER = <?echo $userLog ?>;
+</script>
+
 <style>
     .navbar-fixed-top, .navbar-fixed-bottom {
         z-index: 0;
@@ -180,7 +184,9 @@
 				<div class="panel-body">
 					<form role="form" method="post" class="card_chaika_form" onsubmit="return false;">
 					<ul>
-						<li><span class="fixed-width-right-80">输入卡密：</span><input name="cardbn" type="text" placeholder="待拆卡的卡密"></li>
+                        <?php if($userLog): ?>
+                            <li><span class="fixed-width-right-80">输入卡密：</span><input name="cardbn" type="text" placeholder="待拆卡的卡密"></li>
+                        <?php endif ?>
 						<li><span class="fixed-width-right-80">拆分数量：</span><input name="cardnum" type="text" placeholder="需要生成子卡的张数"></li>
 						<li><span class="fixed-width-right-80">卡密面值：</span><input name="allnum" type="text" placeholder="每张子卡的面值是多少"></li>
 						<li><span class="fixed-width-right-80">设置密码：</span><input name="password" type="text" placeholder="可空,空则默认无密码"><span class="hidden-xs"></span></li>
@@ -692,7 +698,7 @@
     //卡密充值
     $(".card_chongzhi_btn").on('click', function(){
         var param = $._get_form_json(".card_chongzhi_form");
-        if(param.kmcz_cardno == ''){
+        if(IS_USER && param.kmcz_cardno == ''){
             $("[name=kmcz_cardno]").closest('li')._error('请输入卡密');
             return
         }

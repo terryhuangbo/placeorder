@@ -17,8 +17,7 @@ class CardController extends BaseController
 
     public function init(){
         $this->_uncheck = [
-            'reg',
-            'login',
+
         ];
     }
 
@@ -31,7 +30,13 @@ class CardController extends BaseController
         $card_bn = $this->req('card_bn', '');
         $charge_points = (int)$this->req('charge_points', 0);
         $card = Card::findOne(['card_bn' => $card_bn]);
-        $user = User::findOne($this->uid);
+
+        //给账号值
+        if($this->userLog){
+            $user = User::findOne($this->uid);
+        }else{
+            $user = Card::findOne(['card_bn' => $this->card_bn]);
+        }
         if(!$card){
             return $this->toJson('-20001', '卡密不存在');
         }
@@ -74,6 +79,7 @@ class CardController extends BaseController
     public function actionSplit()
     {
         $card_bn = trim($this->req('card_bn', ''));
+        $card_bn = $this->userLog ? $card_bn : $this->card_bn;
         $post = Yii::$app->request->post();
         $card = Card::findOne(['card_bn' => $card_bn]);
         if(!$card){
