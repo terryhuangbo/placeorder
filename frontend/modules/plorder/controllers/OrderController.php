@@ -36,6 +36,7 @@ class OrderController extends BaseController
         if(empty($goods)){
             $this->redirect('/plorder/goods/index');
         }
+        //用户登录或者卡密登录
         if($this->userLog){
             $info = $this->user;
         }else{
@@ -43,6 +44,7 @@ class OrderController extends BaseController
             $info['login_time'] = $this->card['create_time'];
             $info['points'] = $this->card['points'];
         }
+
         $_data = [
             'info' => $info,
             'goods' => $goods,
@@ -128,14 +130,9 @@ class OrderController extends BaseController
      * 订单列表
      * @return type
      */
-    public function actionList()
+    public function actionOrderList()
     {
-        $r_mdl = new Order();
-        $list = $r_mdl->_get_list_all([$r_mdl::tableName() . '.uid' => $this->uid, 'order_status' => Order::STATUS_PAY]);
-        $_data = [
-            'order_list' => $list,
-        ];
-        return $this->render('list', $_data);
+
     }
 
 
