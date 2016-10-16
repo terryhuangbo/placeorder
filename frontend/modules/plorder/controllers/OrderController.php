@@ -202,7 +202,7 @@ class OrderController extends BaseController
         }
 
         if($this->userLog){
-            $where[] = ['uid' => $this->uid];
+            $where[] = [Card::tableName() . '.uid' => $this->uid];
         }else{
             $card = Card::findOne(['card_bn' => $this->card_bn]);
             $where[] = ['pid' => $card->id];
