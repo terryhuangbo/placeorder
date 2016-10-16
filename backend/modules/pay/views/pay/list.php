@@ -6,7 +6,7 @@ use common\models\Order;
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>订单列表</title>
+    <title>财务列表</title>
     <link href="/css/dpl.css" rel="stylesheet">
     <link href="/css/bui.css" rel="stylesheet">
     <link href="/css/page-min.css" rel="stylesheet">
@@ -47,7 +47,7 @@ use common\models\Order;
                         </div>
                     </div>
                     <div class="control-group span8">
-                        <label class="control-label">订单状态：</label>
+                        <label class="control-label">财务状态：</label>
                         <div class="controls" >
                             <select name="pay_status" id="checkstatus">
                                 <option value="">请选择</option>
@@ -68,7 +68,7 @@ use common\models\Order;
                     </div>
                     <div class="row">
                         <div class="control-group span10">
-                            <button type="button" id="btnSearch" class="button button-primary"  onclick="searchOrder()">查询</button>
+                            <button type="button" id="btnSearch" class="button button-primary"  onclick="searchPay()">查询</button>
                         </div>
                     </div>
                 </div>
@@ -120,8 +120,8 @@ use common\models\Order;
                 idField: 'id', //自定义选项 id 字段
                 selectedEvent: 'click',
                 columns: [
-                    {title: '序号', dataIndex: 'oid', width: 80, elCls : 'center'},
-                    {title: '订单编号', dataIndex: 'order_bn', width: 200, elCls : 'center'},
+                    {title: '序号', dataIndex: 'id', width: 80, elCls : 'center'},
+                    {title: '财务编号', dataIndex: 'order_bn', width: 200, elCls : 'center'},
                     {title: '买家账号', dataIndex: 'username', width: 120, elCls : 'center'},
                     {title: '商品编号', dataIndex: 'goods_bn', width: 120, elCls : 'center'},
                     {title: '商品名称', dataIndex: 'goods_name', width: 90, elCls : 'center',},
@@ -132,7 +132,7 @@ use common\models\Order;
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
-                            return "<a class='button button-success' onclick='showOrderInfo(" + obj.oid + ")'>查看</a>";
+                            return "<a class='button button-success' onclick='showPayInfo(" + obj.id + ")'>查看</a>";
                         }
                     }
                 ],
@@ -155,9 +155,9 @@ use common\models\Order;
 
 <script>
 /**
- * 搜索订单,刷新列表
+ * 搜索财务,刷新列表
  */
-function searchOrder() {
+function searchPay() {
     var search = {};
     var fields = $("#authsearch").serializeArray();//获取表单信息
     jQuery.each(fields, function (i, field) {
@@ -173,7 +173,7 @@ function searchOrder() {
 /**
  * 获取过滤项
  */
-function getOrderGridSearchConditions() {
+function getPayGridSearchConditions() {
     var search = {};
     var upusername = $("#upusername").val();
     if (upusername != "") {
@@ -187,9 +187,9 @@ function getOrderGridSearchConditions() {
 }
 
 /**
- * 显示订单详情
+ * 显示财务详情
  */
-function showOrderInfo(oid) {
+function showPayInfo(id) {
     var width = 500;
     var height = 500;
     var Overlay = BUI.Overlay;
@@ -203,57 +203,57 @@ function showOrderInfo(oid) {
         }
     ];
     dialog = new Overlay.Dialog({
-        title: '订单信息',
+        title: '财务信息',
         width: width,
         height: height,
         closeAction: 'destroy',
         loader: {
             url: "/pay/pay/info",
             autoLoad: true, //不自动加载
-            params: {oid: oid},//附加的参数
+            params: {id: id},//附加的参数
             lazyLoad: false //不延迟加载
         },
         buttons: buttons,
         mask: false
     });
     dialog.show();
-    dialog.get('loader').load({oid: oid});
+    dialog.get('loader').load({id: id});
 }
 
 
 /**
- * 更改订单详情
+ * 更改财务详情
  */
-function updateOrder(oid) {
+function updatePay(id) {
     var width = 400;
     var height = 300;
     var Overlay = BUI.Overlay;
     var buttons = [];
     dialog = new Overlay.Dialog({
-        title: '订单信息',
+        title: '财务信息',
         width: width,
         height: height,
         closeAction: 'destroy',
         loader: {
             url: "/pay/pay/update",
             autoLoad: true, //不自动加载
-            params: {oid: oid},//附加的参数
+            params: {id: id},//附加的参数
             lazyLoad: false, //不延迟加载
         },
         buttons: buttons,
         mask: false
     });
     dialog.show();
-    dialog.get('loader').load({oid: oid});
+    dialog.get('loader').load({id: id});
 }
 
 /**
  *删除
  */
-function del(oid) {
+function del(id) {
     BUI.Message.Confirm('您确定要删除？', function(){
         var param = param || {};
-        param.oid = oid;
+        param.id = id;
         $._ajax('<?php echo yiiUrl('pay/pay/ajax-delete') ?>', param, 'POST','JSON', function(json){
             if(json.code > 0){
                 BUI.Message.Alert(json.msg, function(){

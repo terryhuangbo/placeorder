@@ -32,7 +32,7 @@ class PayController extends BaseController
     }
 
     /**
-     * 订单列表
+     * 财务列表
      * @return type
      */
     public function actionListView()
@@ -41,7 +41,7 @@ class PayController extends BaseController
     }
 
     /**
-     * 订单数据
+     * 财务数据
      */
     public function actionList()
     {
@@ -69,7 +69,7 @@ class PayController extends BaseController
             {
                 $query = $query->andWhere(['goods_id' => $search['goods_id']]);
             }
-            if (isset($search['pay_status'])) //订单状态
+            if (isset($search['pay_status'])) //财务状态
             {
                 $query = $query->andWhere(['pay_status' => $search['pay_status']]);
             }
@@ -79,7 +79,7 @@ class PayController extends BaseController
             }
         }
 
-        $_pay_by = 'oid DESC';
+        $_pay_by = 'id DESC';
         $query_count = clone($query);
         $payArr = $query
             ->joinWith('order')
@@ -92,7 +92,7 @@ class PayController extends BaseController
         $count = $query_count->count();
         $payList = ArrayHelper::toArray($payArr, [
             'common\models\Pay' => [
-                'oid',
+                'id',
                 'uid',
                 'cost',
                 'username' => 'user.username',
@@ -113,7 +113,7 @@ class PayController extends BaseController
     }
 
     /**
-     * 添加订单
+     * 添加财务
      * @return array
      */
     function actionAdd()
@@ -131,110 +131,20 @@ class PayController extends BaseController
     }
 
     /**
-     * 添加订单
-     * @return array
-     */
-    function actionUpdate()
-    {
-        $oid = intval($this->req('oid'));
-        $mdl = new Pay();
-        //检验参数是否合法
-        if (empty($oid)) {
-            $this->toJson(-20001, '订单序号oid不能为空');
-        }
-
-        //检验订单是否存在
-        $pay = $mdl->getOne(['oid' => $oid]);
-        if (!$pay) {
-            $this->toJson(-20002, '订单信息不存在');
-        }
-        $_data = [
-            'pay' => $pay,
-            'status_list' => $mdl::getPayStatus(),
-        ];
-        return $this->render('update', $_data);
-    }
-
-    /**
-     * 改变订单状态
-     * @return array
-     */
-    function actionAjaxSave()
-    {
-        $oid = intval($this->req('oid'));
-        $pay_info = $this->req('pay', []);
-
-        $mdl = new Pay();
-        //检验参数是否合法
-        if (empty($oid)) {
-            $this->toJson(-20001, '订单序号oid不能为空');
-        }
-        if(empty($pay_info['pay_status'])){
-            $this->toJson(-20002, '订单状态不能为空');
-        }
-
-        //检验订单是否存在
-        $pay = $mdl->_get_info(['oid' => $oid]);
-        if (!$pay) {
-            $this->toJson(-20002, '订单信息不存在');
-        }
-        $res = $mdl->_save([
-            'oid' => $oid,
-            'pay_status' => intval($pay_info['pay_status']),
-        ]);
-        if(!$res){
-            $this->toJson(-20003, '保存失败');
-        }
-
-        //保存
-        $this->toJson(20000, '保存成功');
-    }
-
-    /**
-     * 改变订单状态
-     * @return array
-     */
-    function actionAjaxDelete()
-    {
-        $oid = intval($this->req('oid'));
-
-        $mdl = new Pay();
-        //检验参数是否合法
-        if (empty($oid)) {
-            $this->toJson(-20001, '订单序号oid不能为空');
-        }
-
-        //检验订单是否存在
-        $pay = $mdl->_get_info(['oid' => $oid]);
-        if (!$pay) {
-            $this->toJson(-20002, '订单信息不存在');
-        }
-
-        $res = $mdl->_save([
-            'oid' => $oid,
-            'is_deleted' => $mdl::IS_DELETE,
-        ]);
-        if(!$res){
-            $this->toJson(-20003, '删除失败');
-        }
-        $this->toJson(20000, '删除成功');
-    }
-
-    /**
-     * 加载订单详情
+     * 加载财务详情
      */
     function actionInfo()
     {
-        $oid = intval($this->req('oid'));
+        $id = intval($this->req('id'));
 
         $mdl = new Pay();
         //检验参数是否合法
-        if (empty($oid)) {
+        if (empty($id)) {
             $this->toJson(-20001, '用户编号id不能为空');
         }
 
         //检验用户是否存在
-        $pay = $mdl->getRelationOne(['oid' => $oid], ['with' => ['goods']]);
+        $pay = $mdl->getRelationOne(['id' => $id], ['with' => ['user', 'order.goods']]);
         if (!$pay) {
             $this->toJson(-20003, '用户信息不存在');
         }
