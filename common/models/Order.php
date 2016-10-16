@@ -142,7 +142,7 @@ class Order extends BaseModel
      * 关联表-hasOne
      **/
     public function getCard() {
-        return $this->hasOne(Goods::className(), ['card_bn' => 'card_bn']);
+        return $this->hasOne(Card::className(), ['card_bn' => 'card_bn']);
     }
 
     /**
@@ -248,11 +248,19 @@ class Order extends BaseModel
             //生成财务数据
             $pay = new Pay();
             $pay->attributes = [
-                'uid' => $this->uid,
                 'oid' => $this->oid,
                 'cost' => $this->amount,
-                'balance' => $this->user->points,
             ];
+            //场景-用户下单/卡密下单
+            if($this->scenario === self::SCENARIO_USER){
+                $pay->uid = $this->uid;
+                $pay->balance = $this->user->points;
+                $pay->scenario = Pay::SCENARIO_USER;
+            }else{
+                $pay->card_bn = $this->card_bn;
+                $pay->balance = $this->card->points;
+                $pay->scenario = Pay::SCENARIO_CARD;
+            }
             $ret = $pay->save();
             if($ret['code'] < 0){
                 throw new Exception('生成财务数据失败');
