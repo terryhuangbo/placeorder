@@ -710,6 +710,22 @@
         });
     });
 
+    //查询余额
+    $(".kmcz_cye").on('click', function(){
+        var card_bn = $.trim($("[name=kmcz_cardno]").val());
+        if(card_bn == ''){
+            $("[name=kmcz_cardno]").closest('li')._error('请输入卡密');
+            return
+        }
+        $._ajax('/plorder/card/remain', {card_bn: card_bn}, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                alert('卡密余额为：' + json.data.points);
+            }else{
+                alert(json.msg);
+            }
+        });
+    });
+
     //拆分卡密
     $(".card_splitcard_btn").on('click', function(){
         var param = $._get_form_json(".card_chaika_form");

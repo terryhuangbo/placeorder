@@ -114,7 +114,15 @@ class CardController extends BaseController
      */
     public function actionRemain()
     {
-
+        $card_bn = $this->req('card_bn', '');
+        $card = Card::findOne(['card_bn' => $card_bn]);
+        if(!$card){
+            return $this->toJson('-20001', '卡密不存在');
+        }
+        $_data = [
+            'points' => $card['points']
+        ];
+        return $this->toJson('20000', '卡密不存在', $_data);
     }
 
     /**
