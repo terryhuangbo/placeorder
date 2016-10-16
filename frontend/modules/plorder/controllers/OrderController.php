@@ -132,7 +132,38 @@ class OrderController extends BaseController
      */
     public function actionOrderList()
     {
-
+        $qq = $this->req('qq', '');
+        $format = [
+            'qq',
+            'num',
+            'create_time' => function($m){
+                return date('Y-m-d H:i:s', $m->create_time);
+            },
+            'goods_num_now' => function($m){
+                return getValue($m, 'goods.num', 0);
+            },
+            'goods_num_org' => function($m){
+                return getValue($m, 'goods.num', 0) + $m->num;
+            },
+            'status_name' => function ($m) {
+                return Order::getOrderStatus($m->status);
+            },
+            'operate' => function ($m) {
+                return '确定';
+            },
+        ];
+        $with = ['goods'];
+        $where = ['and'];
+        if($this->userLog){
+            $where[] = ['uid' => $this->uid];
+        }else{
+            $where[] = ['card_bn' => $this->card_bn];
+        }
+        if(!empty($qq)){
+            $where[] = ['like', 'qq', $qq];
+        }
+        $list = (new Order())->getRelationAll('*', $where,['with' => $with], 'oid DESC', 1, 0, $format);
+        return $this->toJson('20000', '查询成功', $list);
     }
 
 

@@ -246,153 +246,132 @@
 				<ul class="nav nav-tabs">
 				  <li class="active"><a href="#" data-toggle="tab"><button type="button" class="btn btn_ddglq">订单管理</button></a></li>
 				  <li><a href="#" data-toggle="tab"><button type="button" class="btn btn_zkmglq">卡组管理</button></a></li>
-				  <li><a href="#" data-toggle="tab"><button type="button" class="btn btn_zkmglq">子卡管理</button></a></li>
+				  <li><a href="#" data-toggle="tab"><button type="button" class="btn btn_zkmdlq">子卡管理</button></a></li>
 				</ul>
 
 				<div class="tab-content">
-					<div class="tab-pane active" id="tab1">
 
-<!-- 订单列表区开始 -->
-<div class="div_search">
-		<form class="form-inline" role="form">
-			<div class="form-group">
-					<label class="control-label" for="name">QQ号码：</label>
-					<input type="text" class="form-control" id="sokey_qq" placeholder="请输入QQ号码">&nbsp;
-				</div>			<button type="button" class="btn" id="custom_search_orders">模糊搜索订单</button>
-		</form>
-	</div>
-<div id="dtGridContainer_orders" class="dt-grid-container" ajax_change_order_status="">
 
-<table class="dt-grid table table-condensed" id="dt_grid_d0f0de9301d3c9faeac08e71a11379d6" style="">
-	<thead>
-	<tr class="dt-grid-headers">
-    <th class="extra-column visible-xs "></th>
-    <th columnno="0" columnid="aa" class="dt-grid-header   can-sort" style="text-align: left;">QQ号码</th>			<th columnno="1" columnid="need_num_0" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		下单数量	</th>
+    <div class="tab-pane active" id="tab1">
+        <!-- 订单列表区开始 -->
+        <div class="div_search">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <label class="control-label" for="name">QQ号码：</label>
+                        <input type="text" class="form-control" id="sokey_qq" placeholder="请输入QQ号码">&nbsp;
+                    </div>
+                    <button type="button" class="btn" id="custom_search_orders">模糊搜索订单</button>
+                </form>
+            </div>
+        <div id="dtGridContainer_orders" class="dt-grid-container" ajax_change_order_status="">
 
-    <th columnno="2" columnid="add_time" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">下单日期</th>
+        <table class="dt-grid table table-condensed"  style="">
+            <thead>
+                <tr class="dt-grid-headers">
+                    <th class="extra-column visible-xs "></th>
+                    <th columnno="0" columnid="aa" class="dt-grid-header   can-sort" style="text-align: left;">QQ号码</th>			<th columnno="1" columnid="need_num_0" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		下单数量	</th>
+                    <th columnno="2" columnid="add_time" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">下单日期</th>
+                    <th columnno="3" columnid="start_num" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		初始数量	</th>
+                    <th columnno="4" columnid="now_num" class="dt-grid-header   can-sort" style="text-align: left;">		当前数量	</th>
+                    <th columnno="5" columnid="order_state" class="dt-grid-header   can-sort" style="text-align: left;">		订单状态	</th>
+                    <th columnno="6" columnid="jwxh_action" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		操作订单	</th>
+                </tr>
+            </thead>
+            <tbody id="order-list-area">
 
-    <th columnno="3" columnid="start_num" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		初始数量	</th>
-
-    <th columnno="4" columnid="now_num" class="dt-grid-header   can-sort" style="text-align: left;">		当前数量	</th>
-
-    <th columnno="5" columnid="order_state" class="dt-grid-header   can-sort" style="text-align: left;">		订单状态	</th>
-
-    <th columnno="6" columnid="jwxh_action" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		操作订单	</th>
-    </tr>
-    <tr  class="dt-grid-headers">
-    	<td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-    </tr>
-     <tr  class="dt-grid-headers">
-    	<td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-    </table>
+            </tbody>
+        </table>
     </div>
 
 
-<div id="dtGridToolBarContainer_orders" class="dt-grid-toolbar-container"><span class="pagination pagination-sm dt-grid-tools"></span><span class="dt-grid-pager"><ul id="d0f0de9301d3c9faeac08e71a11379d6_dtGridOperations" class="pagination pagination-sm dt-grid-pager-button"></ul><span class="dt-grid-pager-status text-primary">无查询记录...</span><div class="clearfix"></div></span><div class="clearfix"></div></div>
+        <div id="dtGridToolBarContainer_orders" class="dt-grid-toolbar-container"><span class="pagination pagination-sm dt-grid-tools"></span><span class="dt-grid-pager"><ul id="d0f0de9301d3c9faeac08e71a11379d6_dtGridOperations" class="pagination pagination-sm dt-grid-pager-button"></ul><span class="dt-grid-pager-status text-primary">无查询记录...</span><div class="clearfix"></div></span><div class="clearfix"></div></div>
 
-<script type="text/javascript">
-	var order_state = {0:'未开始', 1:'未开始', 2:'进行中', 3:'已完成', 4:'已退单', 5:'退单中', 6:'续费中', 7:'补单中', 8:'改密中', 9:'登录失败'};
-		var dtGridColumns_orders = [
-					{id:'aa', title:'QQ号码', type:'string', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'', fastQuery:true, fastQueryType:'eq'},		{id:'need_num_0', title:'下单数量', type:'string', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'xs',  fastQuery:true, fastQueryType:'eq'},		{id:'add_time', title:'下单日期', type:'date', format:'yyyy-MM-dd hh:mm:ss', otype:'string', oformat:'yyyy-MM-dd hh:mm:ss', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'xs',  fastQuery:true, fastQueryType:'range' },
-		{id:'start_num', title:'初始数量', type:'string', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'xs',  fastQuery:true, fastQueryType:'eq'},
-		{id:'now_num', title:'当前数量', type:'string', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'',  fastQuery:true, fastQueryType:'eq'},
+        <script type="text/javascript">
+            var order_state = {0:'未开始', 1:'未开始', 2:'进行中', 3:'已完成', 4:'已退单', 5:'退单中', 6:'续费中', 7:'补单中', 8:'改密中', 9:'登录失败'};
+                var dtGridColumns_orders = [
+                            {id:'aa', title:'QQ号码', type:'string', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'', fastQuery:true, fastQueryType:'eq'},		{id:'need_num_0', title:'下单数量', type:'string', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'xs',  fastQuery:true, fastQueryType:'eq'},		{id:'add_time', title:'下单日期', type:'date', format:'yyyy-MM-dd hh:mm:ss', otype:'string', oformat:'yyyy-MM-dd hh:mm:ss', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'xs',  fastQuery:true, fastQueryType:'range' },
+                {id:'start_num', title:'初始数量', type:'string', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'xs',  fastQuery:true, fastQueryType:'eq'},
+                {id:'now_num', title:'当前数量', type:'string', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'',  fastQuery:true, fastQueryType:'eq'},
 
-		{id:'order_state', title:'订单状态', type:'string', codeTable:order_state, headerStyle:'text-align: left;', columnClass:'text-left', hideType:'',  resolution:function(value, record, column, grid, dataNo, columnNo){
-				var content = '';
-				if( record.order_state==9 ){
-					switch(record.login_state){
-						case 0:
-							content=content+'正常-OR-异常';
-							break;
-						case 1:
-							content=content+'登录保护';
-							break;
-						case 2:
-							content=content+'号码冻结';
-							break;
-						case 3:
-							content=content+'密码错误';
-							break;
-						default:
-							content=content+'[警告:系统异常]';
-					}
-					value=content;
-				}else{
-					value=order_state[value];
-				}
-				if(value==''){
-					value='-未知-';
-				}
-				return value;
-			}
-		},
+                {id:'order_state', title:'订单状态', type:'string', codeTable:order_state, headerStyle:'text-align: left;', columnClass:'text-left', hideType:'',  resolution:function(value, record, column, grid, dataNo, columnNo){
+                        var content = '';
+                        if( record.order_state==9 ){
+                            switch(record.login_state){
+                                case 0:
+                                    content=content+'正常-OR-异常';
+                                    break;
+                                case 1:
+                                    content=content+'登录保护';
+                                    break;
+                                case 2:
+                                    content=content+'号码冻结';
+                                    break;
+                                case 3:
+                                    content=content+'密码错误';
+                                    break;
+                                default:
+                                    content=content+'[警告:系统异常]';
+                            }
+                            value=content;
+                        }else{
+                            value=order_state[value];
+                        }
+                        if(value==''){
+                            value='-未知-';
+                        }
+                        return value;
+                    }
+                },
 
-		{id:'jwxh_action', title:'操作订单', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'xs', resolution:function(value, record, column, grid, dataNo, columnNo){
-				var tuidan_array = [];
-				var bugua_array =  [];
-				var gaimi_array =  [];
-				var content = '';
-				if( $.inArray(record.order_state, tuidan_array)>=0 && record.order_state!=5 ){
-					content=content+'<a href="#" class="ddglq_change_order_status" ajax_orderid="'+record.id+'" ajax_goods_type="'+record.goods_type+'" ajax_action="tuidan">退单</a>&nbsp;';
-				}
-				if( $.inArray(record.order_state, bugua_array)>=0 && record.order_state!=7 ){
-					content=content+'<a href="#" class="ddglq_change_order_status" ajax_orderid="'+record.id+'" ajax_goods_type="'+record.goods_type+'" ajax_action="budan">补单</a>&nbsp;';
-				}
-								if(content==''){
-					content='-无-';
-				}
-				return content;
-			}
-		}
+                {id:'jwxh_action', title:'操作订单', headerStyle:'text-align: left;', columnClass:'text-left', hideType:'xs', resolution:function(value, record, column, grid, dataNo, columnNo){
+                        var tuidan_array = [];
+                        var bugua_array =  [];
+                        var gaimi_array =  [];
+                        var content = '';
+                        if( $.inArray(record.order_state, tuidan_array)>=0 && record.order_state!=5 ){
+                            content=content+'<a href="#" class="ddglq_change_order_status" ajax_orderid="'+record.id+'" ajax_goods_type="'+record.goods_type+'" ajax_action="tuidan">退单</a>&nbsp;';
+                        }
+                        if( $.inArray(record.order_state, bugua_array)>=0 && record.order_state!=7 ){
+                            content=content+'<a href="#" class="ddglq_change_order_status" ajax_orderid="'+record.id+'" ajax_goods_type="'+record.goods_type+'" ajax_action="budan">补单</a>&nbsp;';
+                        }
+                                        if(content==''){
+                            content='-无-';
+                        }
+                        return content;
+                    }
+                }
 
-	];
-	var dtGridOption_orders = {
-		lang : 'zh-cn',
-		tableClass : 'table table-condensed',
-		ajaxLoad : true,
-		loadURL : '/index.php?m=home&c=order&a=orderlist_dtGrid&goods_id=1260&goods_type=135',
-		exportFileName : '订单列表',
-		columns : dtGridColumns_orders,
-		gridContainer : 'dtGridContainer_orders',
-		toolbarContainer : 'dtGridToolBarContainer_orders',
-		tools : '',
-		pageSize : 10,
-		pageSizeLimit : [10, 20, 50]
-	};
-	var DtGrid_orders = $.fn.DtGrid.init(dtGridOption_orders);
+            ];
+            var dtGridOption_orders = {
+                lang : 'zh-cn',
+                tableClass : 'table table-condensed',
+                ajaxLoad : true,
+                loadURL : '/index.php?m=home&c=order&a=orderlist_dtGrid&goods_id=1260&goods_type=135',
+                exportFileName : '订单列表',
+                columns : dtGridColumns_orders,
+                gridContainer : 'dtGridContainer_orders',
+                toolbarContainer : 'dtGridToolBarContainer_orders',
+                tools : '',
+                pageSize : 10,
+                pageSizeLimit : [10, 20, 50]
+            };
+            var DtGrid_orders = $.fn.DtGrid.init(dtGridOption_orders);
 
-	jQuery(document).ready(function() {
-		$(function(){
-            DtGrid_orders.load();
-			$('#custom_search_orders').click(customSearch_orders);        });
-	});
-	//自定义查询
-		function customSearch_orders(){
-			DtGrid_orders.parameters = new Object();
-			DtGrid_orders.parameters['qq'] = $('#sokey_qq').val();			DtGrid_orders.refresh(true);
-		}</script>
-<!-- 订单列表区结束 -->
+            jQuery(document).ready(function() {
+                $(function(){
+                    DtGrid_orders.load();
+                        });
+            });
+            //自定义查询
+                function customSearch_orders(){
+                    DtGrid_orders.parameters = new Object();
+                    DtGrid_orders.parameters['qq'] = $('#sokey_qq').val();			DtGrid_orders.refresh(true);
+                }</script>
+        <!-- 订单列表区结束 -->
 
-					</div>
+                            </div>
 
-					<div class="tab-pane" id="tab2">
-
+<div class="tab-pane" id="tab2">
 
 <!-- 卡密组列表区开始 -->
 <div class="div_search">
@@ -467,10 +446,9 @@
 
 
 <!-- 卡密组列表区结束 -->
+</div>
 
-					</div>
-
-					<div class="tab-pane" id="tab3">
+<div class="tab-pane" id="tab3">
 
 <!-- 卡密详细列表区开始 -->
 <div class="div_search">
@@ -760,11 +738,67 @@
         $._ajax('/plorder/card/split', val, 'POST', 'JSON', function(json){
             if(json.code > 0){
                 alert(json.msg);
+
             }else{
                 $(".card_splitcard_btn").closest('li')._error(json.msg);
             }
         });
     });
+
+    //订单管理列表
+    $(".btn_ddglq, #custom_search_orders").on('click', function(){
+        $("#tab1").show();
+        $("#tab2").hide();
+        $("#tab3").hide();
+
+        //搜索条件
+        var qq = $.trim($("#sokey_qq").val());
+        $._ajax('/plorder/order/order-list', {qq: qq}, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                var data = json.data;
+                var html = '';
+                if(data.length == 0){
+                    $("#order-list-area").html('');
+                    return false
+                }
+                $.each(data, function(i, v){
+                    html += '' +
+                    '<tr  class="dt-grid-headers">'+
+                    '<td>'+ v.qq +'</td>'+
+                    '<td>'+ v.num +'</td>'+
+                    '<td>'+ v.create_time +'</td>'+
+                    '<td>'+ v.goods_num_org +'</td>'+
+                    '<td>'+ v.goods_num_now +'</td>'+
+                    '<td>'+ v.status_name +'</td>'+
+                    '<td>'+ v.operate +'</td>'+
+                    '</tr>';
+                });
+                $("#order-list-area").html(html);
+            }else{
+
+            }
+        });
+    });
+
+    //卡组管理列表
+    $(".btn_zkmglq").on('click', function(){
+        $("#tab2").show();
+        $("#tab1").hide();
+        $("#tab3").hide();
+
+
+    });
+
+    //子卡管理列表
+    $(".btn_zkmdlq").on('click', function(){
+        $("#tab3").show();
+        $("#tab2").hide();
+        $("#tab1").hide();
+
+
+    });
+
+
 
 
 
