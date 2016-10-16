@@ -199,7 +199,7 @@ class CardBehavior extends Behavior
                 $new_card->off(Card::EVENT_AFTER_INSERT);//解除更新卡组操作
                 $new_card->attributes = [
                     'uid' => $user->uid,
-                    'pid' => $user->uid,
+                    'pid' => ($user instanceof Card) ?  $user->id : 0,
                     'points' => $each_points,
                     'pwd' => $pwd,
                     'group_bn' => $group_bn,

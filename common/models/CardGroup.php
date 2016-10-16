@@ -85,6 +85,13 @@ class CardGroup extends BaseModel
     }
 
     /**
+     * 关联表-hasOne
+     **/
+    public function getCard() {
+        return $this->hasMany(Card::className(), ['group_bn' => 'group_bn']);
+    }
+
+    /**
      * 卡组状态
      * @param $status int
      * @return array|boolean

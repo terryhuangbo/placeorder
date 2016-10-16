@@ -2,14 +2,13 @@
 
 namespace frontend\modules\plorder\controllers;
 
-use common\models\CartGoods;
-use common\models\Goods;
-use common\models\Order;
+use common\models\Card;
 use Yii;
 use app\base\BaseController;
+use common\models\Goods;
+use common\models\Order;
 use common\models\User;
-use common\models\Auth;
-use common\models\Address;
+use common\models\CardGroup;
 
 
 class OrderController extends BaseController
@@ -165,6 +164,109 @@ class OrderController extends BaseController
         $list = (new Order())->getRelationAll('*', $where,['with' => $with], 'oid DESC', 1, 0, $format);
         return $this->toJson('20000', '查询成功', $list);
     }
+
+    /**
+     * 卡密列表
+     * @return type
+     */
+    public function actionCardList()
+    {
+        $card_bn = $this->req('card_bn', '');
+        $group_bn = $this->req('group_bn', '');
+        $format = [
+            'card_bn',
+            'pid',
+            'points',
+            'group_bn',
+            'group_points' => function($m){
+                return getValue($m, 'cardGroup.points');
+            },
+            'create_time' => function($m){
+                return date('Y-m-d H:i:s', $m->create_time);
+            },
+            'status_name' => function ($m) {
+                return CardGroup::getCardGroupStatus($m->cardGroup->status);
+            },
+            'operate' => function ($m) {
+                return '确定';
+            },
+        ];
+        $join = ['cardGroup'];
+        $where = ['and'];
+
+        if(!empty($card_bn)){
+            $where[] = ['like', 'card_bn', $card_bn];
+        }
+        if(!empty($group_bn)){
+            $where[] = ['group_bn' => $group_bn];
+        }
+
+        if($this->userLog){
+            $where[] = ['uid' => $this->uid];
+        }else{
+            $card = Card::findOne(['card_bn' => $this->card_bn]);
+            $where[] = ['pid' => $card->id];
+        }
+
+        $list = (new Card())->getRelationAll('*', $where,['joinWith' => $join], Card::tableName() . ".id DESC", 1, 0, $format);
+        return $this->toJson('20000', '查询成功', $list);
+    }
+
+    /**
+     * 卡组列表
+     * @return type
+     */
+    public function actionCardGroupList()
+    {
+        $card_bn = $this->req('card_bn', '');
+        $group_bn = $this->req('group_bn', '');
+        $comment = $this->req('comment', '');
+        $format = [
+            'points',
+            'group_bn',
+            'points',
+            'card_num',
+            'pwd',
+            'comment',
+            'total' => function($m){
+                return $m->points * $m->card_num;
+            },
+            'create_time' => function($m){
+                return date('Y-m-d H:i:s', $m->create_time);
+            },
+
+            'status_name' => function ($m) {
+                return CardGroup::getCardGroupStatus($m->status);
+            },
+            'operate' => function ($m) {
+                return '确定';
+            },
+        ];
+        $join = ['card'];
+        $where = ['and'];
+
+        if(!empty($card_bn)){
+            $where[] = ['card_bn' => $card_bn];
+        }
+        if(!empty($group_bn)){
+            $where[] = ['group_bn' => $group_bn];
+        }
+        if(!empty($comment)){
+            $where[] = ['like', 'comment', $comment];
+        }
+
+        if($this->userLog){
+            $where[] = [CardGroup::tableName() . '.uid' => $this->uid];
+        }else{
+            $card = Card::findOne(['card_bn' => $this->card_bn]);
+            $where[] = [CardGroup::tableName() . '.group_bn' => $card->group_bn];
+        }
+
+        $list = (new CardGroup())->getRelationAll('*', $where,['joinWith' => $join], CardGroup::tableName() . ".id DESC", 1, 0, $format);
+        return $this->toJson('20000', '查询成功', $list);
+    }
+
+
 
 
 

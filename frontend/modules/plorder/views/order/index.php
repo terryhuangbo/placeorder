@@ -385,58 +385,28 @@
 	</form>
 </div>
 <div id="dtGridContainer_card_groups" class="dt-grid-container" ajax_change_card_group_status="/index.php?m=home&amp;c=card&amp;a=change_card_group_status" ajax_card_group_down="/index.php?m=home&amp;c=card&amp;a=homeDown" ajax_dtgrid_url="/index.php?m=home&amp;c=card&amp;a=cardlist_dtGrid&amp;goods_id=1260&amp;goods_type=135">
+    <table class="dt-grid table table-condensed"  style="">
+        <thead>
+        <tr class="dt-grid-headers">
+            <th class="extra-column visible-xs "></th>
+            <th columnno="0" columnid="groupno" class="dt-grid-header   can-sort" style="text-align: left;">		卡密组	</th>
+            <th columnno="1" columnid="all_num" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		面值	</th>
+            <th columnno="2" columnid="count_num" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		张数	</th>
+            <th columnno="3" columnid="all_count_num" class="dt-grid-header   can-sort" style="text-align: left;">		合计点	</th>
+            <th columnno="4" columnid="password" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		默认密码	</th>
+            <th columnno="5" columnid="user_note" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		备注信息	</th>
+            <th columnno="6" columnid="time" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		生成时间	</th>
+            <th columnno="7" columnid="status" class="dt-grid-header   can-sort" style="text-align: left;">		组状态	</th>
+            <th columnno="8" columnid="jwxh_action" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		操作卡密组	</th>
+            <th columnno="9" columnid="jwxh_down" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		下载卡密组	</th>
+        </tr>
+        </thead>
+        <tbody id="group-list-area">
 
-<table class="dt-grid table table-condensed" id="dt_grid_f794fc98de87c25849f4b6f483a01d91" style="">
-
-	<thead>
-    <tr class="dt-grid-headers">
-    <th class="extra-column visible-xs "></th>
-    <th columnno="0" columnid="groupno" class="dt-grid-header   can-sort" style="text-align: left;">		卡密组	</th>
-
-    <th columnno="1" columnid="all_num" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		面值	</th>
-
-    <th columnno="2" columnid="count_num" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		张数	</th>
-
-    <th columnno="3" columnid="all_count_num" class="dt-grid-header   can-sort" style="text-align: left;">		合计点	</th>
-
-    <th columnno="4" columnid="password" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		默认密码	</th>
-
-    <th columnno="5" columnid="user_note" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		备注信息	</th>
-
-    <th columnno="6" columnid="time" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		生成时间	</th>
-
-    <th columnno="7" columnid="status" class="dt-grid-header   can-sort" style="text-align: left;">		组状态	</th>
-
-    <th columnno="8" columnid="jwxh_action" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		操作卡密组	</th>
-
-    <th columnno="9" columnid="jwxh_down" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		下载卡密组	</th>
-
-    </tr>
-    <tr class="dt-grid-headers">
-    	<td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-    </tr>
-    <tr class="dt-grid-headers">
-    	<td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-        <td>111</td>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
+        </tbody>
     </table>
-    </div>
+</div>
 <div id="dtGridToolBarContainer_card_groups" class="dt-grid-toolbar-container"><span class="pagination pagination-sm dt-grid-tools"></span><span class="dt-grid-pager"><ul id="f794fc98de87c25849f4b6f483a01d91_dtGridOperations" class="pagination pagination-sm dt-grid-pager-button"></ul><span class="dt-grid-pager-status text-primary">无查询记录...</span><div class="clearfix"></div></span><div class="clearfix"></div></div>
-
 
 <!-- 卡密组列表区结束 -->
 </div>
@@ -457,49 +427,26 @@
 		<button type="button" class="btn" id="custom_search_cards">搜索详细卡密</button>
 	</form>
 </div>
-<div id="dtGridContainer_cards" class="dt-grid-container" ajax_change_card_status="/index.php?m=home&amp;c=card&amp;a=change_card_status" ajax_dtgrid_url="/index.php?m=home&amp;c=card&amp;a=cardslist_dtGrid&amp;goods_id=1260&amp;goods_type=135"><table class="dt-grid table table-condensed" id="dt_grid_ee55d6168457509b79d4cf14937f0d44" style="">
+<div id="dtGridContainer_cards" class="dt-grid-container" >
+    <table class="dt-grid table table-condensed" id="dt_grid_ee55d6168457509b79d4cf14937f0d44" style="">
+        <thead>
+            <tr class="dt-grid-headers">
+                <th class="extra-column visible-xs "></th>
+                <th columnno="0" columnid="cardno" class="dt-grid-header   can-sort" style="text-align: left;">		卡密	</th>
+                <th columnno="1" columnid="usenum" class="dt-grid-header   can-sort" style="text-align: left;">		余额	</th>
+                <th columnno="2" columnid="allnum" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		面值	</th>
+                <th columnno="3" columnid="groupid" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		卡组ID	</th>
+                <th columnno="4" columnid="time" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		生成时间	</th>
+                <th columnno="5" columnid="status" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		组状态	</th>
+                <th columnno="6" columnid="jwxh_action" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		操作卡密组	</th>
+              </tr>
+        </thead>
 
-	<thead>
-    	<tr class="dt-grid-headers">
-        	<th class="extra-column visible-xs "></th>
-            <th columnno="0" columnid="cardno" class="dt-grid-header   can-sort" style="text-align: left;">		卡密	</th>
+        <tbody id="card-list-area">
 
-            <th columnno="1" columnid="usenum" class="dt-grid-header   can-sort" style="text-align: left;">		余额	</th>
-
-            <th columnno="2" columnid="allnum" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		面值	</th>
-
-            <th columnno="3" columnid="groupid" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		卡组ID	</th>
-
-            <th columnno="4" columnid="time" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		生成时间	</th>
-
-            <th columnno="5" columnid="status" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		组状态	</th>
-
-            <th columnno="6" columnid="jwxh_action" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		操作卡密组	</th>
-
-          </tr>
-          <tr class="dt-grid-headers">
-          		<td>111</td>
-                <td>111</td>
-                <td>111</td>
-                <td>111</td>
-                <td>111</td>
-                <td>111</td>
-                <td>111</td>
-          </tr>
-           <tr class="dt-grid-headers">
-          		<td>111</td>
-                <td>111</td>
-                <td>111</td>
-                <td>111</td>
-                <td>111</td>
-                <td>111</td>
-                <td>111</td>
-          </tr>
-          </thead>
-          <tbody>
-          </tbody>
-          </table>
-          </div>
+        </tbody>
+    </table>
+</div>
 
 
 <div id="dtGridToolBarContainer_cards" class="dt-grid-toolbar-container"><span class="pagination pagination-sm dt-grid-tools"></span><span class="dt-grid-pager"><ul id="ee55d6168457509b79d4cf14937f0d44_dtGridOperations" class="pagination pagination-sm dt-grid-pager-button"></ul><span class="dt-grid-pager-status text-primary">无查询记录...</span><div class="clearfix"></div></span><div class="clearfix"></div></div>
@@ -774,33 +721,40 @@
     });
 
     //卡组管理列表
-    $(".btn_zkmglq").on('click', function(){
+    $(".btn_zkmglq, #custom_search_card_groups").on('click', function(){
         $("#tab2").show();
         $("#tab1").hide();
-        $("#tab3").hide();//sokey_card_groups_GroupId
+        $("#tab3").hide();
+
         //搜索条件
-        var qq = $.trim($("#sokey_card_groups_GroupId").val());
-        $._ajax('/plorder/order/order-list', {qq: qq}, 'POST', 'JSON', function(json){
+        var group_bn = $.trim($("#sokey_card_groups_GroupId").val());
+        var card_bn = $.trim($("#sokey_card_groups_Card").val());
+        var comment = $.trim($("#sokey_card_groups_UserNote").val());
+        var param = {group_bn: group_bn, card_bn:card_bn, comment:comment};
+        $._ajax('/plorder/order/card-group-list', param, 'POST', 'JSON', function(json){
             if(json.code > 0){
                 var data = json.data;
                 var html = '';
                 if(data.length == 0){
-                    $("#order-list-area").html('');
+                    $("#group-list-area").html('');
                     return false
                 }
                 $.each(data, function(i, v){
                     html += '' +
                     '<tr  class="dt-grid-headers">'+
-                    '<td>'+ v.qq +'</td>'+
-                    '<td>'+ v.num +'</td>'+
+                    '<td>'+ v.group_bn +'</td>'+
+                    '<td>'+ v.points +'</td>'+
+                    '<td>'+ v.card_num +'</td>'+
+                    '<td>'+ v.total +'</td>'+
+                    '<td>'+ v.pwd +'</td>'+
+                    '<td>'+ v.comment +'</td>'+
                     '<td>'+ v.create_time +'</td>'+
-                    '<td>'+ v.goods_num_org +'</td>'+
-                    '<td>'+ v.goods_num_now +'</td>'+
                     '<td>'+ v.status_name +'</td>'+
+                    '<td>'+ v.operate +'</td>'+
                     '<td>'+ v.operate +'</td>'+
                     '</tr>';
                 });
-                $("#order-list-area").html(html);
+                $("#group-list-area").html(html);
             }else{
 
             }
@@ -809,11 +763,39 @@
     });
 
     //子卡管理列表
-    $(".btn_zkmdlq").on('click', function(){
+    $(".btn_zkmdlq, #custom_search_cards").on('click', function(){
         $("#tab3").show();
         $("#tab2").hide();
         $("#tab1").hide();
 
+        //搜索条件
+        var group_bn = $.trim($("#sokey_cards_GroupId").val());
+        var card_bn = $.trim($("#sokey_cards_Card").val());
+        $._ajax('/plorder/order/card-list', {group_bn: group_bn, card_bn:card_bn}, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                var data = json.data;
+                var html = '';
+                if(data.length == 0){
+                    $("#card-list-area").html('');
+                    return false
+                }
+                $.each(data, function(i, v){
+                    html += '' +
+                    '<tr  class="dt-grid-headers">'+
+                    '<td>'+ v.card_bn +'</td>'+
+                    '<td>'+ v.points +'</td>'+
+                    '<td>'+ v.group_points +'</td>'+
+                    '<td>'+ v.group_bn +'</td>'+
+                    '<td>'+ v.create_time +'</td>'+
+                    '<td>'+ v.status_name +'</td>'+
+                    '<td>'+ v.operate +'</td>'+
+                    '</tr>';
+                });
+                $("#card-list-area").html(html);
+            }else{
+
+            }
+        });
 
     });
 
