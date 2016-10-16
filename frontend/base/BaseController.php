@@ -24,6 +24,7 @@ class BaseController extends Controller
      */
     public function beforeAction()
     {
+
         //不用校验的页面，自动跳过
         $action_id = Yii::$app->controller->action->id;
         if(in_array($action_id, $this->_uncheck)){
@@ -37,6 +38,7 @@ class BaseController extends Controller
 
         //检查是否登录
         if(empty($this->uid) && empty($this->card_bn)){
+            $this->setReturnUrl();
             $this->redirect('/plorder/user/reg');
             return false;
         }
@@ -46,6 +48,7 @@ class BaseController extends Controller
             $this->userLog = true;
             $this->user = (new User())->getOne(['uid' => $this->uid]);
             if(empty($this->user)){
+                $this->setReturnUrl();
                 $this->redirect('/plorder/user/reg');
                 return false;
             }
@@ -53,6 +56,7 @@ class BaseController extends Controller
             $this->userLog = false;
             $this->card = (new Card())->getOne(['card_bn' => $this->card_bn]);
             if(empty($this->card)){
+                $this->setReturnUrl();
                 $this->redirect('/plorder/user/reg');
                 return false;
             }
@@ -61,14 +65,36 @@ class BaseController extends Controller
         return true;
     }
 
+
     /**
-     * 跳回登录页面
+     * 保存返回链接
      * @return string
      */
-    public function _to_login()
+    public function setReturnUrl($url = '')
     {
-        return $this->redirect('/redeem/user/reg');
+        if(empty($url)){
+            Yii::$app->request->absoluteUrl;
+        }
+        //保存返回链接
+        $cookies = Yii::$app->response->cookies;
+        $cookies->add(new \yii\web\Cookie([
+            'name' => 'return_url',
+            'value' => Yii::$app->request->absoluteUrl,
+        ]));
     }
+
+    /**
+     * 保存返回链接
+     * @return string
+     */
+    public function getReturnUrl()
+    {
+        //从cookies中校验用户登录信息
+        $cookies = Yii::$app->request->cookies;
+        return $cookies->getValue('return_url', '');
+    }
+
+
 
     /**
      * 判断是否是POST请求
@@ -78,6 +104,8 @@ class BaseController extends Controller
     {
         return Yii::$app->request->isPost;
     }
+
+
 
     /**
      * 判断是否是Get请求

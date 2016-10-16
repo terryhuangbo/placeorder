@@ -250,7 +250,7 @@
 
             $._ajax('/plorder/user/card-login', param, 'POST', 'JSON', function(json){
                 if(json.code > 0){
-                    alert(json.msg);
+                    window.location.href = json.data.redirect_url || "/plorder/order/index";
                 }else{
                     //输入卡密密码
                     if(json.code == -20004){
@@ -281,9 +281,7 @@
             };
             $._ajax('/plorder/user/login', param, 'POST', 'JSON', function(json){
                 if(json.code > 0){
-                    window.location.href = "/plorder/order/index";
-
-//                    alert(json.msg);
+                    window.location.href = json.data.redirect_url || "/plorder/order/index";
                 }else{
                     $(".username_login_btn").closest('p')._error(json.msg, 'p', 'prepend');
                 }
@@ -323,6 +321,7 @@
             $._ajax('/plorder/user/reg', param, 'POST', 'JSON', function(json){
                 if(json.code > 0){
                     alert('注册成功');
+                    window.location.href = "/plorder/order/index";
                 }else{
                     $(".username_register_btn").closest('p')._error(json.msg, 'p', 'prepend');
                 }

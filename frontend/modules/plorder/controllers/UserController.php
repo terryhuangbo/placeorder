@@ -78,8 +78,10 @@ class UserController extends BaseController
             'value' => $user['uid'],
         ]));
         $cookies->remove('card_bn');
-
-        return $this->toJson('20000', '登录成功');
+        $_data = [
+            'redirect_url' => $this->getReturnUrl()
+        ];
+        return $this->toJson('20000', '登录成功', $_data);
     }
 
     /**
@@ -119,7 +121,11 @@ class UserController extends BaseController
             ]));
             $cookies->remove('user_id');
         }
-        return $this->toJson($data['code'], $data['msg']);
+
+        $_data = [
+            'redirect_url' => $this->getReturnUrl()
+        ];
+        return $this->toJson($data['code'], $data['msg'], $_data);
     }
 
     /**
