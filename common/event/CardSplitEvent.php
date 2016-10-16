@@ -17,6 +17,12 @@ use yii\base\Event;
  */
 class CardSplitEvent extends Event
 {
+
+    /**
+     * @var User|Card 待拆的用户
+     */
+    public $splitedUser = null;
+
     /**
      * @var int 拆分数量
      */

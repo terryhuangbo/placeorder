@@ -11,6 +11,7 @@ use common\base\BaseModel;
  *
  * @property integer $id
  * @property string $group_bn
+ * @property integer $uid
  * @property integer $points
  * @property string $pwd
  * @property string $card_num
@@ -50,12 +51,14 @@ class CardGroup extends BaseModel
     public function rules()
     {
         return [
-            [['points', 'card_num','status', 'create_time', 'update_time'], 'integer'],
+            [['uid','points', 'card_num','status', 'create_time', 'update_time'], 'integer'],
             [['group_bn'], 'string', 'max' => 21],
             [['pwd'], 'string', 'max' => 50],
             [['comment'], 'string', 'max' => 200],
             //卡组
             [['group_bn'], 'unique', 'message' => '卡组必须唯一'],
+            //卡组用户
+            [['uid'], 'default', 'value' => 0],
             //卡组状态
             ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '卡组状态错误'],
 
@@ -70,6 +73,7 @@ class CardGroup extends BaseModel
         return [
             'id' => '卡组ID',
             'group_bn' => '卡组编号',
+            'uid' => '卡组用户ID',
             'points' => '卡密面值',
             'pwd' => '卡组密码',
             'card_num' => '卡密数量',
@@ -79,8 +83,6 @@ class CardGroup extends BaseModel
             'update_time' => '更新时间',
         ];
     }
-
-
 
     /**
      * 卡组状态

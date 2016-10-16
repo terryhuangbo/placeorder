@@ -78,15 +78,18 @@ class CardController extends BaseController
      */
     public function actionSplit()
     {
-        $card_bn = trim($this->req('card_bn', ''));
-        $card_bn = $this->userLog ? $card_bn : $this->card_bn;
         $post = Yii::$app->request->post();
-        $card = Card::findOne(['card_bn' => $card_bn]);
-        if(!$card){
-            return $this->toJson('-20001', '卡密不存在');
-        }
+
         unset($post['card_bn']);
+
+        if($this->userLog){
+            $splitedUser = User::findOne($this->uid);
+        }else{
+            $splitedUser = Card::findOne(['card_bn' => $this->card_bn]);
+        }
+        $post['splitedUser'] = $splitedUser;
         $event = new \common\event\CardSplitEvent($post);
+        $card = new Card();
         $card->trigger(Card::EVENT_SPLIT, $event);
 
         return $this->toJson($event->code, $event->msg);

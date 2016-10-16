@@ -145,11 +145,17 @@ class CardBehavior extends Behavior
      * 处理拆卡事件
      */
     public function handleSplit($event) {
-        $card = $this->owner;
+        $user = $event->splitedUser;
         $num = (int) $event->num;
         $each_points = (int) $event->each_points;
         $pwd = $event->pwd;
         $comment = $event->comment;
+
+        if(!($user instanceof User) && !($user instanceof Card)){
+            $event->code = -20002;
+            $event->msg = '充值用户不存在';
+        }
+
         //充值金额是否为正整数
         if($each_points <= 0){
             $event->code = -20001;
@@ -157,9 +163,9 @@ class CardBehavior extends Behavior
             return;
         }
         //卡余额是否足够
-        if($card->points < $num * $each_points){
+        if($user->points < $num * $each_points){
             $event->code = -20002;
-            $event->msg = '此卡余额不足';
+            $event->msg = '余额不足';
             return;
         }
 
@@ -168,14 +174,15 @@ class CardBehavior extends Behavior
         try{
 
             //原卡扣款
-            $card->points -= $num * $each_points;
-            $ret = $card->save();
+            $user->points -= $num * $each_points;
+            $ret = $user->save();
             if($ret['code'] < 0){
                 throw new Exception('卡密扣款失败');
             }
 
             //生成新的卡组
             $group = new CardGroup();
+            $group->uid = $user->uid;
             $group->points = $each_points;
             $group->pwd = $pwd;
             $group->card_num = $num;
@@ -191,7 +198,8 @@ class CardBehavior extends Behavior
                 $new_card = new Card();
                 $new_card->off(Card::EVENT_AFTER_INSERT);//解除更新卡组操作
                 $new_card->attributes = [
-                    'pid' => $card->id,
+                    'uid' => $user->uid,
+                    'pid' => $user->uid,
                     'points' => $each_points,
                     'pwd' => $pwd,
                     'group_bn' => $group_bn,

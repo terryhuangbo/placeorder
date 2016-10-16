@@ -184,9 +184,6 @@
 				<div class="panel-body">
 					<form role="form" method="post" class="card_chaika_form" onsubmit="return false;">
 					<ul>
-                        <?php if($userLog): ?>
-                            <li><span class="fixed-width-right-80">输入卡密：</span><input name="cardbn" type="text" placeholder="待拆卡的卡密"></li>
-                        <?php endif ?>
 						<li><span class="fixed-width-right-80">拆分数量：</span><input name="cardnum" type="text" placeholder="需要生成子卡的张数"></li>
 						<li><span class="fixed-width-right-80">卡密面值：</span><input name="allnum" type="text" placeholder="每张子卡的面值是多少"></li>
 						<li><span class="fixed-width-right-80">设置密码：</span><input name="password" type="text" placeholder="可空,空则默认无密码"><span class="hidden-xs"></span></li>
@@ -250,40 +247,36 @@
 				</ul>
 
 				<div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <!-- 订单列表区开始 -->
+                        <div class="div_search">
+                                <form class="form-inline" role="form">
+                                    <div class="form-group">
+                                        <label class="control-label" for="name">QQ号码：</label>
+                                        <input type="text" class="form-control" id="sokey_qq" placeholder="请输入QQ号码">&nbsp;
+                                    </div>
+                                    <button type="button" class="btn" id="custom_search_orders">模糊搜索订单</button>
+                                </form>
+                            </div>
+                        <div id="dtGridContainer_orders" class="dt-grid-container" ajax_change_order_status="">
 
+                        <table class="dt-grid table table-condensed"  style="">
+                            <thead>
+                                <tr class="dt-grid-headers">
+                                    <th class="extra-column visible-xs "></th>
+                                    <th columnno="0" columnid="aa" class="dt-grid-header   can-sort" style="text-align: left;">QQ号码</th>			<th columnno="1" columnid="need_num_0" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		下单数量	</th>
+                                    <th columnno="2" columnid="add_time" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">下单日期</th>
+                                    <th columnno="3" columnid="start_num" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		初始数量	</th>
+                                    <th columnno="4" columnid="now_num" class="dt-grid-header   can-sort" style="text-align: left;">		当前数量	</th>
+                                    <th columnno="5" columnid="order_state" class="dt-grid-header   can-sort" style="text-align: left;">		订单状态	</th>
+                                    <th columnno="6" columnid="jwxh_action" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		操作订单	</th>
+                                </tr>
+                            </thead>
+                            <tbody id="order-list-area">
 
-    <div class="tab-pane active" id="tab1">
-        <!-- 订单列表区开始 -->
-        <div class="div_search">
-                <form class="form-inline" role="form">
-                    <div class="form-group">
-                        <label class="control-label" for="name">QQ号码：</label>
-                        <input type="text" class="form-control" id="sokey_qq" placeholder="请输入QQ号码">&nbsp;
+                            </tbody>
+                        </table>
                     </div>
-                    <button type="button" class="btn" id="custom_search_orders">模糊搜索订单</button>
-                </form>
-            </div>
-        <div id="dtGridContainer_orders" class="dt-grid-container" ajax_change_order_status="">
-
-        <table class="dt-grid table table-condensed"  style="">
-            <thead>
-                <tr class="dt-grid-headers">
-                    <th class="extra-column visible-xs "></th>
-                    <th columnno="0" columnid="aa" class="dt-grid-header   can-sort" style="text-align: left;">QQ号码</th>			<th columnno="1" columnid="need_num_0" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		下单数量	</th>
-                    <th columnno="2" columnid="add_time" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">下单日期</th>
-                    <th columnno="3" columnid="start_num" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		初始数量	</th>
-                    <th columnno="4" columnid="now_num" class="dt-grid-header   can-sort" style="text-align: left;">		当前数量	</th>
-                    <th columnno="5" columnid="order_state" class="dt-grid-header   can-sort" style="text-align: left;">		订单状态	</th>
-                    <th columnno="6" columnid="jwxh_action" class="dt-grid-header hidden-xs   can-sort" style="text-align: left;">		操作订单	</th>
-                </tr>
-            </thead>
-            <tbody id="order-list-area">
-
-            </tbody>
-        </table>
-    </div>
-
-
         <div id="dtGridToolBarContainer_orders" class="dt-grid-toolbar-container"><span class="pagination pagination-sm dt-grid-tools"></span><span class="dt-grid-pager"><ul id="d0f0de9301d3c9faeac08e71a11379d6_dtGridOperations" class="pagination pagination-sm dt-grid-pager-button"></ul><span class="dt-grid-pager-status text-primary">无查询记录...</span><div class="clearfix"></div></span><div class="clearfix"></div></div>
 
         <script type="text/javascript">
@@ -676,10 +669,10 @@
     //卡密充值
     $(".card_chongzhi_btn").on('click', function(){
         var param = $._get_form_json(".card_chongzhi_form");
-        if(IS_USER && param.kmcz_cardno == ''){
-            $("[name=kmcz_cardno]").closest('li')._error('请输入卡密');
-            return
-        }
+//        if(IS_USER && param.kmcz_cardno == ''){
+//            $("[name=kmcz_cardno]").closest('li')._error('请输入卡密');
+//            return
+//        }
         if(param.usenum == ''){
             $("[name=usenum]").closest('li')._error('请输入数量');
             return
@@ -784,8 +777,34 @@
     $(".btn_zkmglq").on('click', function(){
         $("#tab2").show();
         $("#tab1").hide();
-        $("#tab3").hide();
+        $("#tab3").hide();//sokey_card_groups_GroupId
+        //搜索条件
+        var qq = $.trim($("#sokey_card_groups_GroupId").val());
+        $._ajax('/plorder/order/order-list', {qq: qq}, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                var data = json.data;
+                var html = '';
+                if(data.length == 0){
+                    $("#order-list-area").html('');
+                    return false
+                }
+                $.each(data, function(i, v){
+                    html += '' +
+                    '<tr  class="dt-grid-headers">'+
+                    '<td>'+ v.qq +'</td>'+
+                    '<td>'+ v.num +'</td>'+
+                    '<td>'+ v.create_time +'</td>'+
+                    '<td>'+ v.goods_num_org +'</td>'+
+                    '<td>'+ v.goods_num_now +'</td>'+
+                    '<td>'+ v.status_name +'</td>'+
+                    '<td>'+ v.operate +'</td>'+
+                    '</tr>';
+                });
+                $("#order-list-area").html(html);
+            }else{
 
+            }
+        });
 
     });
 

@@ -14,6 +14,7 @@ use yii\db\Exception;
  *
  * @property integer $id
  * @property integer $pid
+ * @property integer $uid
  * @property string $card_bn
  * @property integer $points
  * @property string $pwd
@@ -69,7 +70,7 @@ class Card extends BaseModel
             [['card_bn'], 'string', 'max' => 8],
             [['pwd'], 'string', 'max' => 50],
             [['card_bn'], 'unique', 'message' => '卡密必须唯一'],
-            [['pid'], 'default', 'value' => 0],
+            [['pid', 'uid'], 'default', 'value' => 0],
             //面值
             ['points',  'required', 'message' => '卡密面值不能为空'],
             ['points',  'integer', 'min' => 1, 'tooSmall' => '卡密面值必须大于0', 'on' => self::SCENARIO_ADD],//添加时，面值必须大于0
@@ -90,6 +91,7 @@ class Card extends BaseModel
         return [
             'id' => '卡密ID',
             'pid' => '卡密父ID',
+            'uid' => '卡密所属用户ID',
             'card_bn' => '卡密编号',
             'points' => '卡密面值',
             'pwd' => '卡密密码',
