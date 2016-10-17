@@ -5,7 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>手工人气</title>
+<title><?php echo getValue($meta, 'site_name', '') ?></title>
+<meta name="keywords" content="<?php echo $meta['site_keywords'] ?>"/>
+<meta name="description" content="<?php echo $meta['site_description'] ?>"/>
 <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
 <link href="/static/css/font-awesome.min.css" rel="stylesheet">
@@ -15,9 +17,6 @@
 <script src="/static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="/static/js/jquery.dtGrid.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="/static/js/zh-cn.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" >
-    var IS_USER = <?echo $userLog ?>;
-</script>
 
 <style>
     .navbar-fixed-top, .navbar-fixed-bottom {
@@ -50,7 +49,7 @@
         background-image:none
     }
     .login_page,body {
-        background-image: url("http://all-pt.upyun.cdn.95jw.cn/Uploads/image/2016-03-11/56e29f86ac53d.jpg");
+        background-image: url("<?php echo yiiParams('img_host') . getValue($meta, 'site_bgimg', '') ?>");
         background-attachment: fixed;
     }
     .menu,footer {
@@ -76,7 +75,7 @@
 	<div class="container-fluid menu">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><a href="#"><h2>手工人气</h2></a></div>
+				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><a href="#"><h2><?php echo getValue($meta, 'order_title', '') ?></h2></a></div>
 				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right">
 					<div class="top_nav">
 						<a href="<?php echo yiiUrl('/plorder/goods/index') ?>" class="hidden-xs">切换到首页</a>
@@ -93,10 +92,10 @@
    <div class="row">
       <div class="col-md-12 banner">
             <p>
-                <span style="color:#E53333;font-size:24px;"><strong>手工人气每天中午12点和晚上12点开刷 急单不要下</strong></span>
+                <span style="color:#E53333;font-size:24px;"><strong><?php echo getValue($meta, 'order_notice', '') ?></strong></span>
             </p>
             <p>
-                <span style="font-size:24px;color:#E53333;"><span style="font-size:24px;color:#E53333;"><b>下单的Q空间有说说即可 &nbsp;下单前空间必须设置允许任何人可访问</b></span></span>
+<!--                <span style="font-size:24px;color:#E53333;"><span style="font-size:24px;color:#E53333;"><b>下单的Q空间有说说即可 &nbsp;下单前空间必须设置允许任何人可访问</b></span></span>-->
             </p>
        </div>
    </div>
@@ -468,18 +467,12 @@
 <footer class="navbar-fixed-bottom hidden-xs hidden-sm">
 	<div class="container">
 		<div class="row">
-		  <div class="col-md-8 col-sm-6 col-xs-6"><span>Copyright © 新版post卡密平台<span class="hidden-xs hidden-sm">. All Rights Reserved</span></span></div>
-		  <div class="col-md-4 col-sm-6 col-xs-6 text-right">蜀ICP备123456号</div>
-		</div>
-	</div>
-</footer>
-
-<!--底部-->
-<footer class="hidden-md hidden-lg">
-	<div class="container">
-		<div class="row">
-		  <div class="col-md-8 col-sm-6 col-xs-6"><span><span class="hidden-xs">Copyright </span>© 新版post卡密平台<span class="hidden-xs hidden-sm">. All Rights Reserved</span></span></div>
-		  <div class="col-md-4 col-sm-6 col-xs-6 text-right">蜀ICP备123456号</div>
+		  <div class="col-md-8 col-sm-6 col-xs-6">
+              <span><?php echo $meta['site_copyright'] ?>
+                  <span class="hidden-xs hidden-sm">. All Rights Reserved</span>
+              </span>
+          </div>
+		  <div class="col-md-4 col-sm-6 col-xs-6 text-right"><?php echo $meta['site_icp'] ?></div>
 		</div>
 	</div>
 </footer>
@@ -616,10 +609,6 @@
     //卡密充值
     $(".card_chongzhi_btn").on('click', function(){
         var param = $._get_form_json(".card_chongzhi_form");
-//        if(IS_USER && param.kmcz_cardno == ''){
-//            $("[name=kmcz_cardno]").closest('li')._error('请输入卡密');
-//            return
-//        }
         if(param.usenum == ''){
             $("[name=usenum]").closest('li')._error('请输入数量');
             return
@@ -796,11 +785,6 @@
 
             }
         });
-
     });
-
-
 </script>
-
-
 </body></html>

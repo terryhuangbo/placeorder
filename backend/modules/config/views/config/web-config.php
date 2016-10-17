@@ -106,7 +106,7 @@ $meta = new Meta();
         </div>
 
         <div class="control-group">
-            <label class="control-label">网站备案号：</label>
+            <label class="control-label">网站底部版权：</label>
             <div class="controls">
                 <input name="config[site_copyright]" type="text" class="input-medium" data-rules="" value="<?echo $site_copyright ?>">
             </div>

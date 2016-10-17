@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新版post卡密社区</title>
+    <title><?php echo getValue($meta, 'site_name', '') ?></title>
+    <meta name="keywords" content="<?php echo $meta['site_keywords'] ?>"/>
+    <meta name="description" content="<?php echo $meta['site_description'] ?>"/>
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/jwxh.css">
@@ -26,7 +28,7 @@
     .thumbnail a{height:180px}
     .alert-danger{color:#007e94;background-color:#b4eef8;border-color:#40d0e8;background-image:none}
     .login_page,body {
-        background-image: url("/static/image/56e29f86ac53d.jpg");
+        background-image: url("<?php echo yiiParams('img_host') . getValue($meta, 'site_bgimg', '') ?>");
         background-attachment: fixed;
     }
     .menu,footer {
@@ -51,7 +53,7 @@
 <header>
     <div class="container-fluid menu">
         <div class="container">
-            <h2 class="text-center" ><strong>新版post卡密社区</strong></h2>
+            <h2 class="text-center" ><strong><?php echo getValue($meta, 'site_title', '') ?></strong></h2>
         </div>
     </div>
 </header>
@@ -63,7 +65,7 @@
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
             &times;
         </button>
-        这是新版post卡密社区  感谢大家的支持  之前的Q冻结了  新售后QQ1356130480 有任何变动 看公告即可
+        <?php echo getValue($meta, 'home_notice', '') ?>
     </div>
     <!--内容标签-->
     <div class="row">
@@ -83,18 +85,27 @@
 <footer class="navbar-fixed-bottom hidden-xs hidden-sm">
     <div class="container">
         <div class="row">
-          <div class="col-md-8 col-sm-6 col-xs-6" ><span>Copyright © 新版post卡密平台<span class="hidden-xs hidden-sm">. All Rights Reserved</span></span></div>
-          <div class="col-md-4 col-sm-6 col-xs-6 text-right">蜀ICP备123456号</div>
+            <div class="col-md-8 col-sm-6 col-xs-6">
+              <span><?php echo $meta['site_copyright'] ?>
+                  <span class="hidden-xs hidden-sm">. All Rights Reserved</span>
+              </span>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-6 text-right"><?php echo $meta['site_icp'] ?></div>
         </div>
     </div>
 </footer>
 
 <!--底部-->
-<footer class="hidden-md hidden-lg">
+<!--底部-->
+<footer class="navbar-fixed-bottom hidden-xs hidden-sm">
     <div class="container">
         <div class="row">
-          <div class="col-md-8 col-sm-6 col-xs-6" ><span><span class="hidden-xs">Copyright </span>© 新版post卡密平台<span class="hidden-xs hidden-sm">. All Rights Reserved</span></span></div>
-          <div class="col-md-4 col-sm-6 col-xs-6 text-right">蜀ICP备123456号</div>
+            <div class="col-md-8 col-sm-6 col-xs-6">
+              <span><?php echo $meta['site_copyright'] ?>
+                  <span class="hidden-xs hidden-sm">. All Rights Reserved</span>
+              </span>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-6 text-right"><?php echo $meta['site_icp'] ?></div>
         </div>
     </div>
 </footer>
@@ -107,10 +118,11 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                <h4 class="modal-title" id="myModalLabel">新版post卡密社区</h4>
+                <h4 class="modal-title" id="myModalLabel"><?php echo getValue($meta, 'site_title', '') ?></h4>
             </div>
-            <div class="modal-body"> 
-                欢迎光临post新版社区  感谢大家的支持  新售后QQ1356130480 有任何变动 看公告即可          </div>
+            <div class="modal-body">
+                <?php echo getValue($meta, 'home_model_notice', '') ?>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info" data-dismiss="modal">
                 关闭公告
@@ -125,6 +137,9 @@
 <script src="/static/js/jquery.cookie.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="/js/tools.js"  type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
+    <?php if($just_login ===1 ): ?>
+        $('#myModal').modal('show');
+    <?php endif ?>
 </script>
 
 <div style="display:none;">

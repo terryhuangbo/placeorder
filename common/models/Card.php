@@ -215,7 +215,10 @@ class Card extends BaseModel
      * @return string
      */
     protected function genCardBn() {
-        $rand_bn = $this->prefix . Tools::genUpcharNum($this->len);
+        $config = (new Meta())->asArray();
+        $rand_bn = getValue($config, 'card_prefix')
+            . Tools::genUpcharNum((int)getValue($config, 'card_pwd_len', $this->len))
+            . getValue($config, 'card_subfix');
         $exist = static::find()->where(['card_bn' => $rand_bn])->exists();
         if($exist){
             $this->genCardBn();

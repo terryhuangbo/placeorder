@@ -94,6 +94,21 @@ $meta = new Meta();
     </div>
 
     <div class="control-group">
+        <label class="control-label">下单页面标题：</label>
+        <div class="controls">
+            <input name="config[order_title]" type="text" class="input-medium" data-rules="" value="<?echo $order_title ?>">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">下单页面提示：</label>
+        <div class="controls">
+            <input name="config[order_notice]" type="text" class="input-medium" data-rules="" value="<?echo $order_notice ?>">
+        </div>
+    </div>
+
+
+    <div class="control-group">
         <label class="control-label">平台卡密的长度：</label>
         <div class="controls">
             <input name="config[card_pwd_len]" type="text" class="input-medium" data-rules="" value="<?echo $card_pwd_len ?>">

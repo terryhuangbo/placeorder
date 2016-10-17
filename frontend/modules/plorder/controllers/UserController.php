@@ -7,6 +7,7 @@ use Yii;
 use app\base\BaseController;
 use common\models\User;
 use common\models\Card;
+use common\models\Meta;
 
 
 class UserController extends BaseController
@@ -33,7 +34,7 @@ class UserController extends BaseController
     public function actionReg()
     {
         if(!$this->isAjax()){
-            return $this->render('reg');
+            return $this->render('reg', ['meta'  => (new Meta())->asArray()]);
         }
         $post = $this->req();
         $mdl = new User();
@@ -81,6 +82,7 @@ class UserController extends BaseController
             'value' => $user['uid'],
         ]));
         $cookies->remove('card_bn');
+
         $_data = [
             'redirect_url' => $this->getReturnUrl()
         ];
@@ -140,6 +142,7 @@ class UserController extends BaseController
         $cookies = Yii::$app->response->cookies;
         $cookies->remove('user_id');
         $cookies->remove('card_bn');
+        $cookies->remove('just_login');
         return $this->redirect('/plorder/user/reg');
     }
 

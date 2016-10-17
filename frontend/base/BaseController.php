@@ -16,7 +16,7 @@ class BaseController extends Controller
     public $user = null;//用户信息
     public $card_bn = null;//卡密登录账号
     public $card = null;//卡密信息
-    public $userLog = true;//是否是用户账号登录 true-用户账号登录；false-卡密登录
+    public $userLog = null;//是否是用户账号登录 true-用户账号登录；false-卡密登录
     public $_uncheck = []; //不用校验登录的方法,可子类复写
 
     /**

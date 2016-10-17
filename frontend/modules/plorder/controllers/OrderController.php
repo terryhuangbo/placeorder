@@ -7,7 +7,7 @@ use Yii;
 use app\base\BaseController;
 use common\models\Goods;
 use common\models\Order;
-use common\models\User;
+use common\models\Meta;
 use common\models\CardGroup;
 
 
@@ -47,6 +47,7 @@ class OrderController extends BaseController
         $_data = [
             'info' => $info,
             'goods' => $goods,
+            'meta'  => (new Meta())->asArray(),
             'userLog' => (int) $this->userLog,
         ];
         return $this->render('index', $_data);
