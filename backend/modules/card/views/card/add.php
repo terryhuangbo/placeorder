@@ -71,24 +71,25 @@ use yii\helpers\Html;
 <div class="demo-content">
     <form id="Goods_Form" action="" class="form-horizontal" onsubmit="return false;" >
         <h2>添加卡密</h2>
-        <div class="control-group">
-            <label class="control-label"><s>*</s>面值：</label>
-            <div class="controls">
-                <input name="card[points]" type="text" class="input-medium" data-rules="{min:1, required : true}">
-            </div>
-        </div>
-
-        <div class="control-group">
-            <label class="control-label"><s>*</s>密码：</label>
-            <div class="controls">
-                <input name="card[pwd]" type="text" class="input-medium" data-rules="{required : true}">
-            </div>
-        </div>
 
         <div class="control-group">
             <label class="control-label"><s>*</s>卡组：</label>
             <div class="controls">
                 <input name="card[group_bn]" type="text" class="input-medium" data-rules="{required : true}">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">面值：</label>
+            <div class="controls">
+                <input name="card[points]" type="text" class="input-medium" data-rules="">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">密码：</label>
+            <div class="controls">
+                <input name="card[pwd]" type="text" class="input-medium" data-rules="">
             </div>
         </div>
 

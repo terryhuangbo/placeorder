@@ -34,12 +34,12 @@ use yii\helpers\Html;
         .layout-outer-content{
             padding: 15px;
             margin: 10px 0px 40px 130px;
-            width: 700px;
+            width: 300px;
             background-color: #f6f6fb;
             border: 1px solid #c3c3d6;
         }
         .layout-content{
-            width: 700px;
+            width: 300px;
             margin: 10px 120px;
         }
         .img-content-li{
@@ -85,12 +85,12 @@ use yii\helpers\Html;
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label"><s>*</s>商品数量：</label>
-            <div class="controls">
-                <input name="goods[num]" type="text" class="input-medium" data-rules="{min:1, required : true}">
-            </div>
-        </div>
+<!--        <div class="control-group">-->
+<!--            <label class="control-label"><s>*</s>商品数量：</label>-->
+<!--            <div class="controls">-->
+<!--                <input name="goods[num]" type="text" class="input-medium" data-rules="{min:1, required : true}">-->
+<!--            </div>-->
+<!--        </div>-->
 
         <div class="control-group">
             <label class="control-label"><s>*</s>商品图片：</label>

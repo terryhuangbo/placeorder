@@ -119,6 +119,7 @@ class CardController extends BaseController
             return $this->render('add');
         }
         $card = $this->req('card', []);
+        $card['points'] = (int) $card['points'];
         if(isset($card['id'])){
             unset($card['id']);
         }
@@ -126,7 +127,6 @@ class CardController extends BaseController
         if(empty($card_num)) {
             return $this->toJson(-20002, '生成卡密数量不能为空');
         }
-
         $valid_mdl = new Card();
         $valid_mdl->scenario = Card::SCENARIO_ADD;
         $valid_mdl->setAttributes($card);

@@ -61,8 +61,7 @@ class Goods extends BaseModel
             //商品状态
             ['status', 'in', 'range' => [self::STATUS_UPSHELF, self::STATUS_OFFSHELF, self::STATUS_DELETE], 'message' => '商品状态错误'],
             //商品数量
-            ['num', 'required', 'message' => '商品数量不能为空'],
-            ['num', 'integer', 'min' => 1, 'tooSmall' => '商品数量不能为0'],
+            ['num', 'default', 'value' => 1],
             //商品图片
             ['images', 'required', 'message' => '必须上传商品图片'],
 

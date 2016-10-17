@@ -72,9 +72,7 @@ class Card extends BaseModel
             [['card_bn'], 'unique', 'message' => '卡密必须唯一'],
             [['pid', 'uid'], 'default', 'value' => 0],
             //面值
-            ['points',  'required', 'message' => '卡密面值不能为空'],
-            ['points',  'integer', 'min' => 1, 'tooSmall' => '卡密面值必须大于0', 'on' => self::SCENARIO_ADD],//添加时，面值必须大于0
-            ['points',  'integer', 'min' => 0, 'tooSmall' => '卡密面值必须大于等于0', 'on' => self::SCENARIO_UPDATE],
+            ['points',  'default', 'value' => '0'],
             //卡密状态
             ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '卡密状态错误'],
             //卡组号必须存在
