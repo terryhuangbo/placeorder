@@ -128,7 +128,7 @@ $meta = new Meta();
                             <a href="javaScript:;"><span class="label label-important img-delete" file-path="<?php $site_bgimg ?>" attr="config[site_bgimg]" onclick="deleteFile(this)">删除</span></a>
                             <div aria-disabled="false"  class="" aria-pressed="false">
                                 <img  src="<?php echo $site_bgimg ?>" />
-                                <input type="hidden" name="config[site_logo]" value="<?php echo $site_bgimg ?>">
+                                <input type="hidden" name="config[site_bgimg]" value="<?php echo $site_bgimg ?>">
                                 <p></p>
                             </div>
                         </div>
@@ -256,19 +256,7 @@ $meta = new Meta();
                         '</div>'+
                         '</div>';
                     $('#thumbpic-content-logo').html(div);
-                    $('.img-delete').off('click').on('click', function(){
-                        var dom = $(this);
-                        dom.closest('div').remove();
-                        var filePath = dom.attr('file-path');
-                        deleteFile(filePath, function(json){
-                            if(json.code > 0){
-                                dom.closest('div').remove();
-                                uploader.reset();
-                            }else{
-                                BUI.Message.Alert('删除失败！');
-                            }
-                        });
-                    });
+                    uploader.reset();
                 }else{
                     BUI.Message.Alert('上传失败！');
                 }
@@ -333,19 +321,9 @@ $meta = new Meta();
                     '</div>'+
                     '</div>';
                 $('#thumbpic-content-bgimg').html(div);
-                $('.img-delete').off('click').on('click', function(){
-                    var dom = $(this);
-                    dom.closest('div').remove();
-                    var filePath = dom.attr('file-path');
-                    deleteFile(filePath, function(json){
-                        if(json.code > 0){
-                            dom.closest('div').remove();
-                            uploader1.reset();
-                        }else{
-                            BUI.Message.Alert('删除失败！');
-                        }
-                    });
-                });
+                uploader1.reset();
+
+
             }else{
                 BUI.Message.Alert('上传失败！');
             }
@@ -409,19 +387,8 @@ $meta = new Meta();
                     '</div>'+
                     '</div>';
                 $('#thumbpic-content-ico').html(div);
-                $('.img-delete').off('click').on('click', function(){
-                    var dom = $(this);
-                    dom.closest('div').remove();
-                    var filePath = dom.attr('file-path');
-                    deleteFile(filePath, function(json){
-                        if(json.code > 0){
-                            dom.closest('div').remove();
-                            uploader2.reset();
-                        }else{
-                            BUI.Message.Alert('删除失败！');
-                        }
-                    });
-                });
+                uploader2.reset();
+
             }else{
                 BUI.Message.Alert('上传失败！');
             }
