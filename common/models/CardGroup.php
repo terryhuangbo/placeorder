@@ -52,7 +52,7 @@ class CardGroup extends BaseModel
     {
         return [
             [['uid','points', 'card_num','status', 'create_time', 'update_time'], 'integer'],
-            [['group_bn'], 'string', 'max' => 21],
+            [['group_bn'], 'string', 'max' => 50],
             [['pwd'], 'string', 'max' => 50],
             [['comment'], 'string', 'max' => 200],
             //卡组

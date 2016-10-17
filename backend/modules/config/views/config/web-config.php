@@ -92,6 +92,27 @@ $meta = new Meta();
         </div>
 
         <div class="control-group">
+            <label class="control-label">网站描述：</label>
+            <div class="controls">
+                <input name="config[site_description]" type="text" class="input-medium" data-rules="" value="<?echo $site_description ?>">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">网站备案号：</label>
+            <div class="controls">
+                <input name="config[site_icp]" type="text" class="input-medium" data-rules="" value="<?echo $site_icp ?>">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">网站备案号：</label>
+            <div class="controls">
+                <input name="config[site_copyright]" type="text" class="input-medium" data-rules="" value="<?echo $site_copyright ?>">
+            </div>
+        </div>
+
+        <div class="control-group">
             <label class="control-label">平台LOGO标志：</label>
             <div id="thumbpic-logo" class="controls">
                 <span class="button button-primary">上传图片</span>

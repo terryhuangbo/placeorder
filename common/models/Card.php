@@ -67,7 +67,7 @@ class Card extends BaseModel
     {
         return [
             [['status', 'create_time', 'update_time'], 'integer'],
-            [['card_bn'], 'string', 'max' => 8],
+            [['card_bn'], 'string', 'max' => 50],
             [['pwd'], 'string', 'max' => 50],
             [['card_bn'], 'unique', 'message' => '卡密必须唯一'],
             [['pid', 'uid'], 'default', 'value' => 0],

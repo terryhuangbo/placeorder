@@ -23,6 +23,7 @@ class ConfigController extends BaseController
             'save',
             'update',
             'web',
+            'content',
         ];
     }
 
@@ -49,29 +50,23 @@ class ConfigController extends BaseController
     }
 
     /**
-     * 加载财务详情
+     * 添加财务
+     * @return array
      */
-    function actionInfo()
+    function actionContent()
     {
-        $id = intval($this->req('id'));
-
-        $mdl = new Pay();
-        //检验参数是否合法
-        if (empty($id)) {
-            $this->toJson(-20001, '用户编号id不能为空');
+        $meta = new Meta();
+        if(!$this->isAjax()){
+            return $this->render('content-config', $meta->asArray());
         }
-
-        //检验用户是否存在
-        $pay = $mdl->getRelationOne(['id' => $id], ['with' => ['user', 'order.goods']]);
-        if (!$pay) {
-            $this->toJson(-20003, '用户信息不存在');
+        $configs = Yii::$app->request->post('config', []);
+        foreach($configs as $key => $val){
+            $meta->setConfig($key, $val);
         }
-        $pay['create_time'] = date('Y-m-d h:i:s', $pay['create_time']);
-        $_data = [
-            'pay' => $pay
-        ];
-        return $this->render('info', $_data);
+        return $this->toJson(20000, '保存成功');
     }
+
+
 
 
 

@@ -1,11 +1,13 @@
 <?php
 use yii\helpers\Html;
+use common\models\Meta;
+$meta = new Meta();
 ?>
 <!doctype html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>网站配置</title>
+    <title>内容配置</title>
 
     <link href="/css/dpl.css" rel="stylesheet">
     <link href="/css/bui.css" rel="stylesheet">
@@ -34,12 +36,12 @@ use yii\helpers\Html;
         .layout-outer-content{
             padding: 15px;
             margin: 10px 0px 40px 130px;
-            width: 700px;
+            width: 300px;
             background-color: #f6f6fb;
             border: 1px solid #c3c3d6;
         }
         .layout-content{
-            width: 700px;
+            width: 300px;
             margin: 10px 120px;
         }
         .img-content-li{
@@ -66,192 +68,97 @@ use yii\helpers\Html;
 
 <body>
 <div class="demo-content">
-    <form id="Goods_Form" action="" class="form-horizontal" onsubmit="return false;" >
-        <h2>网站配置</h2>
-        <div class="control-group">
-            <label class="control-label"><s>*</s>配置名称：</label>
-            <div class="controls">
-                <input name="goods[name]" type="text" class="input-medium" data-rules="{required : true}">
-            </div>
+<form id="Config_Form" action="" class="form-horizontal" onsubmit="return false;" >
+    <h2>内容配置</h2>
+    <div class="control-group">
+        <label class="control-label">平台首页提示：</label>
+        <div class="controls">
+            <input name="config[home_notice]" type="text" class="input-medium" data-rules="" value="<?echo $home_notice ?>">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">是否启用弹窗：</label>
+        <div class="controls">
+            是<input name="config[home_model_on]" type="radio" class="input-medium" data-rules="" value="1" checked="<? $home_model_on ==1 ? 'checked' : ''?>">&nbsp;&nbsp;
+            否<input name="config[home_model_on]" type="radio" class="input-medium" data-rules="" value="2" checked="<? $home_model_on ==2 ? 'checked' : ''?>">
         </div>
 
-        <div class="control-group">
-            <label class="control-label"><s>*</s>配置价格：</label>
-            <div class="controls">
-                <input name="goods[price]" type="text" class="input-medium" data-rules="{number:true, required : true}">
-            </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">平台弹窗公告内容：</label>
+        <div class="controls">
+            <input name="config[home_model_notice]" type="text" class="input-medium" data-rules="" value="<?echo $home_model_notice ?>">
         </div>
+    </div>
 
-        <div class="control-group">
-            <label class="control-label"><s>*</s>配置数量：</label>
-            <div class="controls">
-                <input name="goods[num]" type="text" class="input-medium" data-rules="{min:1, required : true}">
-            </div>
+    <div class="control-group">
+        <label class="control-label">平台卡密的长度：</label>
+        <div class="controls">
+            <input name="config[card_pwd_len]" type="text" class="input-medium" data-rules="" value="<?echo $card_pwd_len ?>">
         </div>
+    </div>
 
-        <div class="control-group">
-            <label class="control-label"><s>*</s>配置图片：</label>
-            <div id="thumbpic" class="controls">
-                <span class="button button-primary">上传图片</span>
-            </div>
+    <div class="control-group">
+        <label class="control-label">卡密前缀字符：</label>
+        <div class="controls">
+            <input name="config[card_prefix]" type="text" class="input-medium" data-rules="" value="<?echo $card_prefix ?>">
         </div>
-        <div class="row" >
-            <div class="span16 layout-outer-content">
-                <div id="thumbpic-content" class="layout-content" aria-disabled="false" aria-pressed="false" >
+    </div>
 
-                </div>
-            </div>
+    <div class="control-group">
+        <label class="control-label">卡密后缀字符：</label>
+        <div class="controls">
+            <input name="config[card_subfix]" type="text" class="input-medium" data-rules="" value="<?echo $card_subfix ?>">
         </div>
+    </div>
 
-        <div class="row actions-bar">
-            <div class="form-actions span13 offset3">
-                <button type="submit" class="button button-primary" id="save-goods">保存</button>
-                <button type="reset" class="button" id="cancel-goods">返回</button>
-            </div>
+
+    <div class="row actions-bar">
+        <div class="form-actions span13 offset3">
+            <button type="submit" class="button button-primary" id="save-config">保存</button>
+            <button type="reset" class="button" id="cancel-config">返回</button>
         </div>
-    </form>
+    </div>
+</form>
 
-    <!-- script start -->
-    <script type="text/javascript">
-        BUI.use('bui/form',function(Form){
-            var form = new Form.Form({
-                srcNode : '#Goods_Form'
-            });
-            form.render();
-
-            //保存
-            $("#save-goods").on('click', function(){
-                if(form.isValid()){
-                    var param = $._get_form_json("#Goods_Form");
-                    $._ajax('/goods/goods/add', param, 'POST', 'JSON', function(json){
-                        if(json.code > 0){
-                            BUI.Message.Alert(json.msg, function(){
-                                window.location.href = '/goods/goods/list';
-                            }, 'success');
-
-                        }else{
-                            BUI.Message.Alert(json.msg, 'error');
-                            this.close();
-                        }
-                    });
-                }
-            });
-            //返回
-            $("#cancel-goods").on('click', function(){
-                window.location.href = '/goods/goods/list';
-            });
+<!-- script start -->
+<script type="text/javascript">
+    BUI.use('bui/form',function(Form){
+        var form = new Form.Form({
+            srcNode : '#Config_Form'
         });
-    </script>
-    <!-- script end -->
+        form.render();
 
-    <script>
-        $(function () {
-            var editor = UE.getEditor('editor_content', {
-                "initialFrameWidth": "700",
-                "initialFrameHeight": "360",
-                "lang": "zh-cn",
-            });
-        })
-
-        $(function () {
-            /*上传缩略图*/
-            var uploader = WebUploader.create({
-                // 选完文件后，是否自动上传。
-                auto: true,
-                //文件名称
-                fileVal: 'attachment',
-                // swf文件路径
-                swf: '/plugins/webuploader/Uploader.swf',
-                // 文件接收服务端。
-                server: "/common/file/upload",
-                // 选择文件的按钮。可选。
-                pick: '#thumbpic',
-                //文件数量
-                fileNumLimit: 1,
-                //文件大小 byte
-                fileSizeLimit: 5 * 1024 * 1024,
-                // 只允许选择图片文件。
-                accept: {
-                    title: 'Images',
-                    extensions: 'gif,jpg,jpeg,bmp,png',
-                    mimeTypes: 'image/*'
-                },
-                //传递的参数
-                formData: {
-                    objtype: 'goods',
-                }
-            });
-            // 当有文件添加进来之前
-            uploader.on('beforeFileQueued', function (handler) {
-
-            });
-            // 当有文件添加进来的时候-执行队列
-            uploader.on( 'fileQueued', function( file ) {
-
-            });
-            //文件数量，格式等出错
-            uploader.on('error', function (handler) {
-                _file_upload_notice(handler);
-            });
-            // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-            uploader.on('uploadSuccess', function (file, response) {
-                if(response.code > 0){
-                    var data = response.data;
-                    var div =
-                        '<div id="'+ file.id +'" class=" pull-left img-content-li">'+
-                        '<a href="javaScript:;"><span class="label label-important img-delete" file-path="'+ data.filePath +'">删除</span></a>'+
-                        '<div aria-disabled="false"  class="" aria-pressed="false">'+
-                        '<img  src="'+ data.filePath +'" />'+
-                        '<input type="hidden" name="goods[thumb]" value="'+ data.filePath +'">'+
-                        '<p>'+ file.name +'</p>'+
-                        '</div>'+
-                        '</div>';
-                    $('#thumbpic-content').html(div);
-                    $('.img-delete').off('click').on('click', function(){
-                        var dom = $(this);
-                        var filePath = dom.attr('file-path');
-                        deleteFile(filePath, function(json){
-                            if(json.code > 0){
-                                dom.closest('div').remove();
-                                uploader.reset();
-                            }else{
-                                BUI.Message.Alert('删除失败！');
-                            }
-                        });
-                    });
-                }else{
-                    BUI.Message.Alert('上传失败！');
-                }
-            });
-            // 文件上传失败，显示上传出错。
-            uploader.on('uploadError', function (file) {
-
-            });
-        });
-
-        var _file_upload_notice = function (handler) {
-            switch (handler) {
-                case 'Q_TYPE_DENIED':
-                    alert('文件类型不正确！');
-                    break;
-                case 'Q_EXCEED_SIZE_LIMIT':
-                    alert('上传文件总大小超过限制！');
-                    break;
-                case 'Q_EXCEED_NUM_LIMIT':
-                    alert('上传文件总数量超过限制！');
-                    break;
+        //保存
+        $("#save-config").on('click', function(){
+            if(form.isValid()){
+                var param = $._get_form_json("#Config_Form");
+                $._ajax('/config/config/content', param, 'POST', 'JSON', function(json){
+                    if(json.code > 0){
+                        BUI.Message.Alert('保存成功', 'success');
+                    }else{
+                        BUI.Message.Alert(json.msg, 'error');
+                        this.close();
+                    }
+                });
             }
-        };
+        });
+        //返回
+        $("#cancel-config").on('click', function(){
+            window.location.href = '/config/config/list';
+        });
+    });
+</script>
+<!-- script end -->
 
-        var deleteFile = function (filePath, callback){
-            $._ajax('/common/file/delete', {filepath: filePath},  'POST', 'Json', function(json){
-                if(typeof (callback) == 'function'){
-                    callback(json);
-                }
-            });
-        }
+<script>
 
-    </script>
+
+
+
+</script>
 
 </div>
 </body>
