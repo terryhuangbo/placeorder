@@ -290,8 +290,18 @@
         });
 
         $('.user_sendpass_btn').click(function (e) {
-            form_submit('user_sendpass_action');
-            return false;
+            var username = $.trim($("[name=sendpass_username]").val());
+            if(username == ''){
+                $("[name=sendpass_username]").closest('div')._error('账号不能为空');
+                return
+            }
+            $._ajax('/plorder/user/reset', {username:username}, 'POST', 'JSON', function(json){
+                if(json.code > 0){
+                    $(".user_sendpass_input").closest('div')._error('邮件发送成功，请及时到邮箱查收！');
+                }else{
+                    $(".user_sendpass_input").closest('div')._error(json.msg);
+                }
+            });
         });
 
         $('.username_register_btn').click(function (e) {

@@ -2,6 +2,7 @@
 
 namespace frontend\modules\plorder\controllers;
 
+use common\lib\Tools;
 use Yii;
 use app\base\BaseController;
 use common\models\User;
@@ -20,6 +21,8 @@ class UserController extends BaseController
             'login',
             'card-login',
             'index',
+            'reset',
+            'reset-pwd',
         ];
     }
 
@@ -167,5 +170,36 @@ class UserController extends BaseController
         return $this->toJson($ret['code'], $ret['msg']);
     }
 
+    /**
+     * 找回密码
+     * @return type
+     */
+    public function actionReset()
+    {
+        $qq = intval($this->req('username'));
+        if(empty($qq)){
+            return $this->toJson('-20001', '请输入注册时的QQ号');
+        }
+        //查看是否有该用户
+        $user = User::findOne(['qq' => $qq]);
+        if(empty($user)){
+            return $this->toJson('-20002', '邮箱/QQ邮箱不存在');
+        }
+
+        //临时密码
+        $on_pwd = Tools::genUpcharNum(6, 'abcdefghijklmnopqrstouwxyz0123456789');
+        $user->pwd = $on_pwd;
+        $user->save(true);
+
+        $mail= Yii::$app->mailer->compose();
+        $email = $qq . '@qq.com';//qq邮箱
+        $mail->setTo($email);
+        $mail->setSubject("新版post社区密码修改");
+        $mail->setHtmlBody("<p>请记住您的临时密码为：{$on_pwd}</p><p>请及时登录用户中心修改您的密码</p>");
+        if($mail->send()){
+            return $this->toJson('20000', '邮件发送成功');
+        }else
+            return $this->toJson('-20001', '邮件发送失败');
+    }
 
 }
