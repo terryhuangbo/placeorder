@@ -214,6 +214,15 @@ class IndexController extends Controller
                 ['财务列表' => 'pay/pay/list'],
             ]
         ];
+        $menu[] = [
+            'top' => ['系统配置' => 'home'],
+            '网站配置' => [
+                ['配置列表' => 'config/config/web'],
+            ],
+            '内容配置' => [
+                ['配置列表' => 'config/config/content'],
+            ],
+        ];
 
         return $menu;
     }

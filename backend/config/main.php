@@ -44,6 +44,10 @@ return [
         'pay' => [
             'class' => 'backend\modules\pay\Module',
         ],
+        // 配置
+        'config' => [
+            'class' => 'backend\modules\config\Module',
+        ],
     ],
     'components' => [
         'db' => require(__DIR__ . '/../../common/config/db.php'),
