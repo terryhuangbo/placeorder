@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use common\base\BaseModel;
 use yii\db\Exception;
+use yii\base\UnknownPropertyException;
 
 /**
  * This is the model class for table "{{%meta}}".
@@ -23,6 +24,11 @@ class Meta extends BaseModel
      * 配置数组
      */
     private $_config = [];
+
+    /**
+     * 配置单例
+     */
+    private $_model = [];
 
     /**
      * @inheritdoc
@@ -66,6 +72,7 @@ class Meta extends BaseModel
      * @return array
      */
     public function getAllConfig(){
+
         if(!$this->_config){
             $this->_config = static::find()->where('1=1')->indexBy('key')->all();
         }
@@ -74,23 +81,23 @@ class Meta extends BaseModel
 
     /**
      * 获取Meta配置
-     * $key string Meta key
+     * @param $key string Meta key
      * @return array
      */
     public function getConfig($key = ''){
         if(!$this->_config){
             $this->getAllConfig();
         }
-        return empty($key) || !isset($this->_config[$key]) ? '' : $this->_config[$key];
+        return empty($key) || !isset($this->_config[$key]) ? '' : $this->_config[$key]->value;
     }
 
     /**
      * 设置Meta配置
-     * $key string Meta key
-     * $value string Meta value
+     * @param $key string Meta key
+     * @param $value string Meta value
      * @return array
      */
-    public function setConfig($key = null, $value){
+    public function setConfig($key = '', $value){
         if(!$this->_config){
             $this->getAllConfig();
         }
@@ -99,7 +106,21 @@ class Meta extends BaseModel
             return false;
         }
 
+        $this->_config[$key]->value = trim($value);
         return getValue($this->_config[$key]->save(), 'code') > 0;
+    }
+
+    /**
+     * 获取数组
+     * @return array
+     */
+    public function asArray(){
+        $this->getAllConfig();
+        $_array = [];
+        foreach($this->_config as $key => $val){
+            $_array[$key] = $val->value;
+        }
+        return $_array;
     }
 
 

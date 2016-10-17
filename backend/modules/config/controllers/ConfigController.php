@@ -38,9 +38,14 @@ class ConfigController extends BaseController
     function actionWeb()
     {
         $meta = new Meta();
-
-        lg($meta->allConfig);
-        return $this->render('web-config');
+        if(!$this->isAjax()){
+            return $this->render('web-config', $meta->asArray());
+        }
+        $configs = Yii::$app->request->post('config', []);
+        foreach($configs as $key => $val){
+            $meta->setConfig($key, $val);
+        }
+        return $this->toJson(20000, '保存成功');
     }
 
     /**
