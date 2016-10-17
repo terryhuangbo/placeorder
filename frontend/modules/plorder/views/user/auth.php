@@ -16,7 +16,7 @@
     <script src="/plugins/webuploader/webuploader.js" type="text/javascript"></script>
     <script src="/js/tools.js"></script>
 
-    <style type="text/css">
+    <style type="text/css"> 
         .msg-error{
             color: darkorange;
             font-size: 12px;
