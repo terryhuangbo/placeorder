@@ -111,9 +111,10 @@ class OrderController extends BaseController
 
         //保存
         $success = [];
+        $scenario = $this->userLog ? Order::SCENARIO_USER : Order::SCENARIO_CARD;
         foreach($orders as $order){
             $mdl = new Order();
-            $ret = $mdl->saveOrder($order);
+            $ret = $mdl->saveOrder($order, $scenario);
             if($ret['code'] < 0){
                 $_pre_msg = "QQ为{$order['qq']}下单失败：";
                 $_suf_msg = count($success) > 0 ? '。已成功下单QQ：' . implode($success, '，') : '';
