@@ -70,6 +70,23 @@ $meta = new Meta();
 <div class="demo-content">
 <form id="Config_Form" action="" class="form-horizontal" onsubmit="return false;" >
     <h2>内容配置</h2>
+
+    <div class="control-group">
+        <label class="control-label">登录框标题：</label>
+        <div class="controls">
+            <input name="config[login_title]" type="text" class="input-medium" data-rules="" value="<?echo $login_title ?>">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">登录提示：</label>
+        <div class="controls">
+            <input name="config[login_notice]" type="text" class="input-medium" data-rules="" value="<?echo $order_notice ?>">
+        </div>
+    </div>
+
+
+
     <div class="control-group">
         <label class="control-label">平台首页提示：</label>
         <div class="controls">
@@ -107,11 +124,10 @@ $meta = new Meta();
         </div>
     </div>
 
-
     <div class="control-group">
         <label class="control-label">平台卡密的长度：</label>
         <div class="controls">
-            <input name="config[card_pwd_len]" type="text" class="input-medium" data-rules="" value="<?echo $card_pwd_len ?>">
+            <input name="config[card_pwd_len]" type="text" class="input-medium" data-rules="" value="<?echo $login_notice ?>">
         </div>
     </div>
 

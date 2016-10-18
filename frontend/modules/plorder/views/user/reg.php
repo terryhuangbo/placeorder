@@ -53,7 +53,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8 col-sm-7 col-xs-7 ">
-					<h2><a href="<?php echo yiiUrl('/plorder/goods/index') ?>">新版post社区</a></h2>
+					<h2><a href="<?php echo yiiUrl('/plorder/goods/index') ?>"><?php echo getValue($meta, 'site_title', '') ?></a></h2>
 				</div>
 				<div class="col-md-4 col-sm-5 col-xs-5 text-right">
 					<span class="nav_top_right"><a href="<?php echo yiiUrl('/plorder/goods/index') ?>">切换到首页</a></span>
@@ -75,11 +75,10 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h2 class="panel-title">
-							空间人气快刷
+                            <?php echo getValue($meta, 'login_title', '') ?>
                         </h2>
 					</div>
 
-<!--					<form method="post" class="jwxh_form_data kmcz_cye" cardno_login_action="/index.php?m=Home&c=Card&a=login&id=350&goods_type=6" username_login_action="/index.php?m=Home&c=User&a=login&id=350&goods_type=6" user_sendpass_action="/index.php?m=Home&c=User&a=sendpass" username_register_action="/index.php?m=Home&c=User&a=register&id=350&goods_type=6" check_cardno_ajax_href="/index.php?m=Home&c=Card&a=cardinfo_no&id=350&goods_type=6" >-->
 					<form method="post" class="jwxh_form_data kmcz_cye" onsubmit="return false">
                         <div class="panel-body">
                             <ul id="myTab" class="nav nav-tabs">
@@ -94,7 +93,8 @@
 
                             <div id="myTabContent" class="tab-content">
                                 <div class="tab-pane fade in active" id="card_login_form">
-                                    <p class="login_description"><label>																																																<span><b>下单前设置好空间权限 &nbsp;允许任何人可以访问 &nbsp;下单前Q空间必须要有说说</b></span>							 							 							 							 							 							 </label></p>								<p>
+                                    <p class="login_description"><label>
+                                      <span><b><?php echo getValue($meta, 'login_notice', '') ?></b></span>							 							 							 							 							 							 </label></p>								<p>
                                       <div class="form-group">
                                         <div class="input-group">
                                           <div class="input-group-addon">卡密</div>
