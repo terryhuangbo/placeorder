@@ -27,8 +27,9 @@ class Order extends BaseModel
     /**
      * 订单状态
      */
-    const STATUS_YES = 1;//下单成功
-    const STATUS_NO  = 2;//下单失败
+    const STATUS_YES     = 1;//下单成功
+    const STATUS_NO      = 2;//下单失败
+    const STATUS_REFUND  = 3;//已退款
 
     /**
      * 场景
@@ -65,7 +66,7 @@ class Order extends BaseModel
             //订单编号
             [['order_bn'], 'unique', 'message' => '订单编号必须唯一'],
             //订单状态
-            ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO], 'message' => '订单状态错误'],
+            ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO, self::STATUS_REFUND], 'message' => '订单状态错误'],
             //用户ID
             ['uid', 'required', 'message' => '用户ID必须存在', 'on' => self::SCENARIO_USER],
             ['uid', 'exist', 'targetAttribute' => 'uid', 'targetClass' => User::className(), 'message' => '用户不存在', 'on' => self::SCENARIO_USER],
@@ -152,8 +153,9 @@ class Order extends BaseModel
      */
     public static function getOrderStatus($status = null){
         $statusArr = [
-            self::STATUS_YES   => '下单成功',
-            self::STATUS_NO    => '下单失败',
+            self::STATUS_YES     => '下单成功',
+            self::STATUS_NO      => '下单失败',
+            self::STATUS_REFUND  => '已退款',
         ];
         return is_null($status) ? $statusArr : (isset($statusArr[$status]) ? $statusArr[$status] : '');
     }
@@ -232,6 +234,14 @@ class Order extends BaseModel
                 if($ret['code'] < 0){
                     throw new Exception('商品库存更新失败');
                 }
+
+            }else{//更新操作
+                $dirtyAttr = $this->getDirtyAttributes(['status']);
+                //退款操作
+                if(!empty($dirtyAttr['status']) && $dirtyAttr['status'] === self::STATUS_REFUND){
+
+                }
+
             }
             return true;
         }

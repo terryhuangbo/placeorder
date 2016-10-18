@@ -26,12 +26,7 @@ class OrderController extends BaseController
             'info',
             'save',
             'update',
-            'logistic',
             'ajax-save',
-            'ajax-delete',
-            'ajax-change-status',
-            'ajax-save-logestic',
-            'logestic-detail',
         ];
     }
 
@@ -138,7 +133,7 @@ class OrderController extends BaseController
     }
 
     /**
-     * 添加订单
+     * 修改订单
      * @return array
      */
     function actionUpdate()
@@ -163,7 +158,7 @@ class OrderController extends BaseController
     }
 
     /**
-     * 改变订单状态
+     * 改变订单状态（比如退款）
      * @return array
      */
     function actionAjaxSave()
@@ -180,52 +175,10 @@ class OrderController extends BaseController
             $this->toJson(-20002, '订单状态不能为空');
         }
 
-        //检验订单是否存在
-        $order = $mdl->_get_info(['oid' => $oid]);
-        if (!$order) {
-            $this->toJson(-20002, '订单信息不存在');
-        }
-        $res = $mdl->_save([
-            'oid' => $oid,
-            'order_status' => intval($order_info['order_status']),
-        ]);
-        if(!$res){
-            $this->toJson(-20003, '保存失败');
-        }
-
-        //保存
-        $this->toJson(20000, '保存成功');
+        $res = $mdl->saveOrder($order_info);
+        return $this->toJson($res['code'], $res['msg']);
     }
 
-    /**
-     * 改变订单状态
-     * @return array
-     */
-    function actionAjaxDelete()
-    {
-        $oid = intval($this->req('oid'));
-
-        $mdl = new Order();
-        //检验参数是否合法
-        if (empty($oid)) {
-            $this->toJson(-20001, '订单序号oid不能为空');
-        }
-
-        //检验订单是否存在
-        $order = $mdl->_get_info(['oid' => $oid]);
-        if (!$order) {
-            $this->toJson(-20002, '订单信息不存在');
-        }
-
-        $res = $mdl->_save([
-            'oid' => $oid,
-            'is_deleted' => $mdl::IS_DELETE,
-        ]);
-        if(!$res){
-            $this->toJson(-20003, '删除失败');
-        }
-        $this->toJson(20000, '删除成功');
-    }
 
     /**
      * 加载订单详情

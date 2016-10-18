@@ -133,7 +133,15 @@ use common\models\Order;
                 selectedEvent: 'click',
                 columns: [
                     {title: '序号', dataIndex: 'oid', width: 80, elCls : 'center'},
-                    {title: '订单编号', dataIndex: 'order_bn', width: 200, elCls : 'center'},
+                    {
+                        title: '订单编号',
+                        dataIndex: 'order_bn',
+                        width: 200,
+                        elCls : 'center',
+                        renderer: function (v, obj) {
+                            return "<a class='' href='#' onclick='showOrderInfo(" + obj.oid + ")'>" + obj.order_bn + "</a>";
+                        }
+                    },
                     {title: '商品编号', dataIndex: 'goods_bn', width: 120, elCls : 'center'},
                     {title: '商品名称', dataIndex: 'goods_name', width: 90, elCls : 'center'},
                     {title: '商品数量', dataIndex: 'num', width: 90, elCls : 'center'},
@@ -146,7 +154,12 @@ use common\models\Order;
                         title: '操作',
                         width: 300,
                         renderer: function (v, obj) {
-                            return "<a class='button button-success' onclick='showOrderInfo(" + obj.oid + ")'>查看</a>";
+                            if(obj.status == <?php echo Order::STATUS_YES ?>){
+                                return "<a class='button button-success' onclick='showOrderInfo(" + obj.oid + ")'>查看</a>" +
+                                "<a class='button button-danger' onclick='refund(" + obj.oid + ")'>退款</a>";
+                            }else {
+                                return "<a class='button button-success' onclick='showOrderInfo(" + obj.oid + ")'>查看</a>";
+                            }
                         }
                     }
                 ],
@@ -234,7 +247,6 @@ function showOrderInfo(oid) {
     dialog.get('loader').load({oid: oid});
 }
 
-
 /**
  * 更改订单详情
  */
@@ -259,6 +271,27 @@ function updateOrder(oid) {
     });
     dialog.show();
     dialog.get('loader').load({oid: oid});
+}
+
+/**
+ *更改状态
+ */
+function refund(oid, status) {
+    BUI.Message.Confirm('您确定要退款？', function(){
+        var param = param || {};
+        param.oid = oid;
+        param.status = <?php echo Order::STATUS_REFUND ?>;
+        $._ajax('<?php echo yiiUrl('order/order/ajax-save') ?>', {order: param}, 'POST','JSON', function(json){
+            if(json.code > 0){
+                BUI.Message.Alert(json.msg, function(){
+                    window.location.href = '<?php echo yiiUrl('order/order/list') ?>';
+                }, 'success');
+            }else{
+                BUI.Message.Alert(json.msg, 'error');
+                this.close();
+            }
+        });
+    }, 'question');
 }
 
 /**
