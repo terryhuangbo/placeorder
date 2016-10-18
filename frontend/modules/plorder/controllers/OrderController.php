@@ -150,7 +150,7 @@ class OrderController extends BaseController
                 return Order::getOrderStatus($m->status);
             },
             'operate' => function ($m) {
-                return '确定';
+                return '-无-';
             },
         ];
         $with = ['goods'];
@@ -248,10 +248,10 @@ class OrderController extends BaseController
         $where = ['and'];
 
         if(!empty($card_bn)){
-            $where[] = ['card_bn' => $card_bn];
+            $where[] = [Card::tableName() . '.card_bn' => $card_bn];
         }
         if(!empty($group_bn)){
-            $where[] = ['group_bn' => $group_bn];
+            $where[] = [CardGroup::tableName() . '.group_bn' => $group_bn];
         }
         if(!empty($comment)){
             $where[] = ['like', 'comment', $comment];

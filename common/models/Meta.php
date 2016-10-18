@@ -26,11 +26,6 @@ class Meta extends BaseModel
     private $_config = [];
 
     /**
-     * 配置单例
-     */
-    private $_model = [];
-
-    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -95,7 +90,7 @@ class Meta extends BaseModel
      * 设置Meta配置
      * @param $key string Meta key
      * @param $value string Meta value
-     * @return array
+     * @return bool 是否保存成功
      */
     public function setConfig($key = '', $value){
         if(!$this->_config){

@@ -581,6 +581,8 @@
         $._ajax('/plorder/order/add', param, 'POST', 'JSON', function(json){
             if(json.code > 0){
                 alert(json.msg);
+                //重新加载订单列表
+                $("#custom_search_orders").trigger('click');
             }else{
                 $(".order_post_btn").closest('li')._error(json.msg, 'p', 'prepend');
             }
@@ -600,6 +602,8 @@
         $._ajax('/plorder/order/batch-add', param, 'POST', 'JSON', function(json){
             if(json.code > 0){
                 alert(json.msg);
+                //重新加载订单列表
+                $("#custom_search_orders").trigger('click');
             }else{
                 alert(json.msg);
             }
@@ -675,11 +679,23 @@
     });
 
     //订单管理列表
-    $(".btn_ddglq, #custom_search_orders").on('click', function(){
+    $(".btn_ddglq").on('click', function(){
         $("#tab1").show();
         $("#tab2").hide();
         $("#tab3").hide();
-
+        if($("#order-list-area").find("tr").length > 0){
+            return
+        }
+        orderList();
+    });
+    $("#custom_search_orders").on('click', function(){
+        $("#tab1").show();
+        $("#tab2").hide();
+        $("#tab3").hide();
+        orderList();
+    });
+    //加载订单管理列表
+    function orderList(){
         //搜索条件
         var qq = $.trim($("#sokey_qq").val());
         $._ajax('/plorder/order/order-list', {qq: qq}, 'POST', 'JSON', function(json){
@@ -704,17 +720,28 @@
                 });
                 $("#order-list-area").html(html);
             }else{
-
             }
         });
-    });
+    }
 
     //卡组管理列表
-    $(".btn_zkmglq, #custom_search_card_groups").on('click', function(){
+    $(".btn_zkmglq").on('click', function(){
         $("#tab2").show();
         $("#tab1").hide();
         $("#tab3").hide();
-
+        if($("#group-list-area").find("tr").length > 0){
+            return
+        }
+        cardGroupList();
+    });
+    $("#custom_search_card_groups").on('click', function(){
+        $("#tab2").show();
+        $("#tab1").hide();
+        $("#tab3").hide();
+        cardGroupList();
+    });
+    //加载卡组列表
+    function cardGroupList(){
         //搜索条件
         var group_bn = $.trim($("#sokey_card_groups_GroupId").val());
         var card_bn = $.trim($("#sokey_card_groups_Card").val());
@@ -748,15 +775,26 @@
 
             }
         });
-
-    });
+    }
 
     //子卡管理列表
-    $(".btn_zkmdlq, #custom_search_cards").on('click', function(){
+    $(".btn_zkmdlq").on('click', function(){
         $("#tab3").show();
         $("#tab2").hide();
         $("#tab1").hide();
-
+        if($("#card-list-area").find("tr").length > 0){
+            return
+        }
+        cardList();
+    });
+    $("#custom_search_cards").on('click', function(){
+        $("#tab3").show();
+        $("#tab2").hide();
+        $("#tab1").hide();
+        cardList();
+    });
+    //加载卡组列表
+    function cardList(){
         //搜索条件
         var group_bn = $.trim($("#sokey_cards_GroupId").val());
         var card_bn = $.trim($("#sokey_cards_Card").val());
@@ -785,6 +823,12 @@
 
             }
         });
-    });
+    }
+
+    //加载订单列表
+    $(function(){
+        $(".btn_ddglq").trigger('click');
+    })
+
 </script>
 </body></html>
