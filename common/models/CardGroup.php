@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use common\lib\Tools;
 use common\base\BaseModel;
+use yii\db\Exception;
 
 /**
  * This is the model class for table "{{%card_group}}".
@@ -148,6 +149,29 @@ class CardGroup extends BaseModel
             return true;
         }
         return false;
+    }
+
+
+    /**
+     * 卡组状态修改
+     */
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        if($insert){
+
+        }else {//修改
+            if(!empty($changedAttributes['status'])){
+                $cards = $this->card;
+                foreach($cards as $card){
+                    //卡组启用，子卡启用；卡组禁用，子卡禁用
+                    $card->status = $this->status == self::STATUS_YES ? Card::STATUS_YES : Card::STATUS_NO;
+                    $ret = $card->save();
+                    if($ret['code'] < 0){
+                        throw new Exception('子卡状态更新失败');
+                    }
+                }
+            }
+        }
     }
 
     /**

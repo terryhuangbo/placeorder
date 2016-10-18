@@ -837,12 +837,13 @@
         });
     }
 
-    //启用/禁止卡
+    //启用/禁止卡组
     function alterCardGroup(id, status){
         $._ajax('/plorder/card/alter-group-status', {id: id, status: status}, 'POST', 'JSON', function(json){
             if(json.code > 0){
                 alert('保存成功');
                 $("#custom_search_card_groups").trigger('click');
+                $("#custom_search_cards").trigger('click');
             }else{
                 alert(json.msg);
             }
