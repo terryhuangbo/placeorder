@@ -825,6 +825,18 @@
         });
     }
 
+    //启用/禁止卡
+    function alterCard(id, status){
+        $._ajax('/plorder/card/alter-status', {id: id, status: status}, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                alert('保存成功');
+                $("#custom_search_cards").trigger('click');
+            }else{
+                alert(json.msg);
+            }
+        });
+    }
+
     //加载订单列表
     $(function(){
         $(".btn_ddglq").trigger('click');

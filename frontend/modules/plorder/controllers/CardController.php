@@ -122,5 +122,27 @@ class CardController extends BaseController
         return $this->toJson($ret['code'], $ret['msg']);
     }
 
+    /**
+     * 修改卡状态
+     * @return type
+     */
+    public function actionAlterStatus()
+    {
+        $id = (int) $this->req('id', 0);
+        $status = (int) $this->req('status', 0);
+        if(empty($id)){
+            return $this->toJson('-20001', '卡密ID不能为空');
+        }
+        $card = new Card();
+        $data = [
+            'id' => $id,
+            'status' => $status,
+        ];
+        //保存数据
+        $ret = $card->saveCard($data);
+        return $this->toJson($ret['code'], $ret['msg']);
+
+    }
+
 
 }

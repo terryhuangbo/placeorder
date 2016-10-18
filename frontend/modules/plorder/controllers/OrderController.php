@@ -175,32 +175,19 @@ class OrderController extends BaseController
     {
         $card_bn = $this->req('card_bn', '');
         $group_bn = $this->req('group_bn', '');
-        $format = [
-            'card_bn',
-            'pid',
-            'points',
-            'group_bn',
-            'group_points' => function($m){
-                return getValue($m, 'cardGroup.points');
-            },
-            'create_time' => function($m){
-                return date('Y-m-d H:i:s', $m->create_time);
-            },
-            'status_name' => function ($m) {
-                return CardGroup::getCardGroupStatus($m->cardGroup->status);
-            },
-            'operate' => function ($m) {
-                return '确定';
-            },
+        $select = [
+             "card_id" => Card::tableName(). ".id",
+             "card_status" => Card::tableName(). ".status",
+             Card::tableName(). ".*",
+             CardGroup::tableName(). ".*",
         ];
         $join = ['cardGroup'];
         $where = ['and'];
-
         if(!empty($card_bn)){
-            $where[] = ['like', 'card_bn', $card_bn];
+            $where[] = ['like', Card::tableName() . '.card_bn', $card_bn];
         }
         if(!empty($group_bn)){
-            $where[] = ['group_bn' => $group_bn];
+            $where[] = [Card::tableName() . '.group_bn' => $group_bn];
         }
 
         if($this->userLog){
@@ -210,7 +197,17 @@ class OrderController extends BaseController
             $where[] = ['pid' => $card->id];
         }
 
-        $list = (new Card())->getRelationAll('*', $where,['joinWith' => $join], Card::tableName() . ".id DESC", 1, 0, $format);
+        $list = (new Card())->getRelationAll($select, $where,['joinWith' => $join], Card::tableName() . ".id DESC", 1, 0);
+        foreach($list as $k => $m){
+            $list[$k]['group_points'] = getValue($m, 'cardGroup.points');
+            $list[$k]['create_time'] = date('Y-m-d H:i:s', getValue($m, 'create_time', 0));
+            $list[$k]['status_name'] = Card::getCardStatus($m['card_status']);
+            if($m['card_status'] == Card::STATUS_YES){
+                $list[$k]['operate'] = '<a href="#" onclick="alterCard('. $m['card_id'] .', '. Card::STATUS_NO .')">禁用此卡</a>';
+            }else{
+                $list[$k]['operate'] = '<a href="#" onclick="alterCard('. $m['card_id'] .', '. Card::STATUS_YES .')">启用此卡</a>';
+            }
+        }
         return $this->toJson('20000', '查询成功', $list);
     }
 
