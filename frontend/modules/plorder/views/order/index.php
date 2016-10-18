@@ -759,9 +759,9 @@
                     html += '' +
                     '<tr  class="dt-grid-headers">'+
                     '<td>'+ v.group_bn +'</td>'+
-                    '<td>'+ v.points +'</td>'+
+                    '<td>'+ v.group_points +'</td>'+
                     '<td>'+ v.card_num +'</td>'+
-                    '<td>'+ v.total +'</td>'+
+                    '<td>'+ v.sum_points +'</td>'+
                     '<td>'+ v.pwd +'</td>'+
                     '<td>'+ v.comment +'</td>'+
                     '<td>'+ v.create_time +'</td>'+
@@ -831,6 +831,18 @@
             if(json.code > 0){
                 alert('保存成功');
                 $("#custom_search_cards").trigger('click');
+            }else{
+                alert(json.msg);
+            }
+        });
+    }
+
+    //启用/禁止卡
+    function alterCardGroup(id, status){
+        $._ajax('/plorder/card/alter-group-status', {id: id, status: status}, 'POST', 'JSON', function(json){
+            if(json.code > 0){
+                alert('保存成功');
+                $("#custom_search_card_groups").trigger('click');
             }else{
                 alert(json.msg);
             }

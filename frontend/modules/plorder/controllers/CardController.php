@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use app\base\BaseController;
 use common\models\Card;
+use common\models\CardGroup;
 use common\models\User;
 
 
@@ -141,8 +142,29 @@ class CardController extends BaseController
         //保存数据
         $ret = $card->saveCard($data);
         return $this->toJson($ret['code'], $ret['msg']);
-
     }
+
+    /**
+     * 修改卡状态
+     * @return type
+     */
+    public function actionAlterGroupStatus()
+    {
+        $id = (int) $this->req('id', 0);
+        $status = (int) $this->req('status', 0);
+        if(empty($id)){
+            return $this->toJson('-20001', '卡密ID不能为空');
+        }
+        $group = new CardGroup();
+        $data = [
+            'id' => $id,
+            'status' => $status,
+        ];
+        //保存数据
+        $ret = $group->saveCardGroup($data);
+        return $this->toJson($ret['code'], $ret['msg']);
+    }
+
 
 
 }

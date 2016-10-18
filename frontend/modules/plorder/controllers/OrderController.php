@@ -220,26 +220,12 @@ class OrderController extends BaseController
         $card_bn = $this->req('card_bn', '');
         $group_bn = $this->req('group_bn', '');
         $comment = $this->req('comment', '');
-        $format = [
-            'points',
-            'group_bn',
-            'points',
-            'card_num',
-            'pwd',
-            'comment',
-            'total' => function($m){
-                return $m->points * $m->card_num;
-            },
-            'create_time' => function($m){
-                return date('Y-m-d H:i:s', $m->create_time);
-            },
-
-            'status_name' => function ($m) {
-                return CardGroup::getCardGroupStatus($m->status);
-            },
-            'operate' => function ($m) {
-                return '确定';
-            },
+        $select = [
+            "group_id" => CardGroup::tableName(). ".id",
+            "group_status" => CardGroup::tableName(). ".status",
+            "group_points" => CardGroup::tableName(). ".points",
+            Card::tableName(). ".*",
+            CardGroup::tableName(). ".*",
         ];
         $join = ['card'];
         $where = ['and'];
@@ -261,7 +247,18 @@ class OrderController extends BaseController
             $where[] = [CardGroup::tableName() . '.group_bn' => $card->group_bn];
         }
 
-        $list = (new CardGroup())->getRelationAll('*', $where,['joinWith' => $join], CardGroup::tableName() . ".id DESC", 1, 0, $format);
+        $list = (new CardGroup())->getRelationAll($select, $where,['joinWith' => $join], CardGroup::tableName() . ".id DESC", 1, 0);
+        foreach($list as $k => $m){
+            $list[$k]['create_time'] = date('Y-m-d H:i:s', getValue($m, 'create_time', 0));
+            $list[$k]['status_name'] = CardGroup::getCardGroupStatus($m['group_status']);
+            $list[$k]['sum_points'] = $m['points'] * $m['card_num'];
+            if($m['group_status'] == CardGroup::STATUS_YES){
+                $list[$k]['operate'] = '<a href="#" onclick="alterCardGroup('. $m['group_id'] .', '. CardGroup::STATUS_NO .')">禁用此卡组</a>';
+            }else{
+                $list[$k]['operate'] = '<a href="#" onclick="alterCardGroup('. $m['group_id'] .', '. CardGroup::STATUS_YES .')">启用此卡组</a>';
+            }
+        }
+        lg($list);
         return $this->toJson('20000', '查询成功', $list);
     }
 
