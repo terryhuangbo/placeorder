@@ -91,7 +91,9 @@ class PayController extends BaseController
             'common\models\Pay' => [
                 'id',
                 'uid',
-                'cost',
+                'cost' => function($m){
+                    return $m->cost > 0 ?  $m->cost . '（消费）' : abs($m->cost) . '（退款）';
+                },
                 'username' => 'user.username',
                 'balance',
                 'order_bn' => 'order.order_bn',

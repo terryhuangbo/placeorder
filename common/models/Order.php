@@ -67,6 +67,7 @@ class Order extends BaseModel
             [['order_bn'], 'unique', 'message' => '订单编号必须唯一'],
             //订单状态
             ['status', 'in', 'range' => [self::STATUS_YES, self::STATUS_NO, self::STATUS_REFUND], 'message' => '订单状态错误'],
+            ['status', 'filter', 'filter' => 'intval'],
             //用户ID
             ['uid', 'required', 'message' => '用户ID必须存在', 'on' => self::SCENARIO_USER],
             ['uid', 'exist', 'targetAttribute' => 'uid', 'targetClass' => User::className(), 'message' => '用户不存在', 'on' => self::SCENARIO_USER],
@@ -238,8 +239,44 @@ class Order extends BaseModel
             }else{//更新操作
                 $dirtyAttr = $this->getDirtyAttributes(['status']);
                 //退款操作
-                if(!empty($dirtyAttr['status']) && $dirtyAttr['status'] === self::STATUS_REFUND){
-
+                if(!empty($dirtyAttr['status']) && (int) $dirtyAttr['status'] === self::STATUS_REFUND){
+                    if(!empty($this->uid)){//退回个人账户
+                        $this->user->points += $this->amount;
+                        $ret = $this->user->save();
+                        if($ret['code'] < 0){
+                            throw new Exception('退款用户账号失败');
+                        }
+                        //生成财务数据
+                        $pay = new Pay();
+                        $pay->attributes = [
+                            'oid' => $this->oid,
+                            'cost' => -$this->amount,
+                            'balance' => $this->user->points,
+                        ];
+                        $ret = $pay->save();
+                        if($ret['code'] < 0){
+                            throw new Exception('生成财务数据失败');
+                        }
+                    }else if(!empty($this->card_bn)){         //退回卡密
+                        $this->card->points += $this->amount;
+                        $ret = $this->card->save();
+                        if($ret['code'] < 0){
+                            throw new Exception('退款卡密账号失败');
+                        }
+                        //生成财务数据
+                        $pay = new Pay();
+                        $pay->attributes = [
+                            'card_bn' => $this->card_bn,
+                            'cost' => -$this->amount,
+                            'balance' => $this->card->points,
+                        ];
+                        $ret = $pay->save();
+                        if($ret['code'] < 0){
+                            throw new Exception('生成财务数据失败');
+                        }
+                    }else{
+                        throw new Exception('退款状态错误');
+                    }
                 }
 
             }
@@ -257,10 +294,7 @@ class Order extends BaseModel
         if($insert){
             //生成财务数据
             $pay = new Pay();
-            $pay->attributes = [
-                'oid' => $this->oid,
-                'cost' => $this->amount,
-            ];
+            $pay->cost = $this->amount;
             //场景-用户下单/卡密下单
             if($this->scenario === self::SCENARIO_USER){
                 $pay->uid = $this->uid;
