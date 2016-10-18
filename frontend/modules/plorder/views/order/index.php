@@ -767,7 +767,7 @@
                     '<td>'+ v.create_time +'</td>'+
                     '<td>'+ v.status_name +'</td>'+
                     '<td>'+ v.operate +'</td>'+
-                    '<td>'+ v.operate +'</td>'+
+                    '<td>'+ v.download +'</td>'+
                     '</tr>';
                 });
                 $("#group-list-area").html(html);

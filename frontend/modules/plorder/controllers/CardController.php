@@ -165,6 +165,60 @@ class CardController extends BaseController
         return $this->toJson($ret['code'], $ret['msg']);
     }
 
+    /**
+     * 下载卡组
+     * @return type
+     */
+    public function actionDownload(){
+        $type = (int)$this->req('type', '');
+        $group_id = $this->req('gid');
+        $group = CardGroup::findOne($group_id);
+        if(empty($group)){
+            return false;
+        }
+        $name = '';
+        $text = '';
+        $pwd = !empty($group['pwd']) ? $group['pwd'] : '默认无密码';
+        switch($type){
+            case 1:
+                $name = '仅卡数';
+                $text = $group['card_num'];
+            break;
+
+            case 2:
+                $name = '卡+数';
+                $text = "{$group['group_bn']}  {$group['card_num']}";
+            break;
+
+            case 3:
+                $name = '卡+默认密';
+                $text = "{$group['group_bn']}  {$pwd}";
+            break;
+
+            case 4:
+                $name = '卡+默认密+数';
+                $text = "{$group['group_bn']}  {$pwd}  {$group['card_num']}";
+            break;
+        }
+
+        /*下载设置*/
+        $ua = $_SERVER["HTTP_USER_AGENT"];
+        $filename = $name . '.txt';
+        $encoded_filename = urlencode($filename);
+        $encoded_filename = str_replace("+", "%20", $encoded_filename);
+
+        header("Content-Type: application/octet-stream");
+        if (preg_match("/MSIE/", $_SERVER['HTTP_USER_AGENT']) ) {
+            header('Content-Disposition:  attachment; filename="' . $encoded_filename . '"');
+        } elseif (preg_match("/Firefox/", $_SERVER['HTTP_USER_AGENT'])) {
+            header('Content-Disposition: attachment; filename*="' .  $filename . '"');
+        } else {
+            header('Content-Disposition: attachment; filename="' .  $filename . '"');
+        }
+        /*下载设置结束*/
+        echo $text;
+    }
+
 
 
 }

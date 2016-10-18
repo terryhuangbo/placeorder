@@ -257,11 +257,40 @@ class OrderController extends BaseController
             }else{
                 $list[$k]['operate'] = '<a href="#" onclick="alterCardGroup('. $m['group_id'] .', '. CardGroup::STATUS_YES .')">启用此卡组</a>';
             }
+            $list[$k]['download'] = $this->_getDownloadText($m['group_id']);
         }
-        lg($list);
         return $this->toJson('20000', '查询成功', $list);
     }
 
+    /**
+     * 批量下单
+     * @param int $gid 卡组ID
+     * @return string
+     */
+    private  function _getDownloadText($gid){
+        $text = '';
+        //仅卡数
+        $type = 1;
+        $url = yiiUrl(['plorder/card/download', 'gid' => $gid, 'type' => $type]);
+        $text .= '<a href="'. $url .'" target="_blank">仅卡数</a>';
+        $text .= '，';
+        //卡+数
+        $type = 2;
+        $url = yiiUrl(['plorder/card/download', 'gid' => $gid, 'type' => $type]);
+        $text .= '<a href="'. $url .'" target="_blank">卡+数</a>';
+        $text .= '，';
+        //卡+默认密码
+        $type = 3;
+        $url = yiiUrl(['plorder/card/download', 'gid' => $gid, 'type' => $type]);
+        $text .= '<a href="'. $url .'" target="_blank">卡+默认密</a>';
+        $text .= '，';
+        //卡+默认密+数
+        $type = 4;
+        $url = yiiUrl(['plorder/card/download', 'gid' => $gid, 'type' => $type]);
+        $text .= '<a href="'. $url .'" target="_blank">卡+默认密+数</a>';
+
+        return $text;
+    }
 
 
 
