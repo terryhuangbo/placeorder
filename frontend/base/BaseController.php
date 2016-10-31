@@ -22,7 +22,7 @@ class BaseController extends Controller
     /**
      * 获取登录信息
      */
-    public function beforeAction()
+    public function beforeAction($action)
     {
 
         //不用校验的页面，自动跳过

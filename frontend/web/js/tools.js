@@ -234,8 +234,11 @@
                     callback(d);
                 }
             },
-            complete: function(){
+            complete: function(XHR, textStatus){
                 $(document).data(key, true);
+                if (XHR.getResponseHeader('X-Redirect')) {
+                    window.location.href = XHR.getResponseHeader('X-Redirect');
+                }
             }
         });
     };
