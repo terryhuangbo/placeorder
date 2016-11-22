@@ -53,6 +53,9 @@ return [
                 ],
             ],
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\PhpManager', //用文件管理
+        ],
         'wechat' => [
             'class' => 'callmez\wechat\sdk\Wechat',
             'appId' => 'wxd67d44974fa6111c',
