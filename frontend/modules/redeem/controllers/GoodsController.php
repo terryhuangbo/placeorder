@@ -29,8 +29,7 @@ class GoodsController extends BaseController
      * 商品介绍
      * @return type
      */
-    public function actionView()
-    {
+    public function actionView(){
         $gid = intval($this->_request('gid'));
         if (empty($gid)) {
             $this->_json(-20001, '参数不能为空');

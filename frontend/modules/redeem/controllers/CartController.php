@@ -16,8 +16,7 @@ class CartController extends BaseController
      * 生成订单
      * @return type
      */
-    public function actionList()
-    {
+    public function actionList(){
         return $this->render('list');
     }
 

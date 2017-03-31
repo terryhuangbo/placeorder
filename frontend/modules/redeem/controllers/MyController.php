@@ -22,8 +22,7 @@ class MyController extends BaseController
      * 个人中心
      * @return type
      */
-    public function actionIndex()
-    {
+    public function actionIndex(){
         $_data = [
             'user' => $this->user
         ];
