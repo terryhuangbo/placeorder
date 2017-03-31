@@ -19,8 +19,7 @@ class HomeController extends BaseController
      * 用户列表
      * @return type
      */
-    public function actionIndex()
-    {
+    public function actionIndex(){
         $g_mdl = new Goods();
 
         $_goods_list = $g_mdl->_get_list(['goods_status' => $g_mdl::STATUS_UPSHELF], 'gid DESC');
@@ -123,9 +122,4 @@ class HomeController extends BaseController
     {
         return $this->render('about');
     }
-
-
-
-
-    
 }

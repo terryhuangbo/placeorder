@@ -8,8 +8,7 @@ use common\models\Order;
 use common\lib\Logistic;
 
 
-class LogesticController extends BaseController
-{
+class LogesticController extends BaseController{
 
     public $layout = 'layout';
     public $enableCsrfValidation = false;
