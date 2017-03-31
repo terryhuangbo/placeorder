@@ -2,7 +2,7 @@
 
 namespace frontend\modules\redeem\controllers;
 
-use app\base\BaseController;
+use app\base\BaseController; 
 use common\lib\Http;
 
 class LogisticController extends BaseController
