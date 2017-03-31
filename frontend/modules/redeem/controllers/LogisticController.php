@@ -8,7 +8,7 @@ use common\lib\Http;
 class LogisticController extends BaseController
 {
     public $layout = 'layout';
-    public $enableCsrfValidation = false;;
+    public $enableCsrfValidation = false;
     private $_apikey = 'apikey:aa189f2a5edc7813767ca14ca206640b'; //物流接口
 
     /**
@@ -18,7 +18,7 @@ class LogisticController extends BaseController
      */
     public function actionDetail()
     {
-        $this->render('detail');;
+        $this->render('detail');
         exit;
     }
 
