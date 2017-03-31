@@ -48,7 +48,7 @@ class LogisticController extends BaseController
      * 查询物流编号
      * @return type
      */
-    public function actionExpress2(){
+    public function actionExpress2() {
         $url = 'http://apis.baidu.com/netpopo/express/express2';
         $res = $this->_curl($url);
         $this->_json(20000, '成功', json_decode($res));
