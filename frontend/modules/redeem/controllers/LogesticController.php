@@ -48,7 +48,7 @@ class LogesticController extends BaseController{
      * 查询方法curl
      * @return type
      */
-    private function _curl($url){
+    private function _curl($url) {
         $ch = curl_init();
         $header = array($this->_apikey);
         // 添加apikey到header
