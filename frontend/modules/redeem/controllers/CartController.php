@@ -6,10 +6,8 @@ use Yii;
 use app\base\BaseController;
 use common\models\CartGoods;
 
-
 class CartController extends BaseController
 {
-
     public $layout = 'layout';
     public $enableCsrfValidation = false;
 
@@ -55,8 +53,8 @@ class CartController extends BaseController
         $cg_mdl = new CartGoods();
         $list = $cg_mdl->_get_list_all([$cg_mdl::tableName() . '.uid' => $this->uid]);
         $total_points = 0;
-        if($list){
-            foreach($list as $val){
+        if ($list) {
+            foreach ($list as $val) {
                 $total_points += $val['count'] * getValue($val, 'goods.redeem_pionts', 0);
             }
         }
@@ -77,29 +75,28 @@ class CartController extends BaseController
         $cg_id = intval($this->_request('cg_id'));
         $mdl = new CartGoods();
         $cg = $mdl->_get_info(['id' => $cg_id]);
-        if(!$cg){
+        if (!$cg) {
             $this->_json(-20001, '购物车商品不存在');
         }
 
-        if($newnum < 0){
+        if ($newnum < 0) {
             $this->_json(-20002, '购物车商品数量不能为负数');
         }
-        if($newnum > 0){
+        if ($newnum > 0) {
             $ret = $mdl->_save([
                 'id' => $cg_id,
                 'count' => $newnum,
             ]);
-            if(!$ret){
+            if (!$ret) {
                 $this->_json(-20003, '购物车商品更改失败');
             }
-        }else{ //删除
+        } else { //删除
             $ret = $mdl->_delete(['id' => $cg_id ]);
-            if($ret === false){
+            if ($ret === false) {
                 $this->_json(-20003, '购物车商品删除失败');
             }
         }
 
         $this->_json(20000, '保存成功');
     }
-
 }

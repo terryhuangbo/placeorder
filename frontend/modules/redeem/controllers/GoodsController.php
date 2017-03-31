@@ -10,10 +10,8 @@ use common\api\VsoApi;
 use common\models\User;
 use common\models\Auth;
 
-
 class GoodsController extends BaseController
 {
-
     public $layout = 'layout';
     public $enableCsrfValidation = false;
 
@@ -31,14 +29,15 @@ class GoodsController extends BaseController
      * 商品介绍
      * @return type
      */
-    public function actionView(){
+    public function actionView()
+    {
         $gid = intval($this->_request('gid'));
-        if(empty($gid)){
+        if (empty($gid)) {
             $this->_json(-20001, '参数不能为空');
         }
         $mdl = new Goods();
         $goods = $mdl->_get_info(['gid' => $gid]);
-        if(empty($goods)){
+        if (empty($goods)) {
             $this->_json(-20002, '商品信息不存在');
         }
 
@@ -55,12 +54,12 @@ class GoodsController extends BaseController
     public function actionDetail()
     {
         $gid = intval($this->_request('gid'));
-        if(empty($gid)){
+        if (empty($gid)) {
             $this->_json(-20001, '参数不能为空');
         }
         $mdl = new Goods();
         $goods = $mdl->_get_info(['gid' => $gid]);
-        if(empty($goods)){
+        if (empty($goods)) {
             $this->_json(-20002, '商品信息不存在');
         }
 
@@ -69,6 +68,4 @@ class GoodsController extends BaseController
         ];
         return $this->render('detail', $_data);
     }
-
-
 }

@@ -10,13 +10,12 @@ use common\models\Order;
 use common\models\PointsRecord;
 use common\models\Address;
 
-
 class MyController extends BaseController
 {
-
     public $layout = 'layout';
     public $enableCsrfValidation = false;
-    public function init(){
+    public function init()
+    {
         $this->_uncheck = [];
     }
     /**
@@ -38,11 +37,10 @@ class MyController extends BaseController
      */
     public function actionAddress()
     {
-
         $a_mdl = new Address();
         $list = $a_mdl->_get_list(['uid' => $this->uid, 'is_deleted' => $a_mdl::NO_DELETE], 'create_at desc');
-        if(!empty($list)){
-            foreach($list as $key => $val){
+        if (!empty($list)) {
+            foreach ($list as $key => $val) {
                 $list[$key]['type_name'] = $a_mdl::_get_address_type_name($val['type']);
             }
         }
@@ -92,21 +90,21 @@ class MyController extends BaseController
     {
         $mdl = new Order();
         $type = trim($this->_request('order_status'));
-        if($type == 'topay'){
+        if ($type == 'topay') {
             $where = ['order_status' => $mdl::STATUS_PAY];
-        }else if($type == 'payed'){
+        } elseif ($type == 'payed') {
             $where = ['in', 'order_status', [
                 $mdl::STATUS_COMMENT,
                 $mdl::STATUS_DONE,
                 $mdl::STATUS_RECEIVE,
                 $mdl::STATUS_SEND,
             ]];
-        }else{
+        } else {
             $where = [];
         }
         $_order_list = $mdl->_get_list($where, 'oid DESC');
         $_status_list = $mdl::_get_status_list();
-        foreach($_order_list as $key => $val){
+        foreach ($_order_list as $key => $val) {
             $_order_list[$key]['time'] = date('Y/m/d', $val['create_at']);
             $_order_list[$key]['status_name'] = getValue($_status_list, [$val['order_status']], '');
             $_order_list[$key]['link'] = in_array($val['order_status'], [Order::STATUS_PAY, Order::STATUS_SEND])
@@ -117,6 +115,4 @@ class MyController extends BaseController
         ];
         $this->_json(20000, '获取成功', $_data);
     }
-
-
 }
