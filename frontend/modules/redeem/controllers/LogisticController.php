@@ -18,7 +18,7 @@ class LogisticController extends BaseController
      */
     public function actionDetail()
     {
-        $this->render('detail');; 
+        $this->render('detail');;   
         exit;
     }
 
