@@ -68,7 +68,8 @@ class HomeController extends BaseController
      * 签到赚积分
      * @return type
      */
-    public function actionSign(){
+    public function actionSign()
+    {
         $p_mdl = new Points();
         $r_mdl = new PointsRecord();
         $sign = $r_mdl::find()
@@ -89,7 +90,8 @@ class HomeController extends BaseController
      * 分享赚积分
      * @return type
      */
-    public function actionShare(){
+    public function actionShare()
+    {
         $p_mdl = new Points();
         $ret = $p_mdl->_add_points($this->uid, Points::POINTS_WECHAT);
         $this->_json($ret['code'], $ret['msg']);
@@ -121,4 +123,9 @@ class HomeController extends BaseController
     {
         return $this->render('about');
     }
+
+
+
+
+    
 }
