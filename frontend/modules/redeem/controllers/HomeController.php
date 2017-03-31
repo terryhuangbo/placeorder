@@ -10,10 +10,8 @@ use common\models\Goods;
 use common\models\Points;
 use common\models\PointsRecord;
 
-
 class HomeController extends BaseController
 {
-
     public $layout = 'layout';
     public $enableCsrfValidation = false;
 
@@ -41,24 +39,24 @@ class HomeController extends BaseController
     public function actionSearch()
     {
         $keywords = urldecode($this->_request('keywords'));
-        if(empty($keywords)) {
+        if (empty($keywords)) {
             $this->_json(-20001, '关键词不能为空');
         }
 
         $g_mdl = new Goods();
-        if(!empty($keywords)){
+        if (!empty($keywords)) {
             $param = [
                 'sql' => "`goods_status` = :goods_status AND `name` like '%{$keywords}%'",
                 'params' => [':goods_status' => $g_mdl::STATUS_UPSHELF]
             ];
-        }else{
+        } else {
             $param = [
                 'sql' => "`goods_status` = :goods_status",
                 'params' => [':goods_status' => $g_mdl::STATUS_UPSHELF]
             ];
         }
 
-        $_goods_list = $g_mdl->_get_list($param,'gid DESC');
+        $_goods_list = $g_mdl->_get_list($param, 'gid DESC');
 
         $_data = [
             'goods' => $_goods_list,
@@ -81,7 +79,7 @@ class HomeController extends BaseController
             ->andWhere(['<', 'create_at', strtotime('today + 1 day')])
             ->asArray()
             ->one();
-        if($sign){
+        if ($sign) {
             $this->_json(-20001, '今天已经签到过了');
         }
         $ret = $p_mdl->_add_points($this->uid, Points::POINTS_SIGNIN);
@@ -125,8 +123,4 @@ class HomeController extends BaseController
     {
         return $this->render('about');
     }
-
-
-
-
 }
