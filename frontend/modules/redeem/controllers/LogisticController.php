@@ -7,7 +7,7 @@ use common\lib\Http;
 
 class LogisticController extends BaseController
 {
-    public $layout = 'layout';
+    public $layout = 'layout';;
     public $enableCsrfValidation = false;
     private $_apikey = 'apikey:aa189f2a5edc7813767ca14ca206640b'; //物流接口
 
