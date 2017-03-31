@@ -21,8 +21,7 @@ class LogisticController extends BaseController
      * 生成订单
      * @return type
      */
-    public function actionDetail()
-    {
+    public function actionDetail(){
         $this->render('detail');
     }
 
@@ -30,8 +29,7 @@ class LogisticController extends BaseController
      * 查询物流公司
      * @return type
      */
-    public function actionExpress1()
-    {
+    public function actionExpress1(){
         $type = trim($this->_request('type'));
         $number = trim($this->_request('number'));
 
@@ -50,8 +48,7 @@ class LogisticController extends BaseController
      * 查询物流编号
      * @return type
      */
-    public function actionExpress2()
-    {
+    public function actionExpress2(){
         $url = 'http://apis.baidu.com/netpopo/express/express2';
         $res = $this->_curl($url);
         $this->_json(20000, '成功', json_decode($res));
