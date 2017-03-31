@@ -19,7 +19,8 @@ class HomeController extends BaseController
      * 用户列表
      * @return type
      */
-    public function actionIndex(){
+    public function actionIndex()
+    {
         $g_mdl = new Goods();
 
         $_goods_list = $g_mdl->_get_list(['goods_status' => $g_mdl::STATUS_UPSHELF], 'gid DESC');
@@ -35,7 +36,8 @@ class HomeController extends BaseController
      * 索索
      * @return type
      */
-    public function actionSearch(){
+    public function actionSearch()
+    {
         $keywords = urldecode($this->_request('keywords'));
         if (empty($keywords)) {
             $this->_json(-20001, '关键词不能为空');
@@ -66,8 +68,7 @@ class HomeController extends BaseController
      * 签到赚积分
      * @return type
      */
-    public function actionSign()
-    {
+    public function actionSign(){
         $p_mdl = new Points();
         $r_mdl = new PointsRecord();
         $sign = $r_mdl::find()
@@ -88,8 +89,7 @@ class HomeController extends BaseController
      * 分享赚积分
      * @return type
      */
-    public function actionShare()
-    {
+    public function actionShare(){
         $p_mdl = new Points();
         $ret = $p_mdl->_add_points($this->uid, Points::POINTS_WECHAT);
         $this->_json($ret['code'], $ret['msg']);
