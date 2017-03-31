@@ -7,9 +7,8 @@ use app\base\BaseController;
 use common\models\Order;
 use common\lib\Logistic;
 
-
-class LogesticController extends BaseController{
-
+class LogesticController extends BaseController
+{
     public $layout = 'layout';
     public $enableCsrfValidation = false;
     private $_apikey = 'apikey:aa189f2a5edc7813767ca14ca206640b';//物流接口
@@ -23,7 +22,7 @@ class LogesticController extends BaseController{
         $type = trim($this->_request('type'));
         $number = trim($this->_request('number'));
 
-        if(empty($type) || empty($number)){
+        if (empty($type) || empty($number)) {
             $this->_json(-20001, '缺少参数');
         }
 
@@ -38,24 +37,26 @@ class LogesticController extends BaseController{
      * 查询物流编号
      * @return type
      */
-    public function actionExpress2(){
+    public function actionExpress2()
+    {
         $url = 'http://apis.baidu.com/netpopo/express/express2';
         $res = $this->_curl($url);
         $this->_json(20000, '成功', json_decode($res));
     }
 
     /**
-     * 查询方法curl
+     * 查询方法curl  
      * @return type
      */
-    private function _curl($url) {
+    private function _curl($url)
+    {
         $ch = curl_init();
         $header = array($this->_apikey);
         // 添加apikey到header
-        curl_setopt($ch, CURLOPT_HTTPHEADER  , $header);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         // 执行HTTP请求
-        curl_setopt($ch , CURLOPT_URL , $url);
+        curl_setopt($ch, CURLOPT_URL, $url);
         $res = curl_exec($ch);
         curl_close($ch);
         return $res;
@@ -65,7 +66,7 @@ class LogesticController extends BaseController{
      * 异步获取订单信息
      * @return array
      */
-    function actionDetail()
+    public function actionDetail()
     {
         $oid = intval($this->_request('oid'));
 
@@ -92,5 +93,4 @@ class LogesticController extends BaseController{
         ];
         return $this->render('detail', $_data);
     }
-
 }

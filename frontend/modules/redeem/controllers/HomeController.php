@@ -90,7 +90,8 @@ class HomeController extends BaseController
      * 分享赚积分
      * @return type
      */
-    public function actionShare() {
+    public function actionShare()
+    {
         $p_mdl = new Points();
         $ret = $p_mdl->_add_points($this->uid, Points::POINTS_WECHAT);
         $this->_json($ret['code'], $ret['msg']);
