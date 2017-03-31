@@ -2,7 +2,6 @@
 
 namespace frontend\modules\redeem\controllers;
 
-use Yii;
 use app\base\BaseController;
 use common\models\Order;
 use common\lib\Logistic;
@@ -11,10 +10,11 @@ class LogesticController extends BaseController
 {
     public $layout = 'layout';
     public $enableCsrfValidation = false;
-    private $_apikey = 'apikey:aa189f2a5edc7813767ca14ca206640b';//物流接口
+    private $_apikey = 'apikey:aa189f2a5edc7813767ca14ca206640b'; //物流接口
 
     /**
-     * 查询物流公司
+     * 查询物流公司.
+     *
      * @return type
      */
     public function actionExpress1()
@@ -26,7 +26,7 @@ class LogesticController extends BaseController
             $this->_json(-20001, '缺少参数');
         }
 
-        $number = str_replace([" ","　","\t","\n","\r"], '', $number);
+        $number = str_replace([' ', '　', "\t", "\n", "\r"], '', $number);
         $url = "http://apis.baidu.com/netpopo/express/express1?type={$type}&number={$number}";
         $res = $this->_curl($url);
 
@@ -34,7 +34,8 @@ class LogesticController extends BaseController
     }
 
     /**
-     * 查询物流编号
+     * 查询物流编号.
+     *
      * @return type
      */
     public function actionExpress2()
@@ -45,7 +46,8 @@ class LogesticController extends BaseController
     }
 
     /**
-     * 查询方法curl  
+     * 查询方法curl.
+     *
      * @return type
      */
     private function _curl($url)
@@ -59,11 +61,13 @@ class LogesticController extends BaseController
         curl_setopt($ch, CURLOPT_URL, $url);
         $res = curl_exec($ch);
         curl_close($ch);
+
         return $res;
     }
 
     /**
-     * 异步获取订单信息
+     * 异步获取订单信息.
+     *
      * @return array
      */
     public function actionDetail()
@@ -91,6 +95,7 @@ class LogesticController extends BaseController
             'log_list' => getValue($res, 'result', []),
             'express' => $express,
         ];
+
         return $this->render('detail', $_data);
     }
 }
