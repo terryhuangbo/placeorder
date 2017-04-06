@@ -36,6 +36,7 @@ class MyController extends BaseController
      * 我的地址
      * down1.
      * down2.
+     * up1.
      *
      * @return type
      */
