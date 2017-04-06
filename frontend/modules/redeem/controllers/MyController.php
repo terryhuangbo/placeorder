@@ -37,6 +37,7 @@ class MyController extends BaseController
      * down1.
      * down2.
      * up1.
+     * up2.
      *
      * @return type
      */
